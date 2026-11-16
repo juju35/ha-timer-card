@@ -58,6 +58,61 @@ test("timer helpers, Google Home and Alexa timers sensors and counters are disco
   );
 });
 
+// A copy of the mock data with Alexa Devices sensors (core): the next timer of an Echo, and an alarm left out.
+const withAlexaDevices = (hass, end) => {
+  const add = (id, state, key) => {
+    hass.entities[id] = { entity_id: id, platform: "alexa_devices", translation_key: key, device_id: "kitchen_dot" };
+    hass.states[id] = { entity_id: id, state, attributes: { device_class: "timestamp", friendly_name: id }, last_changed: new Date(NOW).toISOString(), last_updated: new Date(NOW).toISOString() };
+  };
+  hass.devices.kitchen_dot = { id: "kitchen_dot", name: "Kitchen Dot", name_by_user: null };
+  add("sensor.kitchen_dot_next_timer", end, "timer");
+  add("sensor.kitchen_dot_next_alarm", new Date(NOW + 3.6e6).toISOString(), "alarm");
+  return hass;
+};
+
+test("Alexa Devices (core): the next timer sensor is a timer ending at its state; alarms and stale ends are left out", async () => {
+  const hass = withAlexaDevices(makeHass(), new Date(NOW + 7 * 6e4).toISOString());
+  const m = tm.resolve(hass, {});
+  assert.ok(m.timers.some((x) => x.entity === "sensor.kitchen_dot_next_timer" && x.kind === "alexa_devices"));
+  assert.ok(!m.timers.some((x) => x.entity === "sensor.kitchen_dot_next_alarm"));
+  const card = new TimerCard();
+  card.setConfig({ timers: ["sensor.kitchen_dot_next_timer"] });
+  card.hass = hass;
+  const items = card._summary(card._resolve()).items;
+  same(
+    items.map((it) => [it.name, it.status, it.end]),
+    [["Kitchen Dot", "active", NOW + 7 * 6e4]],
+  );
+  // A state long gone by is a stale end, not a ringing timer; unknown is no timer.
+  for (const state of [new Date(NOW - 10 * 6e4).toISOString(), "unknown"]) {
+    hass.states["sensor.kitchen_dot_next_timer"] = { ...hass.states["sensor.kitchen_dot_next_timer"], state };
+    card.hass = { ...hass, states: { ...hass.states } };
+    same(card._summary(card._resolve()).items, []);
+  }
+});
+
+test("Alexa Media Player: older sorted_active formats (JSON string, [id, timer] pairs) are read", async () => {
+  const timer = { id: "a1", status: "ON", remainingTime: 26 * 6e4, originalDurationInMillis: 45 * 6e4, timerLabel: "Bread" };
+  for (const sorted of [JSON.stringify([timer]), [["a1", timer]], "not json"]) {
+    const hass = makeHass();
+    const id = "sensor.salon_prochain_minuteur";
+    hass.states[id] = { ...hass.states[id], attributes: { ...hass.states[id].attributes, sorted_active: sorted } };
+    const card = new TimerCard();
+    card.setConfig({ timers: [id] });
+    card.hass = hass;
+    const items = card._summary(card._resolve()).items;
+    if (sorted === "not json") {
+      // Unreadable: the state (the next timer's end) is used instead.
+      same(items.map((it) => [it.name, it.status]), [["Bread", "active"]]);
+      continue;
+    }
+    same(
+      items.map((it) => [it.name, it.status, it.total]),
+      [["Bread", "active", 45 * 6e4]],
+    );
+  }
+});
+
 test("every timer with its state, end and length; sorted by what ends first", async () => {
   const { card } = await mount();
   const items = card._summary(card._resolve()).items;
@@ -84,12 +139,15 @@ test("header, hero and rows: the next timer in large, live countdowns, its speak
   const h = html();
   assert.match(h, /chip accent[^>]*>.*4 running/s);
   assert.match(h, /4 running · 1 paused/);
-  assert.match(h, /class="label">Tea</);
+  assert.match(h, /class="big accent">.*<span>Tea<\/span>/s);
+  assert.match(h, /Next: Pasta at 12:38 PM/);
   assert.match(h, /Ends at 12:32 PM/);
   assert.match(h, /Kitchen speaker/);
   assert.match(h, /data-end="\d+">3:15</);
   assert.match(h, /class="sweep"/);
-  assert.equal((h.match(/class="row"/g) || []).length >= 7, true);
+  // The timer in large is not listed again: 5 timers and the counter.
+  assert.equal((h.match(/class="row"/g) || []).length, 6);
+  assert.match(h, /data-fmt="left">8:42 left</);
 });
 
 test("timer helper buttons call the timer services; quick starts and the duration popup start one", async () => {
@@ -139,7 +197,8 @@ test("counters: − and + call the counter services, disabled at their bounds", 
 
 test("nothing running: the hero says so, the quick starts stay", async () => {
   const { html } = await mount({}, "idle");
-  assert.match(html(), /No timer running/);
+  // Said once, in the hero; the subtitle has no count to give.
+  assert.equal((html().match(/No timer running/g) || []).length, 1);
   assert.match(html(), /data-action="quick"/);
   assert.doesNotMatch(html(), /class="chip/);
 });
@@ -165,7 +224,9 @@ test("mini card: the next timer's ring, the running ones and a pause button; the
   const { card, html } = await mount({}, "default", TimerMiniCard);
   assert.match(html(), /content mini/);
   assert.match(html(), /Tea/);
-  assert.match(html(), /data-action="dismiss"/);
+  assert.match(html(), /data-action="dismiss"[^>]*class|class="btn round[^"]*" data-action="dismiss"/);
+  // The other timers' countdowns are live: ticked by data-end.
+  assert.match(html(), /class="line">.*<span class="num" data-end="\d+">/s);
   click(card, { action: "zoom" });
   assert.match(html(), /TIMERS|section-title/);
   card._unzoom.tap({ composedPath: () => [] });
@@ -225,4 +286,27 @@ test("every clickable element can be reached and used from the keyboard", async 
     assert.match(m[0], /role="button"/, m[0]);
     assert.match(m[0], /tabindex="0"/, m[0]);
   }
+});
+
+test("an active timer without its end (Alexa Media without remaining time) is neither ringing nor paused", async () => {
+  const hass = makeHass();
+  const id = "sensor.salon_prochain_minuteur";
+  const timer = { id: "a1", status: "ON", remainingTime: "n/a", originalDurationInMillis: 45 * 6e4, timerLabel: "Bread" };
+  hass.states[id] = { ...hass.states[id], attributes: { ...hass.states[id].attributes, sorted_active: [timer] } };
+  for (const Card of [TimerCard, TimerMiniCard]) {
+    const card = new Card();
+    card.setConfig({ timers: [id] });
+    card.hass = hass;
+    const h = card.shadowRoot.innerHTML;
+    assert.match(h, /Bread/);
+    assert.doesNotMatch(h, /Paused|Ringing|Done/, Card.name);
+  }
+});
+
+test("a paused timer at 0 shows 0:00; rows keep +1 min and cancel", async () => {
+  const { card, html } = await mount();
+  assert.match(html(), /class="row">[\s\S]*data-action="add"/);
+  assert.match(html(), /class="row">[\s\S]*data-action="cancel"/);
+  const it = { key: "k", kind: "timer", entity: "timer.x", name: "X", status: "paused", remaining: 0, total: 6e4 };
+  assert.match(card._state(it), /0:00/);
 });
