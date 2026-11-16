@@ -58,6 +58,61 @@ test("timer helpers, Google Home and Alexa timers sensors and counters are disco
   );
 });
 
+// A copy of the mock data with Alexa Devices sensors (core): the next timer of an Echo, and an alarm left out.
+const withAlexaDevices = (hass, end) => {
+  const add = (id, state, key) => {
+    hass.entities[id] = { entity_id: id, platform: "alexa_devices", translation_key: key, device_id: "kitchen_dot" };
+    hass.states[id] = { entity_id: id, state, attributes: { device_class: "timestamp", friendly_name: id }, last_changed: new Date(NOW).toISOString(), last_updated: new Date(NOW).toISOString() };
+  };
+  hass.devices.kitchen_dot = { id: "kitchen_dot", name: "Kitchen Dot", name_by_user: null };
+  add("sensor.kitchen_dot_next_timer", end, "timer");
+  add("sensor.kitchen_dot_next_alarm", new Date(NOW + 3.6e6).toISOString(), "alarm");
+  return hass;
+};
+
+test("Alexa Devices (core): the next timer sensor is a timer ending at its state; alarms and stale ends are left out", async () => {
+  const hass = withAlexaDevices(makeHass(), new Date(NOW + 7 * 6e4).toISOString());
+  const m = tm.resolve(hass, {});
+  assert.ok(m.timers.some((x) => x.entity === "sensor.kitchen_dot_next_timer" && x.kind === "alexa_devices"));
+  assert.ok(!m.timers.some((x) => x.entity === "sensor.kitchen_dot_next_alarm"));
+  const card = new TimerCard();
+  card.setConfig({ timers: ["sensor.kitchen_dot_next_timer"] });
+  card.hass = hass;
+  const items = card._summary(card._resolve()).items;
+  same(
+    items.map((it) => [it.name, it.status, it.end]),
+    [["Kitchen Dot", "active", NOW + 7 * 6e4]],
+  );
+  // A state long gone by is a stale end, not a ringing timer; unknown is no timer.
+  for (const state of [new Date(NOW - 10 * 6e4).toISOString(), "unknown"]) {
+    hass.states["sensor.kitchen_dot_next_timer"] = { ...hass.states["sensor.kitchen_dot_next_timer"], state };
+    card.hass = { ...hass, states: { ...hass.states } };
+    same(card._summary(card._resolve()).items, []);
+  }
+});
+
+test("Alexa Media Player: older sorted_active formats (JSON string, [id, timer] pairs) are read", async () => {
+  const timer = { id: "a1", status: "ON", remainingTime: 26 * 6e4, originalDurationInMillis: 45 * 6e4, timerLabel: "Bread" };
+  for (const sorted of [JSON.stringify([timer]), [["a1", timer]], "not json"]) {
+    const hass = makeHass();
+    const id = "sensor.salon_prochain_minuteur";
+    hass.states[id] = { ...hass.states[id], attributes: { ...hass.states[id].attributes, sorted_active: sorted } };
+    const card = new TimerCard();
+    card.setConfig({ timers: [id] });
+    card.hass = hass;
+    const items = card._summary(card._resolve()).items;
+    if (sorted === "not json") {
+      // Unreadable: the state (the next timer's end) is used instead.
+      same(items.map((it) => [it.name, it.status]), [["Bread", "active"]]);
+      continue;
+    }
+    same(
+      items.map((it) => [it.name, it.status, it.total]),
+      [["Bread", "active", 45 * 6e4]],
+    );
+  }
+});
+
 test("every timer with its state, end and length; sorted by what ends first", async () => {
   const { card } = await mount();
   const items = card._summary(card._resolve()).items;

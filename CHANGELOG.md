@@ -6,6 +6,10 @@
 - New look, in line with the other cards: a kitchen timer with the live ring of the next timer in the hero, its time in large with when it ends, its length and the next timer after it; text buttons (Pause, +1 min, Resume, Start).
 - Timers as rows with their own live ring, the time left and when they end in color, a pause badge when paused; the timer shown in large is no longer listed again.
 - Mini card: a small kitchen timer, the time in large and the other timers on one line.
+- Timers of Alexa Devices (core): the *Next timer* sensor of each Echo, ending at its state.
+
+### Fixes
+- Alexa Media Player: older formats of `sorted_active` (a JSON string, or a list of `[id, timer]` pairs) are read too.
 
 ## 1.0.0 - 2026-11-16
 

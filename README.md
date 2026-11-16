@@ -13,10 +13,11 @@
 <p align="center">
   <a href="https://www.home-assistant.io/integrations/timer/"><img src="https://raw.githubusercontent.com/juju35/ha-timer-card/main/images/homeassistant.png" alt="Home Assistant" width="64"></a>&nbsp;&nbsp;
   <a href="https://github.com/leikoilja/ha-google-home"><img src="https://raw.githubusercontent.com/juju35/ha-timer-card/main/images/google_home.png" alt="Google Home" width="64"></a>&nbsp;&nbsp;
-  <a href="https://github.com/alandtse/alexa_media_player"><img src="https://raw.githubusercontent.com/juju35/ha-timer-card/main/images/alexa_media.png" alt="Alexa Media Player" width="64"></a>
+  <a href="https://github.com/alandtse/alexa_media_player"><img src="https://raw.githubusercontent.com/juju35/ha-timer-card/main/images/alexa_media.png" alt="Alexa Media Player" width="64"></a>&nbsp;&nbsp;
+  <a href="https://www.home-assistant.io/integrations/alexa_devices/"><img src="https://raw.githubusercontent.com/juju35/ha-timer-card/main/images/alexa_devices.png" alt="Alexa Devices" width="64"></a>
 </p>
 
-Lovelace cards for Home Assistant for **timers and counters**: [timer helpers](https://www.home-assistant.io/integrations/timer/) you start, pause, resume, extend and cancel from the card, the timers set on **Google Home** speakers ([Google Home community integration](https://github.com/leikoilja/ha-google-home)) and on **Echo** devices ([Alexa Media Player](https://github.com/alandtse/alexa_media_player)), with **live countdown rings**, **quick starts**, and [counter helpers](https://www.home-assistant.io/integrations/counter/) with − and + buttons.
+Lovelace cards for Home Assistant for **timers and counters**: [timer helpers](https://www.home-assistant.io/integrations/timer/) you start, pause, resume, extend and cancel from the card, the timers set on **Google Home** speakers ([Google Home community integration](https://github.com/leikoilja/ha-google-home)) and on **Echo** devices ([Alexa Media Player](https://github.com/alandtse/alexa_media_player) or the core [Alexa Devices](https://www.home-assistant.io/integrations/alexa_devices/)), with **live countdown rings**, **quick starts**, and [counter helpers](https://www.home-assistant.io/integrations/counter/) with − and + buttons.
 
 Timers, speaker timers and counters are **discovered automatically** from the Home Assistant entity registry: an empty configuration already shows them, whatever your Home Assistant language or entity ids. Each of them can also be listed in the configuration.
 
@@ -34,7 +35,7 @@ Timers, speaker timers and counters are **discovered automatically** from the Ho
 - **Timer helpers**: Pause, Resume, *Add a minute* (`timer.change`), Cancel, and Start with a popup at the top of the card to pick the duration (presets 1 to 60 minutes, or minute by minute)
 - **Quick starts**: 5, 10 and 15 minutes (or *Other*) on the idle timer helper of your choice
 - **Google Home timers**: label, time left, the speaker; *Delete* (or *Stop* while it rings) with `google_home.delete_timer`
-- **Alexa timers**: label, time left and length from Alexa Media Player's next-timer sensors
+- **Alexa timers**: label, time left and length from Alexa Media Player's next-timer sensors; the next timer's end from Alexa Devices (core)
 - **Counters**: value, bounds, and − / + buttons (`counter.decrement` / `counter.increment`), disabled at the bounds
 - Header icon in a tinted round badge (orange running, red ringing, grey idle), and a status chip on the title's line: *3 running*, *Ringing*, *Paused*
 - Collapsible sections (timers, counters), folded back to their defaults by a click elsewhere on the page
@@ -51,7 +52,8 @@ Timers, speaker timers and counters are **discovered automatically** from the Ho
 | <img src="https://raw.githubusercontent.com/juju35/ha-timer-card/main/images/homeassistant.png" alt="" width="16"> [Timer](https://www.home-assistant.io/integrations/timer/) (core helper) | State (`active`, `paused`, `idle`), `duration`, `remaining`, `finishes_at`; `timer.start` (with a duration), `timer.pause`, `timer.change`, `timer.cancel` |
 | <img src="https://raw.githubusercontent.com/juju35/ha-timer-card/main/images/homeassistant.png" alt="" width="16"> [Counter](https://www.home-assistant.io/integrations/counter/) (core helper) | Value, `minimum`, `maximum`, `step`; `counter.increment`, `counter.decrement` |
 | <img src="https://raw.githubusercontent.com/juju35/ha-timer-card/main/images/google_home.png" alt="" width="16"> [Google Home](https://github.com/leikoilja/ha-google-home) (custom, `google_home`) | The *timers* sensor of each speaker: its `timers` attribute (label, `local_time_iso`, `duration`, `remaining` when paused, `status` set / ringing / paused); `google_home.delete_timer` |
-| <img src="https://raw.githubusercontent.com/juju35/ha-timer-card/main/images/alexa_media.png" alt="" width="16"> [Alexa Media Player](https://github.com/alandtse/alexa_media_player) (custom, `alexa_media`) | The *next timer* sensor of each Echo: its `sorted_active` attribute (`timerLabel`, `remainingTime` at `process_timestamp`, `originalDurationInMillis`, `status` ON / PAUSED), else its state (the time the next timer ends) |
+| <img src="https://raw.githubusercontent.com/juju35/ha-timer-card/main/images/alexa_media.png" alt="" width="16"> [Alexa Media Player](https://github.com/alandtse/alexa_media_player) (custom, `alexa_media`) | The *next timer* sensor of each Echo: its `sorted_active` attribute (`timerLabel`, `remainingTime` at `process_timestamp`, `originalDurationInMillis`, `status` ON / PAUSED), else its state (the time the next timer ends); older formats (`sorted_active` as a JSON string or as `[id, timer]` pairs) are read too |
+| <img src="https://raw.githubusercontent.com/juju35/ha-timer-card/main/images/alexa_devices.png" alt="" width="16"> [Alexa Devices](https://www.home-assistant.io/integrations/alexa_devices/) (core, `alexa_devices`) | The *next timer* sensor of each Echo (timestamp): the time the next timer ends, without label, length or pause |
 
 Helpers and speaker timers are found on their own, sorted by name. Details in [How it works](#how-it-works).
 
@@ -222,7 +224,7 @@ The full card at 6 columns of a phone's Sections view (the dial above its texts,
 
 ## How it works
 
-The cards read the Home Assistant entity registry instead of relying on entity ids: a speaker timer sensor is a sensor of the `google_home` integration whose translation key is *timers*, or of `alexa_media` whose translation key is *next timer*. Entity ids can therefore be in any language or renamed.
+The cards read the Home Assistant entity registry instead of relying on entity ids: a speaker timer sensor is a sensor of the `google_home` integration whose translation key is *timers*, of `alexa_media` whose translation key is *next timer*, or of `alexa_devices` whose translation key is *timer* (its alarm and reminder sensors are left out). Entity ids can therefore be in any language or renamed.
 
 - **Countdown**: the time a timer ends (`finishes_at`, Google's `local_time_iso`, Alexa's time left counted from `process_timestamp`); the texts and rings move every second in place, without redrawing the card, and the card is redrawn once a countdown ends. A paused timer shows the time it has left.
 - **Ring**: what is left of the timer's length (`duration`, Google's `duration`, Alexa's `originalDurationInMillis`).

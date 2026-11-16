@@ -2186,14 +2186,35 @@ const durationText = (minutes) => {
   return `${Math.floor(total / 3600)}:${String(Math.floor((total % 3600) / 60)).padStart(2, "0")}:${String(total % 60).padStart(2, "0")}`;
 };
 
-// Where timers come from: timer helpers, Google Home timers sensors and Alexa Media Player next-timer sensors.
+// Where timers come from: timer helpers, Google Home timers sensors, Alexa Media Player next-timer sensors and the
+// "Next timer" sensors of Alexa Devices (core; their alarm and reminder sensors are left out).
 const sourceKind = (hass, id) => {
   const e = hass.entities?.[id];
   if (domainOf(id) === "timer") return "timer";
   if (e?.platform === "google_home" || /_timers$/.test(id)) return "google_home";
+  if (e?.platform === "alexa_devices") return e.translation_key === "timer" ? "alexa_devices" : null;
   if (e?.platform === "alexa_media" || /_next_timer$/.test(id)) return "alexa_media";
   return null;
 };
+
+// The active timers of Alexa Media Player: a list of objects, or in older versions a JSON string, or a list of
+// [id, timer] pairs.
+const alexaTimers = (raw) => {
+  let list = raw;
+  if (typeof list === "string") {
+    try {
+      list = JSON.parse(list);
+    } catch {
+      return [];
+    }
+  }
+  return asList(list)
+    .map((tm) => (Array.isArray(tm) ? tm[1] : tm))
+    .filter((tm) => tm && typeof tm === "object");
+};
+
+// A timer of Alexa Devices whose end went by more than this long ago is a stale state, not a ringing timer.
+const STALE_MS = 6e4;
 
 const _cache = new WeakMap();
 
@@ -2215,7 +2236,7 @@ const resolve = (hass, config) => {
     const ids = Object.keys(hass.states);
     const helpers = ids.filter((id) => domainOf(id) === "timer").sort(byName);
     const speakers = Object.values(hass.entities || {})
-      .filter((e) => domainOf(e.entity_id) === "sensor" && hass.states[e.entity_id] && ((e.platform === "google_home" && (e.translation_key === "timers" || /_timers$/.test(e.entity_id))) || (e.platform === "alexa_media" && (e.translation_key === "next_timer" || /_next_timer$/.test(e.entity_id)))))
+      .filter((e) => domainOf(e.entity_id) === "sensor" && hass.states[e.entity_id] && ((e.platform === "google_home" && (e.translation_key === "timers" || /_timers$/.test(e.entity_id))) || (e.platform === "alexa_media" && (e.translation_key === "next_timer" || /_next_timer$/.test(e.entity_id))) || (e.platform === "alexa_devices" && e.translation_key === "timer")))
       .map((e) => e.entity_id)
       .sort(byName);
     timers = [...helpers, ...speakers].map((entity) => ({ entity, kind: sourceKind(hass, entity) }));
@@ -2346,7 +2367,7 @@ class TimerCard extends CardBase {
         }
       } else if (src.kind === "alexa_media") {
         const at = parseTime(a.process_timestamp) ?? parseTime(s.last_updated) ?? now;
-        const list = asList(a.sorted_active);
+        const list = alexaTimers(a.sorted_active);
         if (list.length) {
           list.forEach((tm, i) => {
             const st = String(tm.status || "ON").toUpperCase();
@@ -2365,6 +2386,12 @@ class TimerCard extends CardBase {
           });
         } else if (parseTime(s.state) !== null && parseTime(s.state) > now) {
           out.push({ key: src.entity, kind: "alexa_media", entity: src.entity, name: a.timer || src.name || this._t("timer"), sub: dev, status: "active", end: parseTime(s.state), total: null });
+        }
+      } else if (src.kind === "alexa_devices") {
+        // Alexa Devices: the state is the end of the next timer, without label, length or pause.
+        const end = parseTime(s.state);
+        if (end !== null && end > now - STALE_MS) {
+          out.push({ key: src.entity, kind: "alexa_devices", entity: src.entity, name: src.name || dev || this._t("timer"), sub: src.name ? dev : "", status: "active", end, total: null });
         }
       }
     }
