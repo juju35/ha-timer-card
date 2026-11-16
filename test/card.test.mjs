@@ -197,7 +197,8 @@ test("counters: − and + call the counter services, disabled at their bounds", 
 
 test("nothing running: the hero says so, the quick starts stay", async () => {
   const { html } = await mount({}, "idle");
-  assert.match(html(), /No timer running/);
+  // Said once, in the hero; the subtitle has no count to give.
+  assert.equal((html().match(/No timer running/g) || []).length, 1);
   assert.match(html(), /data-action="quick"/);
   assert.doesNotMatch(html(), /class="chip/);
 });
@@ -223,7 +224,9 @@ test("mini card: the next timer's ring, the running ones and a pause button; the
   const { card, html } = await mount({}, "default", TimerMiniCard);
   assert.match(html(), /content mini/);
   assert.match(html(), /Tea/);
-  assert.match(html(), /data-action="dismiss"/);
+  assert.match(html(), /data-action="dismiss"[^>]*class|class="btn round[^"]*" data-action="dismiss"/);
+  // The other timers' countdowns are live: ticked by data-end.
+  assert.match(html(), /class="line">.*<span class="num" data-end="\d+">/s);
   click(card, { action: "zoom" });
   assert.match(html(), /TIMERS|section-title/);
   card._unzoom.tap({ composedPath: () => [] });
@@ -283,4 +286,27 @@ test("every clickable element can be reached and used from the keyboard", async 
     assert.match(m[0], /role="button"/, m[0]);
     assert.match(m[0], /tabindex="0"/, m[0]);
   }
+});
+
+test("an active timer without its end (Alexa Media without remaining time) is neither ringing nor paused", async () => {
+  const hass = makeHass();
+  const id = "sensor.salon_prochain_minuteur";
+  const timer = { id: "a1", status: "ON", remainingTime: "n/a", originalDurationInMillis: 45 * 6e4, timerLabel: "Bread" };
+  hass.states[id] = { ...hass.states[id], attributes: { ...hass.states[id].attributes, sorted_active: [timer] } };
+  for (const Card of [TimerCard, TimerMiniCard]) {
+    const card = new Card();
+    card.setConfig({ timers: [id] });
+    card.hass = hass;
+    const h = card.shadowRoot.innerHTML;
+    assert.match(h, /Bread/);
+    assert.doesNotMatch(h, /Paused|Ringing|Done/, Card.name);
+  }
+});
+
+test("a paused timer at 0 shows 0:00; rows keep +1 min and cancel", async () => {
+  const { card, html } = await mount();
+  assert.match(html(), /class="row">[\s\S]*data-action="add"/);
+  assert.match(html(), /class="row">[\s\S]*data-action="cancel"/);
+  const it = { key: "k", kind: "timer", entity: "timer.x", name: "X", status: "paused", remaining: 0, total: 6e4 };
+  assert.match(card._state(it), /0:00/);
 });

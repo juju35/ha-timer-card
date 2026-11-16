@@ -2294,7 +2294,7 @@ const TIMER_STYLE = `
     .hero { flex-direction: column; align-items: stretch; gap: 8px; }
     .hero .kt { align-self: center; }
     .row { gap: 8px; }
-    .row .acts .btn:not(:first-child) { display: none; }
+    .row .acts .btn:not(:first-child):not([data-action="add"]) { display: none; }
     .row .acts .btn span { display: none; }
     .row .acts .btn { width: 34px; height: 34px; padding: 0; border-radius: 50%; }
     .mini .kt { width: 60px; height: 60px; }
@@ -2420,7 +2420,7 @@ class TimerCard extends CardBase {
     const parts = [];
     if (active.length) parts.push(active.length === 1 ? this._t("running_one") : this._t("running_n", { n: active.length }));
     if (paused.length) parts.push(paused.length === 1 ? this._t("paused_one") : this._t("paused_n", { n: paused.length }));
-    const sub = parts.length ? parts.join(" · ") : items.length ? this._t("none_running") : "";
+    const sub = parts.join(" · ");
     const hero = ringing[0] || active[0] || paused[0] || null;
     return { items, ringing, active, paused, chip, sub, hero, quick: this._quickTarget(items) };
   }
@@ -2444,8 +2444,8 @@ class TimerCard extends CardBase {
   }
 
   _progress(it) {
-    const left = it.status === "active" ? (it.end ?? Date.now()) - Date.now() : it.status === "paused" ? it.remaining : it.status === "ringing" ? 0 : it.total;
-    return it.total ? clamp((left ?? 0) / it.total, 0, 1) : it.status === "idle" ? 1 : 0;
+    const left = it.status === "active" ? (it.end ? it.end - Date.now() : it.total) : it.status === "paused" ? it.remaining : it.status === "ringing" ? 0 : it.total;
+    return it.total ? clamp((left ?? 0) / it.total, 0, 1) : it.status === "idle" || (it.status === "active" && !it.end) ? 1 : 0;
   }
 
   _cls(it) {
@@ -2486,13 +2486,14 @@ class TimerCard extends CardBase {
   }
 
   // The buttons of a timer: pause / resume / +1 min / cancel for a helper, stop or delete for a Google Home timer.
-  _actions(it, compact = false) {
+  // In a row (`row`), +1 min is a round button, so that the state keeps its room.
+  _actions(it, compact = false, row = false) {
     const out = [];
     if (it.kind === "timer") {
       if (it.status === "active") out.push(this._btn(it, "pause", ICONS.pause, this._t("pause"), this._t("pause")));
       if (it.status === "paused") out.push(this._btn(it, "resume", ICONS.play, this._t("resume"), this._t("resume"), " primary"));
       if (it.status === "idle") out.push(this._btn(it, "start", ICONS.play, this._t("start"), this._t("start")));
-      if (it.status === "active" && !compact) out.push(this._btn(it, "add", ICONS.plus, this._t("add_minute"), this._length(6e4)));
+      if (it.status === "active" && !compact) out.push(this._btn(it, "add", ICONS.plus, this._t("add_minute"), row ? "" : this._length(6e4), row ? " round" : ""));
       if (it.status !== "idle" && !compact) out.push(this._btn(it, "cancel", ICONS.close, this._t("cancel_timer"), "", " round"));
     } else if (it.kind === "google_home") {
       const label = this._t(it.status === "ringing" ? "stop_ringing" : "delete");
@@ -2507,15 +2508,19 @@ class TimerCard extends CardBase {
       return `<div class="none">${svgIcon(ICONS.timer_off)}<span>${esc(this._t("none_running"))}</span></div>`;
     }
     const cls = this._cls(it);
+    // An active timer whose end is not known (Alexa Media without its remaining time) says neither ringing nor paused.
     const ends =
-      it.status === "active" && it.end
-        ? this._t("ends_at", { time: fmtTime(this._hass, this._config, it.end) })
+      it.status === "active"
+        ? it.end
+          ? this._t("ends_at", { time: fmtTime(this._hass, this._config, it.end) })
+          : ""
         : it.status === "paused"
           ? this._t("paused")
           : this._t("ringing");
+    const endLine = [ends, it.sub].filter(Boolean).join(" · ");
     const next = sum.active.find((x) => x !== it && x.end);
     const lines = [
-      `<div class="line ${cls}">${svgIcon(it.status === "ringing" ? ICONS.bell : it.status === "paused" ? ICONS.pause : ICONS.bell_ring)}<span>${esc([ends, it.sub].filter(Boolean).join(" · "))}</span></div>`,
+      endLine ? `<div class="line ${cls}">${svgIcon(it.status === "ringing" ? ICONS.bell : it.status === "paused" ? ICONS.pause : ICONS.bell_ring)}<span>${esc(endLine)}</span></div>` : "",
       it.total ? `<div class="line">${svgIcon(ICONS.timer)}<span>${esc(this._t("of", { length: this._length(it.total) }))}</span></div>` : "",
       next ? `<div class="line">${svgIcon(ICONS.sand)}<span>${esc(this._t("next_timer", { name: next.name, time: fmtTime(this._hass, this._config, next.end) }))}</span></div>` : "",
     ];
@@ -2541,12 +2546,11 @@ class TimerCard extends CardBase {
     const cls = this._cls(it);
     const badge = it.status === "paused" ? `<span class="badge" style="--b: var(--tm-idle)">${svgIcon(ICONS.pause)}</span>` : "";
     const ringed = it.status === "active" || it.status === "ringing";
-    const acts = this._actions(it, true);
-    const cancel = it.kind === "timer" && it.status !== "idle" ? this._btn(it, "cancel", ICONS.close, this._t("cancel_timer"), "", " round") : "";
+    const acts = this._actions(it, false, true);
     return `<div class="row">
       <div class="row-icon ${cls} ${it.status}">${ringed ? this._ring(it, 44, 3) : ""}${svgIcon(this._icon(it), it.status === "ringing" ? "shake" : "")}${badge}</div>
       <div class="row-text clickable" role="button" tabindex="0" data-entity="${esc(it.entity)}"><div class="row-name">${esc(it.name)}</div><div class="row-state ${cls}">${this._state(it)}</div></div>
-      ${acts || cancel ? `<div class="acts">${acts}${cancel}</div>` : ""}
+      ${acts ? `<div class="acts">${acts}</div>` : ""}
     </div>`;
   }
 
@@ -2668,16 +2672,29 @@ class TimerMiniCard extends withMini(TimerCard) {
     const sum = this._summary(m);
     const it = sum.hero;
     const others = sum.items.filter((x) => x !== it && x.status !== "idle");
+    // The other timers, their countdowns live (data-end, ticked by _syncCountdown).
+    const short = (x) => {
+      if (x.status === "active" && x.end) return `<span class="num" data-end="${x.end}">${esc(fmtCountdown(x.end - Date.now()))}</span>`;
+      if (x.status === "paused") return `<span class="num">${esc(fmtCountdown(x.remaining ?? x.total ?? 0))}</span> ${esc(this._t("paused").toLowerCase())}`;
+      if (x.status === "ringing") return esc(this._t("ringing"));
+      return `<span class="num">${esc(x.total ? fmtCountdown(x.total) : "—")}</span>`;
+    };
     const rest = others.length
-      ? `<div class="line">${svgIcon(ICONS.sand)}<span>${esc(others.slice(0, 2).map((x) => `${x.name} ${x.status === "active" && x.end ? fmtCountdown(x.end - Date.now()) : x.status === "paused" && x.remaining ? fmtCountdown(x.remaining) : this._t(x.status === "ringing" ? "ringing" : "paused")}`).join(" · "))}</span></div>`
+      ? `<div class="line">${svgIcon(ICONS.sand)}<span>${others
+          .slice(0, 2)
+          .map((x) => `${esc(x.name)} ${short(x)}`)
+          .join(" · ")}</span></div>`
       : "";
     const q = sum.quick;
-    const pause = it?.kind === "timer" && it.status === "active" ? `<button class="btn round" data-action="pause" data-key="${esc(it.key)}" title="${esc(this._t("pause"))}" aria-label="${esc(`${this._t("pause")} · ${it.name}`)}">${svgIcon(ICONS.pause)}</button>` : "";
-    const controls = it
-      ? pause || (it.status === "paused" || it.kind === "google_home" ? this._actions(it, true).replace(/class="btn( primary| active)?"/, 'class="btn round$1"').replace(/<span>[^<]*<\/span>/, "") : "")
-      : q && this._config.show_quick !== false
-        ? `<button class="btn round primary" data-action="start" data-key="${esc(q.key)}" title="${esc(this._t("start_timer", { name: q.name }))}" aria-label="${esc(this._t("start_timer", { name: q.name }))}">${svgIcon(ICONS.play)}</button>`
-        : "";
+    let controls = "";
+    if (it?.kind === "timer" && it.status === "active") controls = this._btn(it, "pause", ICONS.pause, this._t("pause"), "", " round");
+    else if (it?.kind === "timer" && it.status === "paused") controls = this._btn(it, "resume", ICONS.play, this._t("resume"), "", " round primary");
+    else if (it?.kind === "google_home") {
+      const label = this._t(it.status === "ringing" ? "stop_ringing" : "delete");
+      controls = this._btn(it, "dismiss", it.status === "ringing" ? ICONS.stop : ICONS.close, label, "", it.status === "ringing" ? " round active" : " round");
+    } else if (!it && q && this._config.show_quick !== false) {
+      controls = `<button class="btn round primary" data-action="start" data-key="${esc(q.key)}" title="${esc(this._t("start_timer", { name: q.name }))}" aria-label="${esc(this._t("start_timer", { name: q.name }))}">${svgIcon(ICONS.play)}</button>`;
+    }
     const body = it ? `${this._big(it)}${rest}` : `<div class="line">${svgIcon(ICONS.timer_off)}<span>${esc(this._t("none_running"))}</span></div>`;
     return `<style>${BASE_STYLE}${TIMER_STYLE}${MINI_STYLE}</style>
       <ha-card>
