@@ -84,12 +84,15 @@ test("header, hero and rows: the next timer in large, live countdowns, its speak
   const h = html();
   assert.match(h, /chip accent[^>]*>.*4 running/s);
   assert.match(h, /4 running · 1 paused/);
-  assert.match(h, /class="label">Tea</);
+  assert.match(h, /class="big accent">.*<span>Tea<\/span>/s);
+  assert.match(h, /Next: Pasta at 12:38 PM/);
   assert.match(h, /Ends at 12:32 PM/);
   assert.match(h, /Kitchen speaker/);
   assert.match(h, /data-end="\d+">3:15</);
   assert.match(h, /class="sweep"/);
-  assert.equal((h.match(/class="row"/g) || []).length >= 7, true);
+  // The timer in large is not listed again: 5 timers and the counter.
+  assert.equal((h.match(/class="row"/g) || []).length, 6);
+  assert.match(h, /data-fmt="left">8:42 left</);
 });
 
 test("timer helper buttons call the timer services; quick starts and the duration popup start one", async () => {

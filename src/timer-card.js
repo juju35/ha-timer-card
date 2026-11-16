@@ -12,6 +12,8 @@
 const VERSION = "__VERSION__";
 
 const CARD_ICONS = {
+  bell_ring: "M21,19V20H3V19L5,17V11C5,7.9 7.03,5.17 10,4.29C10,4.19 10,4.1 10,4A2,2 0 0,1 12,2A2,2 0 0,1 14,4C14,4.1 14,4.19 14,4.29C16.97,5.17 19,7.9 19,11V17L21,19M14,21A2,2 0 0,1 12,23A2,2 0 0,1 10,21M19.75,3.19L18.33,4.61C20.04,6.3 21,8.6 21,11H23C23,8.07 21.84,5.25 19.75,3.19M1,11H3C3,8.6 3.96,6.3 5.67,4.61L4.25,3.19C2.16,5.25 1,8.07 1,11Z",
+  sand: "M6,2V8H6V8L10,12L6,16V16H6V22H18V16H18V16L14,12L18,8V8H18V2H6M16,16.5V20H8V16.5L12,12.5L16,16.5M12,11.5L8,7.5V4H16V7.5L12,11.5Z",
   timer:
     "M12,20A7,7 0 0,1 5,13A7,7 0 0,1 12,6A7,7 0 0,1 19,13A7,7 0 0,1 12,20M19.03,7.39L20.45,5.97C20,5.46 19.55,5 19.04,4.56L17.62,6C16.07,4.74 14.12,4 12,4A9,9 0 0,0 3,13A9,9 0 0,0 12,22C17,22 21,17.97 21,13C21,10.88 20.26,8.93 19.03,7.39M11,14H13V8H11M15,1H9V3H15V1Z",
   timer_off:
@@ -27,7 +29,6 @@ const CARD_ICONS = {
 const PRESETS = [1, 3, 5, 10, 15, 20, 30, 45, 60];
 // The quick starts under the timers, in minutes.
 const QUICK = [5, 10, 15];
-const RING_HERO = 120;
 
 const STRINGS = {
   en: {
@@ -63,6 +64,7 @@ const STRINGS = {
     show_timers: "Show the timers",
     show_quick: "Show the quick starts",
     show_counters: "Show the counters",
+    next_timer: "Next: {name} at {time}",
     start: "Start",
     duration: "Duration",
     less: "Less",
@@ -118,6 +120,7 @@ const STRINGS = {
     show_timers: "Afficher les minuteurs",
     show_quick: "Afficher les démarrages rapides",
     show_counters: "Afficher les compteurs",
+    next_timer: "Ensuite : {name} à {time}",
     start: "Démarrer",
     duration: "Durée",
     less: "Moins",
@@ -173,6 +176,7 @@ const STRINGS = {
     show_timers: "Timer anzeigen",
     show_quick: "Schnellstart anzeigen",
     show_counters: "Zähler anzeigen",
+    next_timer: "Danach: {name} um {time}",
     start: "Starten",
     duration: "Dauer",
     less: "Weniger",
@@ -228,6 +232,7 @@ const STRINGS = {
     show_timers: "Mostrar los temporizadores",
     show_quick: "Mostrar el inicio rápido",
     show_counters: "Mostrar los contadores",
+    next_timer: "Después: {name} a las {time}",
     start: "Iniciar",
     duration: "Duración",
     less: "Menos",
@@ -283,6 +288,7 @@ const STRINGS = {
     show_timers: "Mostra i timer",
     show_quick: "Mostra l'avvio rapido",
     show_counters: "Mostra i contatori",
+    next_timer: "Poi: {name} alle {time}",
     start: "Avvia",
     duration: "Durata",
     less: "Meno",
@@ -338,6 +344,7 @@ const STRINGS = {
     show_timers: "Timers tonen",
     show_quick: "Snelstart tonen",
     show_counters: "Tellers tonen",
+    next_timer: "Daarna: {name} om {time}",
     start: "Starten",
     duration: "Duur",
     less: "Minder",
@@ -393,6 +400,7 @@ const STRINGS = {
     show_timers: "Mostrar os temporizadores",
     show_quick: "Mostrar o início rápido",
     show_counters: "Mostrar os contadores",
+    next_timer: "A seguir: {name} às {time}",
     start: "Iniciar",
     duration: "Duração",
     less: "Menos",
@@ -448,6 +456,7 @@ const STRINGS = {
     show_timers: "Pokaż minutniki",
     show_quick: "Pokaż szybki start",
     show_counters: "Pokaż liczniki",
+    next_timer: "Następny: {name} o {time}",
     start: "Start",
     duration: "Czas trwania",
     less: "Mniej",
@@ -503,6 +512,7 @@ const STRINGS = {
     show_timers: "Прикажи тајмере",
     show_quick: "Прикажи брзи старт",
     show_counters: "Прикажи бројаче",
+    next_timer: "Затим: {name} у {time}",
     start: "Покрени",
     duration: "Трајање",
     less: "Мање",
@@ -558,6 +568,7 @@ const STRINGS = {
     show_timers: "Prikaži tajmere",
     show_quick: "Prikaži brzi start",
     show_counters: "Prikaži brojače",
+    next_timer: "Zatim: {name} u {time}",
     start: "Pokreni",
     duration: "Trajanje",
     less: "Manje",
@@ -613,6 +624,7 @@ const STRINGS = {
     show_timers: "Afișează cronometrele",
     show_quick: "Afișează pornirea rapidă",
     show_counters: "Afișează contoarele",
+    next_timer: "Apoi: {name} la {time}",
     start: "Pornește",
     duration: "Durată",
     less: "Mai puțin",
@@ -668,6 +680,7 @@ const STRINGS = {
     show_timers: "Vis timerne",
     show_quick: "Vis hurtigstart",
     show_counters: "Vis tællerne",
+    next_timer: "Derefter: {name} kl. {time}",
     start: "Start",
     duration: "Varighed",
     less: "Mindre",
@@ -723,6 +736,7 @@ const STRINGS = {
     show_timers: "Visa timers",
     show_quick: "Visa snabbstart",
     show_counters: "Visa räknare",
+    next_timer: "Sedan: {name} kl. {time}",
     start: "Starta",
     duration: "Varaktighet",
     less: "Mindre",
@@ -778,6 +792,7 @@ const STRINGS = {
     show_timers: "Показване на таймерите",
     show_quick: "Показване на бързия старт",
     show_counters: "Показване на броячите",
+    next_timer: "След това: {name} в {time}",
     start: "Старт",
     duration: "Продължителност",
     less: "По-малко",
@@ -833,6 +848,7 @@ const STRINGS = {
     show_timers: "Показывать таймеры",
     show_quick: "Показывать быстрый старт",
     show_counters: "Показывать счётчики",
+    next_timer: "Далее: {name} в {time}",
     start: "Запустить",
     duration: "Длительность",
     less: "Меньше",
@@ -888,6 +904,7 @@ const STRINGS = {
     show_timers: "Показувати таймери",
     show_quick: "Показувати швидкий старт",
     show_counters: "Показувати лічильники",
+    next_timer: "Далі: {name} о {time}",
     start: "Запустити",
     duration: "Тривалість",
     less: "Менше",
@@ -943,6 +960,7 @@ const STRINGS = {
     show_timers: "Időzítők megjelenítése",
     show_quick: "Gyorsindítás megjelenítése",
     show_counters: "Számlálók megjelenítése",
+    next_timer: "Utána: {name}, {time}",
     start: "Indítás",
     duration: "Időtartam",
     less: "Kevesebb",
@@ -998,6 +1016,7 @@ const STRINGS = {
     show_timers: "Zobraziť časovače",
     show_quick: "Zobraziť rýchly štart",
     show_counters: "Zobraziť počítadlá",
+    next_timer: "Potom: {name} o {time}",
     start: "Spustiť",
     duration: "Trvanie",
     less: "Menej",
@@ -1053,6 +1072,7 @@ const STRINGS = {
     show_timers: "Zobrazit časovače",
     show_quick: "Zobrazit rychlý start",
     show_counters: "Zobrazit počítadla",
+    next_timer: "Potom: {name} v {time}",
     start: "Spustit",
     duration: "Doba trvání",
     less: "Méně",
@@ -1108,6 +1128,7 @@ const STRINGS = {
     show_timers: "Prikaži časovnike",
     show_quick: "Prikaži hitri zagon",
     show_counters: "Prikaži števce",
+    next_timer: "Nato: {name} ob {time}",
     start: "Zaženi",
     duration: "Trajanje",
     less: "Manj",
@@ -1163,6 +1184,7 @@ const STRINGS = {
     show_timers: "Rādīt taimerus",
     show_quick: "Rādīt ātro palaišanu",
     show_counters: "Rādīt skaitītājus",
+    next_timer: "Pēc tam: {name} {time}",
     start: "Sākt",
     duration: "Ilgums",
     less: "Mazāk",
@@ -1218,6 +1240,7 @@ const STRINGS = {
     show_timers: "Εμφάνιση των χρονομέτρων",
     show_quick: "Εμφάνιση της γρήγορης έναρξης",
     show_counters: "Εμφάνιση των μετρητών",
+    next_timer: "Επόμενο: {name} στις {time}",
     start: "Έναρξη",
     duration: "Διάρκεια",
     less: "Λιγότερο",
@@ -1402,6 +1425,45 @@ const BASE_STYLE = `
   .ring-svg circle { fill: none; }
   .ring-svg .track { stroke: color-mix(in srgb, var(--c, var(--tm-accent)) 18%, transparent); }
   .ring-svg .prog { stroke: var(--c, var(--tm-accent)); stroke-linecap: round; transition: stroke-dashoffset 1s linear; }
+  /* Hero, as on the garden and tempo cards: a flat illustration on the left, a big value and a few colored lines on the right. */
+  .hero { display: flex; align-items: center; gap: 12px; min-width: 0; }
+  .hero-art { flex: none; width: 120px; display: grid; place-items: center; }
+  .hero-art svg { width: 100%; height: auto; display: block; }
+  .hero-body { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 5px; }
+  .hero-kick { font-size: 12px; color: var(--secondary-text-color); }
+  .big { display: flex; align-items: baseline; gap: 6px; min-width: 0; }
+  .big .icon { width: 24px; height: 24px; align-self: center; color: var(--c, var(--tm-accent)); }
+  .big b { font-size: 30px; font-weight: 400; line-height: 1; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .big span { font-size: 14px; color: var(--secondary-text-color); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .hero .line { font-size: 12.5px; }
+  /* Rows, as the watering zones: a round icon (grey at rest, tinted otherwise, a ring while it runs), name, colored state, a button. */
+  .row { display: flex; align-items: center; gap: 12px; min-width: 0; }
+  .row-icon { position: relative; width: 40px; height: 40px; border-radius: 50%; flex: none; display: grid; place-items: center;
+              --t: var(--c, var(--tm-idle)); background: color-mix(in srgb, var(--t) 18%, transparent); color: color-mix(in srgb, var(--t) 70%, var(--primary-text-color)); }
+  .row-icon.idle { background: color-mix(in srgb, var(--primary-text-color) 8%, transparent); color: var(--secondary-text-color); }
+  .row-icon > .icon, .row-icon > ha-icon { width: 22px; height: 22px; --mdc-icon-size: 22px; }
+  .row-icon .ring-svg { inset: -2px; width: 44px; height: 44px; }
+  .badge { position: absolute; right: -3px; bottom: -3px; width: 17px; height: 17px; border-radius: 50%; display: grid; place-items: center;
+           background: var(--b, var(--tm-ok)); color: #fff; box-shadow: 0 0 0 2px var(--ha-card-background, var(--card-background-color, #fff)); }
+  .badge .icon { width: 11px; height: 11px; }
+  .row-text { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 1px; }
+  .row-name { font-size: 14px; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .row-state { font-size: 12.5px; color: var(--secondary-text-color); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .row-state.ok, .row-state.warn, .row-state.crit, .row-state.active, .row-state.accent { color: color-mix(in srgb, var(--c) 60%, var(--primary-text-color)); }
+  .rows { display: flex; flex-direction: column; gap: 8px; }
+  /* Tiles, as on room overview: grey, tinted with a border when they need a look; small badges below. */
+  .tiles { display: grid; gap: 8px; grid-template-columns: repeat(var(--cols, 2), minmax(0, 1fr)); }
+  .tile { min-width: 0; display: flex; flex-direction: column; gap: 6px; padding: 8px; border-radius: 10px; box-sizing: border-box;
+          background: var(--secondary-background-color, rgba(127,127,127,.12)); border: 1px solid transparent; }
+  .tile.tint { background: color-mix(in srgb, var(--c) 13%, var(--secondary-background-color, rgba(127,127,127,.12)));
+               border-color: color-mix(in srgb, var(--c) 30%, transparent); }
+  .tile-head { display: flex; align-items: center; gap: 8px; min-width: 0; }
+  .tile .row-icon { width: 30px; height: 30px; } .tile .row-icon > .icon { width: 18px; height: 18px; }
+  .tile .row-state { font-size: 12px; }
+  .badges { display: flex; gap: 4px; flex-wrap: wrap; }
+  .pill { display: inline-flex; align-items: center; gap: 3px; font-size: 12px; padding: 1px 7px; border-radius: 10px;
+          color: color-mix(in srgb, var(--c, var(--tm-idle)) 60%, var(--primary-text-color)); background: color-mix(in srgb, var(--c, var(--tm-idle)) 14%, transparent); }
+  .pill .icon { width: 14px; height: 14px; color: var(--c, var(--tm-idle)); }
   @media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition: none !important; animation: none !important; } }
   @container (max-width: 230px) {
     .chip { padding: 4px; flex: none; }
@@ -2174,55 +2236,52 @@ const resolve = (hass, config) => {
 // ---------------------------------------------------------------------------
 
 const TIMER_STYLE = `
-  .hero { display: flex; gap: 16px; align-items: center; }
-  .dial { position: relative; width: ${RING_HERO}px; height: ${RING_HERO}px; flex: none; display: grid; place-items: center; text-align: center; }
-  .dial .t { font-size: 28px; font-weight: 400; line-height: 1; }
-  .dial .of { font-size: 11px; color: var(--secondary-text-color); margin-top: 4px; }
-  .dial.paused .t { color: var(--secondary-text-color); }
+  /* The kitchen timer of the hero: its face, the button on top and the live ring of the timer shown in large. */
+  .kt { position: relative; width: 120px; height: 120px; flex: none; --c: var(--tm-idle); }
+  .kt.accent { --c: var(--tm-accent); } .kt.crit { --c: var(--tm-crit); }
+  .kt-body { position: absolute; inset: 0; }
+  .kt-body .face { fill: color-mix(in srgb, var(--c) 10%, var(--ha-card-background, var(--card-background-color, #fff))); }
+  .kt-body .top { fill: var(--c); }
+  .kt-dial { position: absolute; left: 12px; top: 16px; width: 96px; height: 96px; }
+  .kt-dial .ring-svg { width: 100%; height: 100%; }
+  .kt-icon { position: absolute; left: 12px; top: 16px; width: 96px; height: 96px; display: grid; place-items: center; color: color-mix(in srgb, var(--c) 70%, var(--primary-text-color)); }
+  .kt-icon .icon { width: 36px; height: 36px; }
   /* The seconds sweep: a dot runs round the dial while the timer runs. */
   .sweep { position: absolute; inset: 0; border-radius: 50%; animation: tm-sweep 3s linear infinite; pointer-events: none; }
-  .sweep::before { content: ""; position: absolute; top: 1px; left: 50%; width: 8px; height: 8px; margin-left: -4px; border-radius: 50%;
-                   background: var(--c, var(--tm-accent)); box-shadow: 0 0 6px var(--c, var(--tm-accent)); }
+  .sweep::before { content: ""; position: absolute; top: 0; left: 50%; width: 8px; height: 8px; margin-left: -4px; border-radius: 50%;
+                   background: var(--c); box-shadow: 0 0 6px var(--c); }
   @keyframes tm-sweep { to { transform: rotate(360deg); } }
-  .ringing .dial .prog, .ringing.tile .prog { animation: tm-flash .8s steps(2, jump-none) infinite; }
+  .ringing .prog, .row-icon.ringing .prog { animation: tm-flash .8s steps(2, jump-none) infinite; }
   @keyframes tm-flash { 0%, 100% { opacity: 1; } 50% { opacity: .25; } }
   .shake { animation: tm-shake .9s ease-in-out infinite; transform-origin: 50% 10%; }
   @keyframes tm-shake { 0%, 50%, 100% { transform: rotate(0); } 10%, 30% { transform: rotate(-14deg); } 20%, 40% { transform: rotate(14deg); } }
-  .hero .info .label .icon { color: var(--tm-crit); width: 20px; height: 20px; vertical-align: -3px; }
-  .hero .info .label { font-size: 20px; font-weight: 500; line-height: 1.2; overflow-wrap: anywhere; }
-  .rows { display: flex; flex-direction: column; gap: 10px; }
-  .row { display: flex; align-items: center; gap: 10px; min-width: 0; }
-  .tile { position: relative; width: 40px; height: 40px; flex: none; display: grid; place-items: center; border-radius: 50%;
-          background: color-mix(in srgb, var(--c, var(--tm-idle)) 12%, transparent); color: color-mix(in srgb, var(--c, var(--tm-idle)) 60%, var(--primary-text-color)); }
-  .tile > .icon { width: 20px; height: 20px; }
-  .row .info { gap: 1px; }
-  .row .rname { font-size: 14px; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .row .meta { font-size: 12px; color: var(--secondary-text-color); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .row .left { font-size: 18px; flex: none; }
-  .row .left.idle { color: var(--secondary-text-color); font-size: 14px; }
-  .row .acts { display: flex; gap: 4px; flex: none; }
+  .big b span { font-size: inherit; color: inherit; overflow: visible; }
+  .big.idle b { color: var(--secondary-text-color); }
+  .big b.done { font-size: 26px; }
+  .acts { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 3px; }
+  .row .acts { flex-wrap: nowrap; margin: 0; flex: none; }
   .quick { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
-  .quick .ql { font-size: 12px; color: var(--secondary-text-color); margin-right: 2px; flex-basis: 100%; }
-  .counter-val { font-size: 20px; min-width: 2.5ch; text-align: center; flex: none; }
+  .quick .ql { font-size: 12px; color: var(--secondary-text-color); flex-basis: 100%; }
+  .counter-val { font-size: 16px; font-weight: 500; min-width: 2.5ch; text-align: center; flex: none; }
   .none { display: flex; align-items: center; gap: 10px; color: var(--secondary-text-color); font-size: 14px; }
-  .dial .ring-svg { width: 100%; height: 100%; }
-  .mini .dial { width: 64px; height: 64px; }
-  .mini .dial .t { font-size: 14px; }
-  .mini .line .num { flex: none; margin-left: auto; }
-  /* Narrow card: the dial above its texts, one button per timer (the first: pause, resume, start or dismiss). */
+  .mini .kt { width: 72px; height: 72px; }
+  .mini .kt-dial, .mini .kt-icon { left: 7px; top: 10px; width: 58px; height: 58px; }
+  .mini .kt-icon .icon { width: 24px; height: 24px; }
+  .mini .big b { font-size: 26px; }
+  /* Narrow card: the timer above its texts, one button per row. */
   @container (max-width: 300px) {
     .hero { flex-direction: column; align-items: stretch; gap: 8px; }
-    .hero .dial { align-self: center; width: 104px; height: 104px; }
-    .dial .t { font-size: 24px; }
-    .hero .info .label { font-size: 17px; }
+    .hero .kt { align-self: center; }
     .row { gap: 8px; }
     .row .acts .btn:not(:first-child) { display: none; }
-    .row .acts .btn.round { width: 32px; height: 32px; }
-    .row .left { font-size: 15px; }
-    .mini .dial { width: 56px; height: 56px; }
+    .row .acts .btn span { display: none; }
+    .row .acts .btn { width: 34px; height: 34px; padding: 0; border-radius: 50%; }
+    .mini .kt { width: 60px; height: 60px; }
+    .mini .kt-dial, .mini .kt-icon { left: 6px; top: 8px; width: 48px; height: 48px; }
   }
   @container (max-width: 200px) {
-    .mini .dial { display: none; }
+    .mini .kt { display: none; }
+    .mini .big b { font-size: 22px; }
   }
 `;
 
@@ -2371,19 +2430,46 @@ class TimerCard extends CardBase {
     return ring(size, w, this._progress(it), live);
   }
 
-  // The buttons of a timer: pause / resume / +1 min / cancel for a helper, dismiss for a Google Home timer.
+  _icon(it) {
+    return it.status === "ringing" ? ICONS.bell : it.kind === "timer" ? ICONS.timer : ICONS.speaker;
+  }
+
+  // The kitchen timer: its face, the live ring and the timer's icon (a bell that shakes when it rings).
+  _kt(it, size) {
+    const cls = this._cls(it);
+    const w = size > 80 ? 8 : 6;
+    return `<div class="kt ${cls} ${it.status} clickable" role="button" tabindex="0" data-entity="${esc(it.entity)}" aria-label="${esc(it.name)}">
+      <svg class="kt-body" viewBox="0 0 120 120" aria-hidden="true"><rect class="top" x="53" y="3" width="14" height="9" rx="2"/><rect class="top" x="57" y="10" width="6" height="7"/>
+<rect class="top" x="90" y="12" width="12" height="5" rx="2" transform="rotate(45 96 14)"/>
+        <circle class="face" cx="60" cy="64" r="54"/></svg>
+      <div class="kt-dial">${this._ring(it, 96, w)}${it.status === "active" ? '<div class="sweep" aria-hidden="true"></div>' : ""}</div>
+      <div class="kt-icon">${svgIcon(this._icon(it), it.status === "ringing" ? "shake" : "")}</div>
+    </div>`;
+  }
+
+  _big(it) {
+    const cls = this._cls(it);
+    const v = it.status === "ringing" ? `<b class="done">${esc(this._t("done"))}</b>` : `<b>${this._left(it)}</b>`;
+    return `<div class="big ${cls}">${svgIcon(it.status === "ringing" ? ICONS.bell : ICONS.timer)}${v}<span>${esc(it.name)}</span></div>`;
+  }
+
+  // A text button (pause, resume, start, +1 min, stop ringing) or a round one (cancel).
+  _btn(it, action, icon, label, text, extra = "") {
+    return `<button class="btn${extra}" data-action="${action}" data-key="${esc(it.key)}" title="${esc(label)}" aria-label="${esc(`${label} · ${it.name}`)}">${svgIcon(icon)}${text ? `<span>${esc(text)}</span>` : ""}</button>`;
+  }
+
+  // The buttons of a timer: pause / resume / +1 min / cancel for a helper, stop or delete for a Google Home timer.
   _actions(it, compact = false) {
-    const b = (action, icon, label, extra = "") =>
-      `<button class="btn round${extra}" data-action="${action}" data-key="${esc(it.key)}" title="${esc(label)}" aria-label="${esc(`${label} · ${it.name}`)}">${svgIcon(icon)}</button>`;
     const out = [];
     if (it.kind === "timer") {
-      if (it.status === "active") out.push(b("pause", ICONS.pause, this._t("pause")));
-      if (it.status === "paused") out.push(b("resume", ICONS.play, this._t("resume"), " primary"));
-      if (it.status === "idle") out.push(b("start", ICONS.play, this._t("start"), " primary"));
-      if (it.status === "active" && !compact) out.push(b("add", ICONS.plus, this._t("add_minute")));
-      if (it.status !== "idle" && !compact) out.push(b("cancel", ICONS.stop, this._t("cancel_timer")));
+      if (it.status === "active") out.push(this._btn(it, "pause", ICONS.pause, this._t("pause"), this._t("pause")));
+      if (it.status === "paused") out.push(this._btn(it, "resume", ICONS.play, this._t("resume"), this._t("resume"), " primary"));
+      if (it.status === "idle") out.push(this._btn(it, "start", ICONS.play, this._t("start"), this._t("start")));
+      if (it.status === "active" && !compact) out.push(this._btn(it, "add", ICONS.plus, this._t("add_minute"), this._length(6e4)));
+      if (it.status !== "idle" && !compact) out.push(this._btn(it, "cancel", ICONS.close, this._t("cancel_timer"), "", " round"));
     } else if (it.kind === "google_home") {
-      out.push(b("dismiss", ICONS.close, this._t(it.status === "ringing" ? "stop_ringing" : "delete")));
+      const label = this._t(it.status === "ringing" ? "stop_ringing" : "delete");
+      out.push(this._btn(it, "dismiss", it.status === "ringing" ? ICONS.stop : ICONS.close, label, label, it.status === "ringing" ? " active" : ""));
     }
     return out.join("");
   }
@@ -2400,32 +2486,40 @@ class TimerCard extends CardBase {
         : it.status === "paused"
           ? this._t("paused")
           : this._t("ringing");
-    const of = it.total ? `<div class="of">${esc(this._t("of", { length: this._length(it.total) }))}</div>` : "";
+    const next = sum.active.find((x) => x !== it && x.end);
+    const lines = [
+      `<div class="line ${cls}">${svgIcon(it.status === "ringing" ? ICONS.bell : it.status === "paused" ? ICONS.pause : ICONS.bell_ring)}<span>${esc([ends, it.sub].filter(Boolean).join(" · "))}</span></div>`,
+      it.total ? `<div class="line">${svgIcon(ICONS.timer)}<span>${esc(this._t("of", { length: this._length(it.total) }))}</span></div>` : "",
+      next ? `<div class="line">${svgIcon(ICONS.sand)}<span>${esc(this._t("next_timer", { name: next.name, time: fmtTime(this._hass, this._config, next.end) }))}</span></div>` : "",
+    ];
+    const acts = this._actions(it);
     return `<div class="hero ${it.status}">
-      <div class="dial ${cls} ${it.status} clickable" role="button" tabindex="0" data-entity="${esc(it.entity)}" aria-label="${esc(it.name)}">
-        ${this._ring(it, RING_HERO, 10)}${it.status === "active" ? '<div class="sweep" aria-hidden="true"></div>' : ""}
-        <div><div class="t">${this._left(it)}</div>${of}</div>
-      </div>
-      <div class="info">
-        <div class="label">${it.status === "ringing" ? `${svgIcon(ICONS.bell, "shake")} ` : ""}${esc(it.name)}</div>
-        <div class="line ${cls}">${svgIcon(it.status === "ringing" ? ICONS.bell : ICONS.timer)}<span>${esc(ends)}</span></div>
-        ${it.sub ? `<div class="line">${svgIcon(ICONS.speaker)}<span>${esc(it.sub)}</span></div>` : ""}
-        <div class="row">${this._actions(it)}</div>
-      </div>
+      ${this._kt(it, 120)}
+      <div class="hero-body">${this._big(it)}${lines.join("")}${acts ? `<div class="acts">${acts}</div>` : ""}</div>
     </div>`;
+  }
+
+  // "8:42 left · ends at 12:38 PM", "Paused · 12:00 left", "6 min", "Ringing".
+  _state(it) {
+    const left = (ms) => `<span class="num">${esc(this._t("left", { time: fmtCountdown(ms) }))}</span>`;
+    let parts;
+    if (it.status === "active" && it.end) parts = [`<span class="num" data-end="${it.end}" data-fmt="left">${esc(this._t("left", { time: fmtCountdown(it.end - Date.now()) }))}</span>`, esc(this._t("ends_at", { time: fmtTime(this._hass, this._config, it.end) }))];
+    else if (it.status === "paused") parts = [esc(this._t("paused")), it.remaining !== null && it.remaining !== undefined ? left(it.remaining) : ""];
+    else if (it.status === "ringing") parts = [esc(this._t("ringing"))];
+    else parts = [it.total ? esc(this._length(it.total)) : ""];
+    return [...parts, it.sub ? esc(it.sub) : ""].filter(Boolean).join(" · ");
   }
 
   _row(it) {
     const cls = this._cls(it);
-    const meta = [it.sub, it.status === "paused" ? this._t("paused") : it.status === "idle" ? (it.total ? this._length(it.total) : "") : it.status === "ringing" ? this._t("ringing") : it.end ? this._t("ends_at", { time: fmtTime(this._hass, this._config, it.end) }) : ""]
-      .filter(Boolean)
-      .join(" · ");
-    const icon = it.status === "ringing" ? ICONS.bell : it.status === "paused" ? ICONS.pause : it.kind === "timer" ? ICONS.timer : ICONS.speaker;
+    const badge = it.status === "paused" ? `<span class="badge" style="--b: var(--tm-idle)">${svgIcon(ICONS.pause)}</span>` : "";
+    const ringed = it.status === "active" || it.status === "ringing";
+    const acts = this._actions(it, true);
+    const cancel = it.kind === "timer" && it.status !== "idle" ? this._btn(it, "cancel", ICONS.close, this._t("cancel_timer"), "", " round") : "";
     return `<div class="row">
-      <div class="tile ${cls} ${it.status}">${this._ring(it, 40, 3)}${svgIcon(icon, it.status === "ringing" ? "shake" : "")}</div>
-      <div class="info clickable" role="button" tabindex="0" data-entity="${esc(it.entity)}"><div class="rname">${esc(it.name)}</div>${meta ? `<div class="meta">${esc(meta)}</div>` : ""}</div>
-      <div class="left num ${it.status === "idle" ? "idle" : ""}">${this._left(it)}</div>
-      <div class="acts">${this._actions(it)}</div>
+      <div class="row-icon ${cls} ${it.status}">${ringed ? this._ring(it, 44, 3) : ""}${svgIcon(this._icon(it), it.status === "ringing" ? "shake" : "")}${badge}</div>
+      <div class="row-text clickable" role="button" tabindex="0" data-entity="${esc(it.entity)}"><div class="row-name">${esc(it.name)}</div><div class="row-state ${cls}">${this._state(it)}</div></div>
+      ${acts || cancel ? `<div class="acts">${acts}${cancel}</div>` : ""}
     </div>`;
   }
 
@@ -2447,8 +2541,8 @@ class TimerCard extends CardBase {
     const lo = off || (a.minimum !== null && a.minimum !== undefined && v !== null && v - step < Number(a.minimum));
     const hi = off || (a.maximum !== null && a.maximum !== undefined && v !== null && v + step > Number(a.maximum));
     return `<div class="row">
-      <div class="tile accent">${svgIcon(ICONS.counter)}</div>
-      <div class="info clickable" role="button" tabindex="0" data-entity="${esc(c.entity)}"><div class="rname">${esc(name)}</div>${a.minimum !== undefined || a.maximum !== undefined ? `<div class="meta">${esc([a.minimum, a.maximum].map((x) => x ?? "∞").join(" – "))}</div>` : ""}</div>
+      <div class="row-icon idle">${svgIcon(ICONS.counter)}</div>
+      <div class="row-text clickable" role="button" tabindex="0" data-entity="${esc(c.entity)}"><div class="row-name">${esc(name)}</div>${a.minimum !== undefined || a.maximum !== undefined ? `<div class="row-state">${esc([a.minimum, a.maximum].map((x) => x ?? "∞").join(" – "))}</div>` : ""}</div>
       <button class="btn round" data-action="dec" data-entity="${esc(c.entity)}" title="${esc(this._t("decrement"))}" aria-label="${esc(`${this._t("decrement")} · ${name}`)}"${lo ? " disabled" : ""}>${svgIcon(ICONS.minus)}</button>
       <span class="counter-val num">${esc(v ?? "—")}</span>
       <button class="btn round" data-action="inc" data-entity="${esc(c.entity)}" title="${esc(this._t("increment"))}" aria-label="${esc(`${this._t("increment")} · ${name}`)}"${hi ? " disabled" : ""}>${svgIcon(ICONS.plus)}</button>
@@ -2467,8 +2561,10 @@ class TimerCard extends CardBase {
     const sum = this._summary(m);
     const parts = [];
     if (c.show_hero !== false && m.timers.length) parts.push(this._hero(sum));
-    if (c.show_timers !== false && sum.items.length) {
-      parts.push(this._section("timers", ICONS.timer, this._t("timers"), sum.items.length, `<div class="rows">${sum.items.map((it) => this._row(it)).join("")}</div>`));
+    // The timer shown in large is not listed again.
+    const rows = sum.items.filter((it) => !(c.show_hero !== false && it === sum.hero));
+    if (c.show_timers !== false && rows.length) {
+      parts.push(this._section("timers", ICONS.timer, this._t("timers"), rows.length, `<div class="rows">${rows.map((it) => this._row(it)).join("")}</div>`));
     }
     parts.push(this._quick(sum));
     if (c.show_counters !== false && m.counters.length) {
@@ -2544,19 +2640,24 @@ class TimerMiniCard extends withMini(TimerCard) {
     if (error) return error;
     const sum = this._summary(m);
     const it = sum.hero;
-    const lines = sum.items
-      .filter((x) => x.status !== "idle")
-      .slice(0, 3)
-      .map((x) => `<div class="line ${this._cls(x)} clickable"${moreInfo(x.entity)}>${svgIcon(x.status === "ringing" ? ICONS.bell : ICONS.timer)}<span>${esc(x.name)}</span>${this._left(x)}</div>`)
-      .join("");
+    const others = sum.items.filter((x) => x !== it && x.status !== "idle");
+    const rest = others.length
+      ? `<div class="line">${svgIcon(ICONS.sand)}<span>${esc(others.slice(0, 2).map((x) => `${x.name} ${x.status === "active" && x.end ? fmtCountdown(x.end - Date.now()) : x.status === "paused" && x.remaining ? fmtCountdown(x.remaining) : this._t(x.status === "ringing" ? "ringing" : "paused")}`).join(" · "))}</span></div>`
+      : "";
     const q = sum.quick;
-    const controls = it ? this._actions(it, true) : q && this._config.show_quick !== false ? `<button class="btn round primary" data-action="start" data-key="${esc(q.key)}" title="${esc(this._t("start_timer", { name: q.name }))}" aria-label="${esc(this._t("start_timer", { name: q.name }))}">${svgIcon(ICONS.play)}</button>` : "";
+    const pause = it?.kind === "timer" && it.status === "active" ? `<button class="btn round" data-action="pause" data-key="${esc(it.key)}" title="${esc(this._t("pause"))}" aria-label="${esc(`${this._t("pause")} · ${it.name}`)}">${svgIcon(ICONS.pause)}</button>` : "";
+    const controls = it
+      ? pause || (it.status === "paused" || it.kind === "google_home" ? this._actions(it, true).replace(/class="btn( primary| active)?"/, 'class="btn round$1"').replace(/<span>[^<]*<\/span>/, "") : "")
+      : q && this._config.show_quick !== false
+        ? `<button class="btn round primary" data-action="start" data-key="${esc(q.key)}" title="${esc(this._t("start_timer", { name: q.name }))}" aria-label="${esc(this._t("start_timer", { name: q.name }))}">${svgIcon(ICONS.play)}</button>`
+        : "";
+    const body = it ? `${this._big(it)}${rest}` : `<div class="line">${svgIcon(ICONS.timer_off)}<span>${esc(this._t("none_running"))}</span></div>`;
     return `<style>${BASE_STYLE}${TIMER_STYLE}${MINI_STYLE}</style>
       <ha-card>
         ${this._head(sum, "")}
         <div class="content mini">
-          ${it ? `<div class="dial ${this._cls(it)} ${it.status} clickable" role="button" tabindex="0" data-entity="${esc(it.entity)}" aria-label="${esc(it.name)}">${this._ring(it, 64, 6)}<div class="t">${this._left(it)}</div></div>` : ""}
-          <div class="info">${lines || `<div class="line">${svgIcon(ICONS.timer_off)}<span>${esc(this._t("none_running"))}</span></div>`}</div>
+          ${it ? this._kt(it, 72) : ""}
+          <div class="info">${body}</div>
           ${controls ? `<div class="controls">${controls}</div>` : ""}
         </div>
       </ha-card>`;
