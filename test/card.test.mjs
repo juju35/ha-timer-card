@@ -341,10 +341,12 @@ test("illustrated header: its picture and icon colour follow the state, night by
   assert.match(idle.html(), /class="banner tm-idle"/);
   assert.match(idle.html(), /class="type-icon idle"/);
   assert.doesNotMatch(idle.html(), /class="tm-(steam|glow)"/);
-  // Night: the sun below the horizon, unless illustration_theme says otherwise.
-  const night = await mount({}, "default", TimerCard, { sun: "below_horizon" });
+  // Night: the dark theme alone (a light theme keeps the day after sunset), unless illustration_theme says otherwise.
+  const night = await mount({}, "default", TimerCard, { sun: "below_horizon", darkMode: true });
   assert.match(night.html(), /class="banner tm-running night"/);
-  const day = await mount({ illustration_theme: "day" }, "default", TimerCard, { sun: "below_horizon" });
+  const light = await mount({}, "default", TimerCard, { sun: "below_horizon", darkMode: false });
+  assert.match(light.html(), /class="banner tm-running"/);
+  const day = await mount({ illustration_theme: "day" }, "default", TimerCard, { sun: "below_horizon", darkMode: true });
   assert.match(day.html(), /class="banner tm-running"/);
   const forced = await mount({ illustration_theme: "night" });
   assert.match(forced.html(), /tm-running night/);
