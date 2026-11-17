@@ -351,7 +351,14 @@ test("illustration: false keeps the classic header and its status chip", async (
   const { html } = await mount({ illustration: false });
   assert.doesNotMatch(html(), /class="banner/);
   assert.match(html(), /class="header"/);
-  assert.match(html(), /chip accent[^>]*>.*4 running/s);
+  // The same status pill as on the banner, right after the title.
+  assert.match(html(), /class="trow"><div class="name">Timers<\/div><span class="chip accent"[^>]*>.*?4 running</s);
   const ringing = await mount({ illustration: false }, "ringing");
-  assert.match(ringing.html(), /chip crit[^>]*>.*Ringing/s);
+  assert.match(ringing.html(), /class="type-icon crit"[\s\S]*chip crit[^>]*>.*?Ringing</);
+  const paused = await mount({ illustration: false }, "paused");
+  assert.match(paused.html(), /class="type-icon warn"[\s\S]*chip warn[^>]*>.*?2 paused</);
+  const idle = await mount({ illustration: false }, "idle");
+  assert.match(idle.html(), /class="type-icon idle"[\s\S]*chip idle[^>]*>.*?Idle</);
+  const mini = await mount({ illustration: false }, "default", TimerMiniCard);
+  assert.match(mini.html(), /class="header">[\s\S]*class="trow">[\s\S]*chip accent[\s\S]*class="zoom"/);
 });

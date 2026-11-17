@@ -8,6 +8,7 @@
 - Day and night pictures: night when `sun.sun` is below the horizon (else with the dark theme), forced with `illustration_theme: day | night`; `illustration: false` keeps the classic header with its status chip. Both options are in the visual editors.
 - Mini card: the subtitle (how many timers run, are paused or ring) shows in the illustrated header.
 - The status pill is back in the illustrated header, on the title row right after the title, in the icon's colour (Ringing, N running, N paused, Idle); the subtitle keeps the other counts. It drops under the subtitle when room runs short and keeps only its dot on a very narrow card. The mini card's detail button sits in the banner's top-right corner, in the frosted style of the other cards.
+- With `illustration: false`, the classic header has the same status pill on the title row (Ringing, N running, N paused, Idle) in its own style and in the icon's colour, with the same narrow-card behaviour; its subtitle no longer repeats the count the pill gives.
 
 ## 1.1.0 - 2026-11-16
 
