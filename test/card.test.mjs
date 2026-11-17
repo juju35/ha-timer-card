@@ -9,8 +9,9 @@ const TimerMiniCard = tm.element("timer-mini-card");
 // Objects from the sandbox have the sandbox's prototypes: compared as plain JSON.
 const same = (a, b, msg) => assert.deepEqual(JSON.parse(JSON.stringify(a)), JSON.parse(JSON.stringify(b)), msg);
 
-const makeHass = (variant = "default", { language = "en" } = {}) => {
+const makeHass = (variant = "default", { language = "en", sun } = {}) => {
   const d = mockData(variant);
+  if (sun) d.states["sun.sun"] = { entity_id: "sun.sun", state: sun, attributes: {} };
   const calls = [];
   return { calls, ...d, language, locale: { language }, callService: (...a) => calls.push(a) };
 };
@@ -137,7 +138,9 @@ test("every timer with its state, end and length; sorted by what ends first", as
 test("header, hero and rows: the next timer in large, live countdowns, its speaker", async () => {
   const { html } = await mount();
   const h = html();
-  assert.match(h, /chip accent[^>]*>.*4 running/s);
+  // The illustrated header: running, its icon in the accent colour; the subtitle counts the timers.
+  assert.match(h, /class="banner tm-running"/);
+  assert.match(h, /class="type-icon accent"/);
   assert.match(h, /4 running · 1 paused/);
   assert.match(h, /class="big accent">.*<span>Tea<\/span>/s);
   assert.match(h, /Next: Pasta at 12:38 PM/);
@@ -176,7 +179,9 @@ test("timer helper buttons call the timer services; quick starts and the duratio
 
 test("a Google Home timer is dismissed with its service; a ringing one rings in the header", async () => {
   const { card, hass, html } = await mount({}, "ringing");
-  assert.match(html(), /chip crit[^>]*>.*Ringing/s);
+  assert.match(html(), /class="banner tm-finished/);
+  assert.match(html(), /class="type-icon crit"/);
+  assert.match(html(), /class="sub">Ringing · 3 running · 1 paused</);
   assert.match(html(), /shake/);
   click(card, { action: "dismiss", key: "sensor.cuisine_minuteurs|timer/5b2e6a1e-1111-4c7e-9d6f-0123456789ab" });
   same(hass.calls.at(-1), ["google_home", "delete_timer", { entity_id: "sensor.cuisine_minuteurs", timer_id: "timer/5b2e6a1e-1111-4c7e-9d6f-0123456789ab" }]);
@@ -309,4 +314,39 @@ test("a paused timer at 0 shows 0:00; rows keep +1 min and cancel", async () => 
   assert.match(html(), /class="row">[\s\S]*data-action="cancel"/);
   const it = { key: "k", kind: "timer", entity: "timer.x", name: "X", status: "paused", remaining: 0, total: 6e4 };
   assert.match(card._state(it), /0:00/);
+});
+
+test("illustrated header: its picture and icon colour follow the state, night by the sun or the option, ids per card", async () => {
+  const paused = await mount({}, "paused");
+  assert.match(paused.html(), /class="banner tm-paused"/);
+  assert.match(paused.html(), /class="type-icon warn"/);
+  assert.match(paused.html(), /class="tm-pause"/);
+  const idle = await mount({}, "idle");
+  assert.match(idle.html(), /class="banner tm-idle"/);
+  assert.match(idle.html(), /class="type-icon idle"/);
+  assert.doesNotMatch(idle.html(), /class="tm-(steam|glow)"/);
+  // Night: the sun below the horizon, unless illustration_theme says otherwise.
+  const night = await mount({}, "default", TimerCard, { sun: "below_horizon" });
+  assert.match(night.html(), /class="banner tm-running night"/);
+  const day = await mount({ illustration_theme: "day" }, "default", TimerCard, { sun: "below_horizon" });
+  assert.match(day.html(), /class="banner tm-running"/);
+  const forced = await mount({ illustration_theme: "night" });
+  assert.match(forced.html(), /tm-running night/);
+  // Each card has its own gradient ids.
+  const ids = [paused, idle].map(({ html }) => html().match(/id="(tm-glow-\d+)"/)?.[1]);
+  assert.ok(ids[0]);
+  assert.match(night.html(), /url\(#tm-glow-\d+\)/);
+  assert.notEqual(night.html().match(/id="(tm-glow-\d+)"/)[1], ids[0]);
+  // The mini card has the banner too, with its detail button on it.
+  const mini = await mount({}, "default", TimerMiniCard);
+  assert.match(mini.html(), /class="banner tm-running"[\s\S]*class="zoom"/);
+});
+
+test("illustration: false keeps the classic header and its status chip", async () => {
+  const { html } = await mount({ illustration: false });
+  assert.doesNotMatch(html(), /class="banner/);
+  assert.match(html(), /class="header"/);
+  assert.match(html(), /chip accent[^>]*>.*4 running/s);
+  const ringing = await mount({ illustration: false }, "ringing");
+  assert.match(ringing.html(), /chip crit[^>]*>.*Ringing/s);
 });

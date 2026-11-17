@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.2.0 - 2026-11-17
+
+### Features
+- Illustrated header, 90 px high on the full and the mini card: a kitchen scene beside the title (tiled wall, worktop, a pot on the hob and a kitchen timer) with a tiled floor strip, that follows the timers' state: running (the hob glows, the pot steams, the timer's hand turns), paused (the hand stops, a pause badge), finished (a speaker timer rings: the kitchen timer shakes and rings out) and idle (all still).
+- The header icon's colour is the state: orange running, amber paused, red ringing, grey idle, day and night.
+- Day and night pictures: night when `sun.sun` is below the horizon (else with the dark theme), forced with `illustration_theme: day | night`; `illustration: false` keeps the classic header with its status chip. Both options are in the visual editors.
+- Mini card: the subtitle (how many timers run, are paused or ring) shows in the illustrated header.
+
 ## 1.1.0 - 2026-11-16
 
 ### Features

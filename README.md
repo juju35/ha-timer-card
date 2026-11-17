@@ -37,7 +37,8 @@ Timers, speaker timers and counters are **discovered automatically** from the Ho
 - **Google Home timers**: label, time left, the speaker; *Delete* (or *Stop* while it rings) with `google_home.delete_timer`
 - **Alexa timers**: label, time left and length from Alexa Media Player's next-timer sensors; the next timer's end from Alexa Devices (core)
 - **Counters**: value, bounds, and − / + buttons (`counter.decrement` / `counter.increment`), disabled at the bounds
-- Header icon in a tinted round badge (orange running, red ringing, grey idle), and a status chip on the title's line: *3 running*, *Ringing*, *Paused*
+- **Illustrated header** (90 px on both cards): a kitchen scene beside the title (tiled wall, worktop, a pot on the hob and a kitchen timer) that follows the timers' state: *running* (the hob glows, the pot steams, the timer's hand turns), *paused* (the hand stops, a pause badge), *finished* (a speaker timer rings: the kitchen timer shakes and rings out) and *idle* (all still, the hob off); a day and a night picture (`illustration_theme`); the round icon's colour is the state (orange running, amber paused, red ringing, grey idle)
+- Classic header with `illustration: false`: a tinted round icon and a status chip on the title's line: *3 running*, *Ringing*, *Paused*
 - Collapsible sections (timers, counters), folded back to their defaults by a click elsewhere on the page
 - Click any timer or counter to open its Home Assistant history (more-info dialog)
 - Detail button on the mini card (top right): it switches the mini card to the full card's content and back; a click anywhere outside the card brings the compact view back
@@ -125,6 +126,8 @@ timers:
 counters:
   - counter.coffees_today
 quick_timer: timer.eggs
+illustration: true
+illustration_theme: auto
 show_title: true
 show_subtitle: true
 show_hero: true
@@ -147,8 +150,10 @@ zoom: true
 | Option | Card | Default | Description |
 |---|---|---|---|
 | `title` | both | Timers | Card title |
+| `illustration` | both | `true` | Illustrated header: the kitchen scene that follows the timers' state; `false` for the classic header with its status chip |
+| `illustration_theme` | both | `auto` | Picture of the illustrated header: `day`, `night`, or `auto` (night when `sun.sun` is below the horizon, else with Home Assistant's dark theme) |
 | `show_title` | both | `true` | Show the title in the header |
-| `show_subtitle` | full | `true` | Show the subtitle (how many timers run and are paused) |
+| `show_subtitle` | both | `true` | Show the subtitle (how many timers run, are paused or ring; on the mini card, with the illustrated header only) |
 | `timers` | both | Automatic | Timer helpers (`timer.*`), Google Home *timers* sensors and Alexa *next timer* sensors: entity ids, or objects with `entity` and `name` (the name of a speaker timer without a label); absent, every timer helper and speaker timer sensor |
 | `counters` | both | Automatic | Counter helpers: entity ids, or objects with `entity` and `name`; absent, every counter helper; `[]` for none |
 | `quick_timer` | both | First idle helper | Timer helper the quick starts (and the mini card's start button) start |
@@ -166,15 +171,15 @@ zoom: true
 
 ### Animations
 
-The dial of the next timer animates; every animation honours `prefers-reduced-motion`.
+The dial of the next timer and the header's kitchen scene animate; every animation honours `prefers-reduced-motion`.
 
-While it runs, a dot sweeps round the dial (and the ring empties second by second in Home Assistant):
+While it runs, a dot sweeps round the dial (and the ring empties second by second in Home Assistant); in the header, the pot steams and the kitchen timer's hand turns:
 
 | Light | Dark |
 |---|---|
 | <img src="https://raw.githubusercontent.com/juju35/ha-timer-card/main/screenshots/running.gif" alt="running animation" width="400"> | <img src="https://raw.githubusercontent.com/juju35/ha-timer-card/main/screenshots/running-dark.gif" alt="running animation dark" width="400"> |
 
-When a speaker timer rings, its dial and ring flash and a bell shakes:
+When a speaker timer rings, its dial and ring flash and a bell shakes; in the header, the kitchen timer shakes and rings out:
 
 | Light | Dark |
 |---|---|
@@ -206,6 +211,7 @@ Nothing running: the quick starts stay at hand:
 |---|---|
 | <img src="https://raw.githubusercontent.com/juju35/ha-timer-card/main/screenshots/mini-card.png" alt="mini card" width="380"> | <img src="https://raw.githubusercontent.com/juju35/ha-timer-card/main/screenshots/mini-card-dark.png" alt="mini card dark" width="380"> |
 | <img src="https://raw.githubusercontent.com/juju35/ha-timer-card/main/screenshots/mini-card-idle.png" alt="mini card idle" width="380"> | <img src="https://raw.githubusercontent.com/juju35/ha-timer-card/main/screenshots/mini-card-idle-dark.png" alt="mini card idle dark" width="380"> |
+| <img src="https://raw.githubusercontent.com/juju35/ha-timer-card/main/screenshots/mini-card-paused.png" alt="mini card paused" width="380"> | <img src="https://raw.githubusercontent.com/juju35/ha-timer-card/main/screenshots/mini-card-paused-dark.png" alt="mini card paused dark" width="380"> |
 
 The detail button (top right) shows the full card's content:
 
