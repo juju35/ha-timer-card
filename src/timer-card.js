@@ -42,6 +42,7 @@ const STRINGS = {
     paused_one: "1 paused",
     paused_n: "{n} paused",
     none_running: "No timer running",
+    idle: "Idle",
     done: "Done",
     pause: "Pause",
     resume: "Resume",
@@ -84,6 +85,11 @@ const STRINGS = {
     zoom_helper: "Switches the mini card to the full card's content",
     show_title: "Show title",
     show_subtitle: "Show subtitle",
+    illustration: "Illustration",
+    illustration_theme: "Illustration theme",
+    theme_auto: "Automatic (sun or dark theme)",
+    theme_day: "Day",
+    theme_night: "Night",
     no_registry: "This card needs Home Assistant 2024.8 or later.",
     unavailable: "Unavailable",
   },
@@ -98,6 +104,7 @@ const STRINGS = {
     paused_one: "1 en pause",
     paused_n: "{n} en pause",
     none_running: "Aucun minuteur en cours",
+    idle: "Inactif",
     done: "Terminé",
     pause: "Pause",
     resume: "Reprendre",
@@ -140,6 +147,11 @@ const STRINGS = {
     zoom_helper: "Bascule la mini-carte vers le contenu de la carte complète",
     show_title: "Afficher le titre",
     show_subtitle: "Afficher le sous-titre",
+    illustration: "Illustration",
+    illustration_theme: "Thème de l'illustration",
+    theme_auto: "Automatique (soleil ou thème sombre)",
+    theme_day: "Jour",
+    theme_night: "Nuit",
     no_registry: "Cette carte nécessite Home Assistant 2024.8 ou plus récent.",
     unavailable: "Indisponible",
   },
@@ -154,6 +166,7 @@ const STRINGS = {
     paused_one: "1 pausiert",
     paused_n: "{n} pausiert",
     none_running: "Kein Timer läuft",
+    idle: "Inaktiv",
     done: "Fertig",
     pause: "Pause",
     resume: "Fortsetzen",
@@ -196,6 +209,11 @@ const STRINGS = {
     zoom_helper: "Schaltet die Mini-Karte auf den Inhalt der vollen Karte um",
     show_title: "Titel anzeigen",
     show_subtitle: "Untertitel anzeigen",
+    illustration: "Illustration",
+    illustration_theme: "Thema der Illustration",
+    theme_auto: "Automatisch (Sonne oder dunkles Design)",
+    theme_day: "Tag",
+    theme_night: "Nacht",
     no_registry: "Diese Karte benötigt Home Assistant 2024.8 oder neuer.",
     unavailable: "Nicht verfügbar",
   },
@@ -210,6 +228,7 @@ const STRINGS = {
     paused_one: "1 en pausa",
     paused_n: "{n} en pausa",
     none_running: "Ningún temporizador en marcha",
+    idle: "Inactivo",
     done: "Terminado",
     pause: "Pausar",
     resume: "Reanudar",
@@ -252,6 +271,11 @@ const STRINGS = {
     zoom_helper: "Cambia la minitarjeta al contenido de la tarjeta completa",
     show_title: "Mostrar título",
     show_subtitle: "Mostrar subtítulo",
+    illustration: "Ilustración",
+    illustration_theme: "Tema de la ilustración",
+    theme_auto: "Automático (sol o tema oscuro)",
+    theme_day: "Día",
+    theme_night: "Noche",
     no_registry: "Esta tarjeta necesita Home Assistant 2024.8 o posterior.",
     unavailable: "No disponible",
   },
@@ -266,6 +290,7 @@ const STRINGS = {
     paused_one: "1 in pausa",
     paused_n: "{n} in pausa",
     none_running: "Nessun timer in corso",
+    idle: "Inattivo",
     done: "Finito",
     pause: "Pausa",
     resume: "Riprendi",
@@ -308,6 +333,11 @@ const STRINGS = {
     zoom_helper: "Passa la mini scheda al contenuto della scheda completa",
     show_title: "Mostra titolo",
     show_subtitle: "Mostra sottotitolo",
+    illustration: "Illustrazione",
+    illustration_theme: "Tema dell'illustrazione",
+    theme_auto: "Automatico (sole o tema scuro)",
+    theme_day: "Giorno",
+    theme_night: "Notte",
     no_registry: "Questa scheda richiede Home Assistant 2024.8 o successivo.",
     unavailable: "Non disponibile",
   },
@@ -322,6 +352,7 @@ const STRINGS = {
     paused_one: "1 gepauzeerd",
     paused_n: "{n} gepauzeerd",
     none_running: "Geen timer actief",
+    idle: "Inactief",
     done: "Klaar",
     pause: "Pauzeren",
     resume: "Hervatten",
@@ -364,6 +395,11 @@ const STRINGS = {
     zoom_helper: "Schakelt de minikaart naar de inhoud van de volledige kaart",
     show_title: "Titel tonen",
     show_subtitle: "Ondertitel tonen",
+    illustration: "Illustratie",
+    illustration_theme: "Thema van de illustratie",
+    theme_auto: "Automatisch (zon of donker thema)",
+    theme_day: "Dag",
+    theme_night: "Nacht",
     no_registry: "Deze kaart vereist Home Assistant 2024.8 of nieuwer.",
     unavailable: "Niet beschikbaar",
   },
@@ -378,6 +414,7 @@ const STRINGS = {
     paused_one: "1 em pausa",
     paused_n: "{n} em pausa",
     none_running: "Nenhum temporizador em curso",
+    idle: "Inativo",
     done: "Terminado",
     pause: "Pausa",
     resume: "Retomar",
@@ -420,6 +457,11 @@ const STRINGS = {
     zoom_helper: "Muda o minicartão para o conteúdo do cartão completo",
     show_title: "Mostrar título",
     show_subtitle: "Mostrar subtítulo",
+    illustration: "Ilustração",
+    illustration_theme: "Tema da ilustração",
+    theme_auto: "Automático (sol ou tema escuro)",
+    theme_day: "Dia",
+    theme_night: "Noite",
     no_registry: "Este cartão requer o Home Assistant 2024.8 ou posterior.",
     unavailable: "Indisponível",
   },
@@ -434,6 +476,7 @@ const STRINGS = {
     paused_one: "1 wstrzymany",
     paused_n: "Wstrzymane: {n}",
     none_running: "Brak aktywnych minutników",
+    idle: "Bezczynny",
     done: "Zakończony",
     pause: "Wstrzymaj",
     resume: "Wznów",
@@ -476,6 +519,11 @@ const STRINGS = {
     zoom_helper: "Przełącza minikartę na zawartość pełnej karty",
     show_title: "Pokaż tytuł",
     show_subtitle: "Pokaż podtytuł",
+    illustration: "Ilustracja",
+    illustration_theme: "Motyw ilustracji",
+    theme_auto: "Automatycznie (słońce lub ciemny motyw)",
+    theme_day: "Dzień",
+    theme_night: "Noc",
     no_registry: "Ta karta wymaga Home Assistant 2024.8 lub nowszego.",
     unavailable: "Niedostępne",
   },
@@ -490,6 +538,7 @@ const STRINGS = {
     paused_one: "1 паузиран",
     paused_n: "Паузирано: {n}",
     none_running: "Ниједан тајмер не ради",
+    idle: "Неактиван",
     done: "Готово",
     pause: "Пауза",
     resume: "Настави",
@@ -532,6 +581,11 @@ const STRINGS = {
     zoom_helper: "Пребацује мини картицу на садржај пуне картице",
     show_title: "Прикажи наслов",
     show_subtitle: "Прикажи поднаслов",
+    illustration: "Илустрација",
+    illustration_theme: "Тема илустрације",
+    theme_auto: "Аутоматски (сунце или тамна тема)",
+    theme_day: "Дан",
+    theme_night: "Ноћ",
     no_registry: "Ова картица захтева Home Assistant 2024.8 или новији.",
     unavailable: "Недоступно",
   },
@@ -546,6 +600,7 @@ const STRINGS = {
     paused_one: "1 pauziran",
     paused_n: "Pauzirano: {n}",
     none_running: "Nijedan tajmer ne radi",
+    idle: "Neaktivan",
     done: "Gotovo",
     pause: "Pauza",
     resume: "Nastavi",
@@ -588,6 +643,11 @@ const STRINGS = {
     zoom_helper: "Prebacuje mini karticu na sadržaj pune kartice",
     show_title: "Prikaži naslov",
     show_subtitle: "Prikaži podnaslov",
+    illustration: "Ilustracija",
+    illustration_theme: "Tema ilustracije",
+    theme_auto: "Automatski (sunce ili tamna tema)",
+    theme_day: "Dan",
+    theme_night: "Noć",
     no_registry: "Ova kartica zahteva Home Assistant 2024.8 ili noviji.",
     unavailable: "Nedostupno",
   },
@@ -602,6 +662,7 @@ const STRINGS = {
     paused_one: "1 în pauză",
     paused_n: "{n} în pauză",
     none_running: "Niciun cronometru pornit",
+    idle: "Inactiv",
     done: "Gata",
     pause: "Pauză",
     resume: "Reia",
@@ -644,6 +705,11 @@ const STRINGS = {
     zoom_helper: "Comută mini cardul la conținutul cardului complet",
     show_title: "Afișează titlul",
     show_subtitle: "Afișează subtitlul",
+    illustration: "Ilustrație",
+    illustration_theme: "Tema ilustrației",
+    theme_auto: "Automat (soare sau temă întunecată)",
+    theme_day: "Zi",
+    theme_night: "Noapte",
     no_registry: "Acest card necesită Home Assistant 2024.8 sau mai nou.",
     unavailable: "Indisponibil",
   },
@@ -658,6 +724,7 @@ const STRINGS = {
     paused_one: "1 på pause",
     paused_n: "{n} på pause",
     none_running: "Ingen timer kører",
+    idle: "Inaktiv",
     done: "Færdig",
     pause: "Pause",
     resume: "Fortsæt",
@@ -700,6 +767,11 @@ const STRINGS = {
     zoom_helper: "Skifter minikortet til det fulde korts indhold",
     show_title: "Vis titel",
     show_subtitle: "Vis undertitel",
+    illustration: "Illustration",
+    illustration_theme: "Illustrationstema",
+    theme_auto: "Automatisk (sol eller mørkt tema)",
+    theme_day: "Dag",
+    theme_night: "Nat",
     no_registry: "Dette kort kræver Home Assistant 2024.8 eller nyere.",
     unavailable: "Utilgængelig",
   },
@@ -714,6 +786,7 @@ const STRINGS = {
     paused_one: "1 pausad",
     paused_n: "{n} pausade",
     none_running: "Ingen timer igång",
+    idle: "Inaktiv",
     done: "Klar",
     pause: "Pausa",
     resume: "Återuppta",
@@ -756,6 +829,11 @@ const STRINGS = {
     zoom_helper: "Växlar minikortet till hela kortets innehåll",
     show_title: "Visa titel",
     show_subtitle: "Visa undertitel",
+    illustration: "Illustration",
+    illustration_theme: "Illustrationstema",
+    theme_auto: "Automatiskt (sol eller mörkt tema)",
+    theme_day: "Dag",
+    theme_night: "Natt",
     no_registry: "Det här kortet kräver Home Assistant 2024.8 eller senare.",
     unavailable: "Otillgänglig",
   },
@@ -770,6 +848,7 @@ const STRINGS = {
     paused_one: "1 на пауза",
     paused_n: "На пауза: {n}",
     none_running: "Няма работещ таймер",
+    idle: "Неактивен",
     done: "Готово",
     pause: "Пауза",
     resume: "Продължи",
@@ -812,6 +891,11 @@ const STRINGS = {
     zoom_helper: "Превключва мини картата към съдържанието на пълната карта",
     show_title: "Покажи заглавие",
     show_subtitle: "Покажи подзаглавие",
+    illustration: "Илюстрация",
+    illustration_theme: "Тема на илюстрацията",
+    theme_auto: "Автоматично (слънце или тъмна тема)",
+    theme_day: "Ден",
+    theme_night: "Нощ",
     no_registry: "Тази карта изисква Home Assistant 2024.8 или по-нов.",
     unavailable: "Недостъпно",
   },
@@ -826,6 +910,7 @@ const STRINGS = {
     paused_one: "1 на паузе",
     paused_n: "На паузе: {n}",
     none_running: "Нет активных таймеров",
+    idle: "Неактивен",
     done: "Готово",
     pause: "Пауза",
     resume: "Продолжить",
@@ -868,6 +953,11 @@ const STRINGS = {
     zoom_helper: "Переключает мини-карточку на содержимое полной карточки",
     show_title: "Показывать заголовок",
     show_subtitle: "Показывать подзаголовок",
+    illustration: "Иллюстрация",
+    illustration_theme: "Тема иллюстрации",
+    theme_auto: "Автоматически (солнце или тёмная тема)",
+    theme_day: "День",
+    theme_night: "Ночь",
     no_registry: "Для этой карточки нужен Home Assistant 2024.8 или новее.",
     unavailable: "Недоступно",
   },
@@ -882,6 +972,7 @@ const STRINGS = {
     paused_one: "1 на паузі",
     paused_n: "На паузі: {n}",
     none_running: "Немає активних таймерів",
+    idle: "Неактивний",
     done: "Готово",
     pause: "Пауза",
     resume: "Продовжити",
@@ -924,6 +1015,11 @@ const STRINGS = {
     zoom_helper: "Перемикає міні-картку на вміст повної картки",
     show_title: "Показувати заголовок",
     show_subtitle: "Показувати підзаголовок",
+    illustration: "Ілюстрація",
+    illustration_theme: "Тема ілюстрації",
+    theme_auto: "Автоматично (сонце або темна тема)",
+    theme_day: "День",
+    theme_night: "Ніч",
     no_registry: "Для цієї картки потрібен Home Assistant 2024.8 або новіший.",
     unavailable: "Недоступно",
   },
@@ -938,6 +1034,7 @@ const STRINGS = {
     paused_one: "1 szüneteltetve",
     paused_n: "{n} szüneteltetve",
     none_running: "Nincs futó időzítő",
+    idle: "Tétlen",
     done: "Kész",
     pause: "Szünet",
     resume: "Folytatás",
@@ -980,6 +1077,11 @@ const STRINGS = {
     zoom_helper: "A minikártyát a teljes kártya tartalmára váltja",
     show_title: "Cím megjelenítése",
     show_subtitle: "Alcím megjelenítése",
+    illustration: "Illusztráció",
+    illustration_theme: "Az illusztráció témája",
+    theme_auto: "Automatikus (nap vagy sötét téma)",
+    theme_day: "Nappal",
+    theme_night: "Éjszaka",
     no_registry: "Ehhez a kártyához Home Assistant 2024.8 vagy újabb szükséges.",
     unavailable: "Nem elérhető",
   },
@@ -994,6 +1096,7 @@ const STRINGS = {
     paused_one: "1 pozastavený",
     paused_n: "Pozastavené: {n}",
     none_running: "Žiadny časovač nebeží",
+    idle: "Nečinný",
     done: "Hotovo",
     pause: "Pozastaviť",
     resume: "Pokračovať",
@@ -1036,6 +1139,11 @@ const STRINGS = {
     zoom_helper: "Prepne mini kartu na obsah úplnej karty",
     show_title: "Zobraziť názov",
     show_subtitle: "Zobraziť podnadpis",
+    illustration: "Ilustrácia",
+    illustration_theme: "Téma ilustrácie",
+    theme_auto: "Automaticky (slnko alebo tmavá téma)",
+    theme_day: "Deň",
+    theme_night: "Noc",
     no_registry: "Táto karta vyžaduje Home Assistant 2024.8 alebo novší.",
     unavailable: "Nedostupné",
   },
@@ -1050,6 +1158,7 @@ const STRINGS = {
     paused_one: "1 pozastaven",
     paused_n: "Pozastaveno: {n}",
     none_running: "Žádný časovač neběží",
+    idle: "Nečinný",
     done: "Hotovo",
     pause: "Pozastavit",
     resume: "Pokračovat",
@@ -1092,6 +1201,11 @@ const STRINGS = {
     zoom_helper: "Přepne mini kartu na obsah plné karty",
     show_title: "Zobrazit název",
     show_subtitle: "Zobrazit podtitul",
+    illustration: "Ilustrace",
+    illustration_theme: "Motiv ilustrace",
+    theme_auto: "Automaticky (slunce nebo tmavý motiv)",
+    theme_day: "Den",
+    theme_night: "Noc",
     no_registry: "Tato karta vyžaduje Home Assistant 2024.8 nebo novější.",
     unavailable: "Nedostupné",
   },
@@ -1106,6 +1220,7 @@ const STRINGS = {
     paused_one: "1 zaustavljen",
     paused_n: "Zaustavljeni: {n}",
     none_running: "Noben časovnik ne teče",
+    idle: "Nedejaven",
     done: "Končano",
     pause: "Premor",
     resume: "Nadaljuj",
@@ -1148,6 +1263,11 @@ const STRINGS = {
     zoom_helper: "Preklopi mini kartico na vsebino polne kartice",
     show_title: "Prikaži naslov",
     show_subtitle: "Prikaži podnaslov",
+    illustration: "Ilustracija",
+    illustration_theme: "Tema ilustracije",
+    theme_auto: "Samodejno (sonce ali temna tema)",
+    theme_day: "Dan",
+    theme_night: "Noč",
     no_registry: "Ta kartica potrebuje Home Assistant 2024.8 ali novejši.",
     unavailable: "Ni na voljo",
   },
@@ -1162,6 +1282,7 @@ const STRINGS = {
     paused_one: "1 pauzēts",
     paused_n: "Pauzēti: {n}",
     none_running: "Neviens taimeris nedarbojas",
+    idle: "Neaktīvs",
     done: "Gatavs",
     pause: "Pauze",
     resume: "Turpināt",
@@ -1204,6 +1325,11 @@ const STRINGS = {
     zoom_helper: "Pārslēdz mini kartīti uz pilnās kartītes saturu",
     show_title: "Rādīt virsrakstu",
     show_subtitle: "Rādīt apakšvirsrakstu",
+    illustration: "Ilustrācija",
+    illustration_theme: "Ilustrācijas tēma",
+    theme_auto: "Automātiski (saule vai tumšais motīvs)",
+    theme_day: "Diena",
+    theme_night: "Nakts",
     no_registry: "Šai kartītei nepieciešams Home Assistant 2024.8 vai jaunāks.",
     unavailable: "Nav pieejams",
   },
@@ -1218,6 +1344,7 @@ const STRINGS = {
     paused_one: "1 σε παύση",
     paused_n: "{n} σε παύση",
     none_running: "Κανένα χρονόμετρο σε λειτουργία",
+    idle: "Ανενεργό",
     done: "Ολοκληρώθηκε",
     pause: "Παύση",
     resume: "Συνέχεια",
@@ -1260,6 +1387,11 @@ const STRINGS = {
     zoom_helper: "Αλλάζει τη μίνι κάρτα στο περιεχόμενο της πλήρους κάρτας",
     show_title: "Εμφάνιση τίτλου",
     show_subtitle: "Εμφάνιση υπότιτλου",
+    illustration: "Εικονογράφηση",
+    illustration_theme: "Θέμα εικονογράφησης",
+    theme_auto: "Αυτόματο (ήλιος ή σκούρο θέμα)",
+    theme_day: "Ημέρα",
+    theme_night: "Νύχτα",
     no_registry: "Αυτή η κάρτα απαιτεί Home Assistant 2024.8 ή νεότερο.",
     unavailable: "Μη διαθέσιμο",
   },
@@ -1357,7 +1489,7 @@ const BASE_STYLE = `
           --tm-crit: var(--error-color, #db4437); --tm-idle: var(--disabled-text-color, #9e9e9e); --tm-active: var(--info-color, #039be5);
           /* Text in a state color is mixed with the text color so that it reads at 4.5:1 at least. */
           --tm-accent-text: color-mix(in srgb, var(--tm-accent) 50%, var(--primary-text-color)); }
-  ha-card { overflow: hidden; container-type: inline-size; }
+  ha-card { overflow: hidden; container: tm-card / inline-size; }
   /* Natural width in a parent that sizes to its content (inline-block, grid "auto" column), without a minimum. */
   :host { display: block; min-width: 0; --tm-natural-width: 380px; }
   :host::before { content: ""; display: grid; grid-template-columns: minmax(0, var(--tm-natural-width)); height: 0; }
@@ -1370,16 +1502,28 @@ const BASE_STYLE = `
   .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--c, var(--tm-ok)); flex: none; display: inline-block; }
   .chip { display: inline-flex; align-items: center; gap: 4px; padding: 1px 8px; border-radius: 12px; font-size: 11px; font-weight: 500; white-space: nowrap;
           background: color-mix(in srgb, var(--c, var(--tm-ok)) 15%, transparent); color: color-mix(in srgb, var(--c, var(--tm-ok)) 50%, var(--primary-text-color));
-          flex: 0 1 auto; min-width: 0; max-width: 50%; overflow: hidden; box-sizing: border-box; }
-  .chip-text { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+          flex: none; line-height: 16px; box-sizing: border-box; }
+  .chip-text { white-space: nowrap; }
   .header { display: flex; align-items: center; gap: 10px; padding: 12px 12px 0; }
-  /* The chip sits on the title's line, whether a subtitle follows or not. */
-  .header .chip, .header .zoom { align-self: flex-start; margin-top: 10px; }
+  /* The detail button sits on the title's line, whether a subtitle follows or not. */
+  .header .zoom { align-self: flex-start; margin-top: 10px; }
   .type-icon { position: relative; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex: none;
                --tm-tint: var(--c, var(--tm-accent)); background: color-mix(in srgb, var(--tm-tint) 16%, transparent); transition: background-color .3s ease; }
   .type-icon .icon { width: 24px; height: 24px; fill: color-mix(in srgb, var(--tm-tint) 60%, var(--primary-text-color)); transition: fill .3s ease; }
-  .titles { flex: 1 1 0; min-width: 5ch; }
-  :host([hide-title]) .titles > .name, :host([hide-subtitle]) .titles > .sub { display: none; }
+  .titles { flex: 1 1 0; min-width: 5ch; display: flex; flex-direction: column; gap: 1px; }
+  :host([hide-title]) .titles .name, :host([hide-subtitle]) .titles .sub { display: none; }
+  /* The status pill (classic header and banner): on the title row, 8 px after the title, only when the whole title
+     and the pill's whole label fit there; otherwise on its own line under the subtitle, which then keeps one line.
+     Its dot alone at 200 px or less, or when the banner has no room left for its label (pill-dot): the label stays
+     in its title and for screen readers. Measured after each render (_fitPill), in every language, never by a fixed
+     width. */
+  .trow { display: flex; align-items: center; gap: 8px; min-width: 0; }
+  .trow .name { flex: 0 1 auto; min-width: 0; }
+  .titles.pill-below .trow { display: contents; }
+  .titles.pill-below .sub { order: 1; }
+  .titles.pill-below .chip { order: 2; align-self: flex-start; margin-top: 2px; }
+  .titles.pill-dot .chip { padding: 4px; }
+  .titles.pill-dot .chip-text { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
   .name { font-size: 16px; font-weight: 500; line-height: 1.25; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .sub { font-size: 12px; color: var(--secondary-text-color); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .warning { padding: 16px; color: color-mix(in srgb, var(--tm-warn) 50%, var(--primary-text-color)); }
@@ -1465,10 +1609,11 @@ const BASE_STYLE = `
           color: color-mix(in srgb, var(--c, var(--tm-idle)) 60%, var(--primary-text-color)); background: color-mix(in srgb, var(--c, var(--tm-idle)) 14%, transparent); }
   .pill .icon { width: 14px; height: 14px; color: var(--c, var(--tm-idle)); }
   @media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition: none !important; animation: none !important; } }
-  @container (max-width: 230px) {
-    .chip { padding: 4px; flex: none; }
-    .chip-text { display: none; }
-    .header { gap: 6px; }
+  @container tm-card (max-width: 230px) { .header { gap: 6px; } }
+  /* At 200 px or less, only the pill's dot: its label stays in its title and for screen readers. */
+  @container tm-card (max-width: 200px) {
+    .chip { padding: 4px; }
+    .chip-text { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
   }
 `;
 
@@ -1501,7 +1646,7 @@ const MINI_STYLE = `
   .mini .info { gap: 4px; }
   .mini .line .icon { width: 14px; height: 14px; }
   .controls { display: flex; gap: 6px; flex: none; }
-  @container (max-width: 300px) {
+  @container tm-card (max-width: 300px) {
     .content.mini { flex-wrap: wrap; row-gap: 8px; }
     .mini .controls { flex-basis: 100%; justify-content: flex-end; }
   }
@@ -1573,10 +1718,16 @@ const ring = (size, w, p, { end, total } = {}) => {
 // kept for keyboard users, folding sections, a popup at the top of the card, live countdowns, service calls.
 // A card defines _build() (its model from the registries and the configuration), _entityIds(m), _render(), and may
 // define _action(action, el, ev), _dialogHtml() / _dialogAction(action, el), _extraDeps(), _onConnect() / _onDisconnect().
+// The banner's ground strip (the worktop's floor), that the title block keeps clear of, and the gap between the
+// title and the status pill on its row (.trow).
+const PILL_GROUND_PX = 10;
+const PILL_GAP_PX = 8;
+
 class CardBase extends HTMLElement {
   constructor() {
     super();
     this.attachShadow({ mode: "open" });
+    this._uid = ++tmUid;
     this._html = "";
     this._inputs = {};
     // No rewrite of the card between a press and its click: Home Assistant updates the card several times a second,
@@ -1678,7 +1829,7 @@ class CardBase extends HTMLElement {
     if (!h || !this._config) return null;
     const m = this._resolve();
     const ids = m ? this._entityIds(m) : [];
-    return [h.entities, h.devices, h.areas, h.language, h.locale, h.themes?.darkMode, Math.floor(Date.now() / 6e4), ...this._extraDeps(), ...ids.map((id) => h.states[id])];
+    return [h.entities, h.devices, h.areas, h.language, h.locale, h.themes?.darkMode, h.states["sun.sun"], Math.floor(Date.now() / 6e4), ...this._extraDeps(), ...ids.map((id) => h.states[id])];
   }
 
   _extraDeps() {
@@ -1708,6 +1859,7 @@ class CardBase extends HTMLElement {
       },
     );
     this._outside.on();
+    this._watchPill();
     if (this._dialog) window.addEventListener("keydown", this._onKey);
     clearInterval(this._tick);
     this._tick = setInterval(() => {
@@ -1717,6 +1869,53 @@ class CardBase extends HTMLElement {
     this._update();
   }
 
+  // The status pill goes on the title row, right after the title, only when the whole title and the pill's whole
+  // label fit there; otherwise it takes its own line under the subtitle (the subtitle then on one line). In the
+  // banner, when title, subtitle and pill still do not fit above the ground strip (or the pill's label runs past the
+  // text, over the picture), the pill keeps its dot only.
+  // Measured after each render and on every new width (or once the web font is loaded), never by a fixed width.
+  _fitPill() {
+    for (const t of this.shadowRoot?.querySelectorAll?.(".titles") || []) {
+      const row = t.querySelector?.(".trow");
+      const name = row?.querySelector(".name");
+      const chips = row ? [...row.children].filter((n) => n.classList.contains("chip")) : [];
+      if (!name?.getBoundingClientRect || !chips.length) continue;
+      t.classList.remove("pill-below", "pill-dot");
+      // The title's whole width (scrollWidth is rounded: 1 px more, so that a title that fits is never cut).
+      const need = chips.reduce((w, c) => w + PILL_GAP_PX + c.getBoundingClientRect().width, name.scrollWidth + 1);
+      if (need <= row.getBoundingClientRect().width + 0.5) continue;
+      t.classList.add("pill-below");
+      const banner = t.closest(".banner");
+      if (!banner) continue;
+      const box = banner.getBoundingClientRect();
+      const ground = box.bottom - PILL_GROUND_PX;
+      const right = t.getBoundingClientRect().right;
+      const out = [name, ...t.querySelectorAll(".sub"), ...chips].some((n) => {
+        const r = n.getBoundingClientRect();
+        return r.height > 0 && (r.top < box.top - 0.5 || r.bottom > ground + 0.5 || r.right > right + 0.5);
+      });
+      if (out) t.classList.add("pill-dot");
+    }
+  }
+
+  _watchPill() {
+    if (typeof ResizeObserver !== "function") return;
+    this._pillResize ??= new ResizeObserver((entries) => {
+      const w = Math.round(entries.at(-1).contentRect.width);
+      if (w === this._pillWidth) return;
+      this._pillWidth = w;
+      cancelAnimationFrame(this._pillFrame);
+      this._pillFrame = requestAnimationFrame(() => this._fitPill());
+    });
+    this._pillResize.observe(this);
+    document.fonts?.ready?.then(() => this._fitPill());
+  }
+
+  _unwatchPill() {
+    this._pillResize?.disconnect();
+    this._pillWidth = null;
+  }
+
   disconnectedCallback() {
     this._pressing = this._dirty = false;
     window.removeEventListener("pointerup", this._onPressEnd, true);
@@ -1724,6 +1923,7 @@ class CardBase extends HTMLElement {
     clearInterval(this._tick);
     clearInterval(this._countdown);
     this._tick = this._countdown = null;
+    this._unwatchPill();
     this._outside?.off();
     window.removeEventListener("keydown", this._onKey);
     this._onDisconnect?.();
@@ -1787,6 +1987,7 @@ class CardBase extends HTMLElement {
       const kept = this._dialog || this._byPointer ? null : this._focusedSpot();
       this._html = html;
       this.shadowRoot.innerHTML = html;
+      this._fitPill();
       // Fields get back what was typed, and the caret when one had the focus.
       for (const el of this.shadowRoot.querySelectorAll?.("[data-keep]") || []) {
         const v = this._inputs[el.dataset.keep];
@@ -1957,26 +2158,6 @@ class CardBase extends HTMLElement {
 
   _errorCard(key) {
     return `<style>${BASE_STYLE}</style><ha-card><div class="warning">${esc(this._t(key))}</div></ha-card>`;
-  }
-
-  // Header: the tinted round icon (its tint follows `cls`), the title and subtitle, the status chip on the title's line.
-  _header({ icon, cls = "accent", title, sub, chip, extra = "" }) {
-    return `
-      <div class="header">
-        <div class="type-icon ${cls}">${extra}${svgIcon(icon)}</div>
-        <div class="titles">
-          <div class="name">${esc(title)}</div>
-          ${sub ? `<div class="sub">${esc(sub)}</div>` : ""}
-        </div>
-        ${
-          chip
-            ? `<span class="chip ${chip.cls}${chip.entity ? " clickable" : ""}"${moreInfo(chip.entity)} title="${esc(chip.text)}" aria-label="${esc(
-                chip.text,
-              )}"><span class="dot"></span><span class="chip-text">${esc(chip.text)}</span></span>`
-            : ""
-        }
-        ${this._zoomButton()}
-      </div>`;
   }
 
   _zoomButton() {
@@ -2290,7 +2471,7 @@ const TIMER_STYLE = `
   .mini .kt-icon .icon { width: 24px; height: 24px; }
   .mini .big b { font-size: 26px; }
   /* Narrow card: the timer above its texts, one button per row. */
-  @container (max-width: 300px) {
+  @container tm-card (max-width: 300px) {
     .hero { flex-direction: column; align-items: stretch; gap: 8px; }
     .hero .kt { align-self: center; }
     .row { gap: 8px; }
@@ -2300,11 +2481,149 @@ const TIMER_STYLE = `
     .mini .kt { width: 60px; height: 60px; }
     .mini .kt-dial, .mini .kt-icon { left: 6px; top: 8px; width: 48px; height: 48px; }
   }
-  @container (max-width: 200px) {
+  @container tm-card (max-width: 200px) {
     .mini .kt { display: none; }
     .mini .big b { font-size: 22px; }
   }
 `;
+
+// ---------------------------------------------------------------------------
+// Illustrated header
+// ---------------------------------------------------------------------------
+
+// The banner's picture, at the right of a 200 × 80 view box drawn at the banner's height above its ground strip: a
+// tiled kitchen wall, the worktop, a hob with a pot and a kitchen timer. Its state follows the timers: running (the
+// hob glows, the pot steams, the timer's hand turns), paused (the hand stops, a pause badge, a faint wisp), finished
+// (a timer rings: it shakes and rings out, the pot boils) and idle (all still, the hob off). `uid` keeps the ids of
+// each card's gradients apart on a page with several cards.
+const tmSceneSvg = (state, uid) => {
+  const on = state !== "idle";
+  const joints = [
+    ...Array.from({ length: 21 }, (_, i) => `<line x1="${i * 10}" y1="0" x2="${i * 10}" y2="56"/>`),
+    ...[14, 28, 42].map((y) => `<line x1="0" y1="${y}" x2="200" y2="${y}"/>`),
+  ].join("");
+  const wisp = (x, d = 0) => `<path style="animation-delay:${d}s" d="M${x} -28q-3 -5 0 -9q3 -4 0 -8"/>`;
+  const steam = state === "running" ? wisp(-6) + wisp(6, 0.75) : state === "finished" ? wisp(-9) + wisp(0, 0.5) + wisp(9, 1) : state === "paused" ? wisp(0) : "";
+  // The timer's hand: at 12 when idle or done, stopped where it was when paused, turning while it runs.
+  const angle = state === "paused" ? 130 : 0;
+  const ticks = [0, 90, 180, 270].map((a) => `<line class="tm-tick" x1="0" y1="-19" x2="0" y2="-17.6" transform="rotate(${a} 0 -12)"/>`).join("");
+  return `<svg class="tm-scene" viewBox="0 0 200 80" preserveAspectRatio="xMaxYMax meet" aria-hidden="true">
+    <defs><radialGradient id="tm-glow-${uid}"><stop offset="0" stop-color="#ff7a3c" stop-opacity=".75"/><stop offset="1" stop-color="#ff7a3c" stop-opacity="0"/></radialGradient></defs>
+    <g class="tm-joints">${joints}</g>
+    <rect class="tm-top" x="0" y="56" width="200" height="24"/>
+    <rect class="tm-edge" x="0" y="56" width="200" height="1.4"/>
+    <rect class="tm-hob" x="60" y="52" width="120" height="4" rx="1"/>
+    <rect class="tm-knob" x="66" y="53.2" width="5" height="1.6" rx=".8"/><rect class="tm-knob" x="74" y="53.2" width="5" height="1.6" rx=".8"/>
+    ${on ? `<ellipse class="tm-glow" cx="100" cy="51" rx="26" ry="7" fill="url(#tm-glow-${uid})"/><rect class="tm-heat" x="83" y="52.4" width="34" height="1.2" rx=".6"/>` : ""}
+    <g transform="translate(100 52)">
+      <rect class="tm-handle" x="-22" y="-15" width="5" height="2.4" rx="1.2"/><rect class="tm-handle" x="17" y="-15" width="5" height="2.4" rx="1.2"/>
+      <rect class="tm-pot" x="-16" y="-18" width="32" height="18" rx="3"/>
+      <rect class="tm-lid" x="-19" y="-20" width="38" height="4" rx="2"/>
+      <rect class="tm-lidknob" x="-3" y="-24" width="6" height="4" rx="1.5"/>
+      ${steam ? `<g class="tm-steam">${steam}</g>` : ""}
+    </g>
+    <g class="tm-kt">
+      <g transform="translate(160 52)">
+        ${state === "finished" ? '<g class="tm-rings"><path d="M-15 -19a10 10 0 0 0 0 14"/><path d="M-19 -22a15 15 0 0 0 0 20"/><path d="M15 -19a10 10 0 0 1 0 14"/><path d="M19 -22a15 15 0 0 1 0 20"/></g>' : ""}
+        <rect class="tm-ktknob" x="-2.5" y="-27" width="5" height="4.4" rx="1"/>
+        <circle class="tm-ktbody" cy="-12" r="11"/>
+        <circle class="tm-ktface" cy="-12" r="8"/>
+        ${ticks}
+        <g class="tm-hand"><g transform="rotate(${angle} 0 -12)"><line x1="0" y1="-12" x2="0" y2="-18.2"/></g></g>
+        <circle class="tm-pin" cy="-12" r="1.1"/>
+        ${state === "paused" ? '<g class="tm-pause" transform="translate(9 -21)"><circle r="4.2"/><rect x="-1.9" y="-2" width="1.3" height="4" rx=".4"/><rect x=".6" y="-2" width="1.3" height="4" rx=".4"/></g>' : ""}
+      </g>
+    </g>
+  </svg>`;
+};
+
+// Night picture: forced by illustration_theme, else the sun below the horizon or Home Assistant's dark theme (dark mode alone without a usable sun).
+const tmIsNight = (hass, config) => {
+  const theme = config?.illustration_theme;
+  if (theme === "night") return true;
+  if (theme === "day") return false;
+  const sun = hass?.states?.["sun.sun"];
+  if (valid(sun)) return sun.state === "below_horizon" || !!hass?.themes?.darkMode;
+  return !!hass?.themes?.darkMode;
+};
+
+// The banner, 90 px high on the full and the mini card: the kitchen's wall colour behind the title, the picture at the
+// right, a 10 px tiled floor strip edge to edge at the bottom. The round icon's colour is the timers' state: running
+// (the card's accent), paused (amber), ringing (red), idle (grey), day and night.
+const BANNER_STYLE = `
+  .banner { position: relative; overflow: hidden; height: 90px; --g: 10px; --scene-w: min(200px, 54%);
+            background: #eef3f4; color: #0d2a45; --sky-muted: #3b5b78; }
+  .banner.night { background: #283040; color: #fff; --sky-muted: rgba(255,255,255,.78); }
+  .tm-scene { position: absolute; right: 0; bottom: var(--g); height: calc(100% - var(--g)); width: var(--scene-w);
+              -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 14%); mask-image: linear-gradient(90deg, transparent 0, #000 14%); }
+  .ground { position: absolute; left: 0; right: 0; bottom: 0; height: var(--g);
+            background: repeating-linear-gradient(90deg, #d9dfe3 0 18px, #c6cdd2 18px 19px); box-shadow: inset 0 2px 0 #b8c0c6; }
+  .night .ground { background: repeating-linear-gradient(90deg, #3a4250 0 18px, #2e3542 18px 19px); box-shadow: inset 0 2px 0 #4a5466; }
+  .htext { position: absolute; z-index: 1; left: 0; top: 0; bottom: var(--g); right: max(0px, calc(var(--scene-w) - 60px)); display: flex; align-items: center; gap: 10px;
+           padding: 8px 8px 8px 14px; min-width: 0; box-sizing: border-box; }
+  .htext .titles { flex: 1 1 auto; min-width: 0; }
+  .htext .name { font-size: 16px; font-weight: 500; }
+  .htext .sub { font-size: 13px; color: var(--sky-muted); }
+  .banner .type-icon { background: rgba(255,255,255,.62); box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--c) 24%, transparent); }
+  .banner .type-icon .icon { fill: var(--c); }
+  .banner .type-icon.idle .icon { fill: color-mix(in srgb, var(--tm-idle) 80%, #0d2a45); }
+  .banner.night .type-icon { background: rgba(255,255,255,.12); box-shadow: inset 0 0 0 1px rgba(255,255,255,.14); }
+  .banner.night .type-icon .icon { fill: color-mix(in srgb, var(--c) 78%, #fff); }
+  .banner.night .type-icon.idle .icon { fill: color-mix(in srgb, var(--tm-idle) 80%, #fff); }
+  /* The mini card's detail button: a frosted round button in the banner's top-right corner. */
+  .banner .zoom { all: unset; position: absolute; z-index: 2; top: 5px; right: 5px; margin: 0; cursor: pointer; width: 24px; height: 24px;
+                  border-radius: 50%; display: grid; place-items: center; box-sizing: border-box; color: #33506b; background: rgba(255,255,255,.55);
+                  box-shadow: inset 0 0 0 1px rgba(255,255,255,.7); -webkit-backdrop-filter: blur(4px); backdrop-filter: blur(4px); }
+  .banner .zoom .icon { width: 16px; height: 16px; }
+  .banner .zoom:hover { background: rgba(255,255,255,.75); color: #33506b; }
+  .banner.night .zoom { color: #ffffff; background: rgba(255,255,255,.12); box-shadow: inset 0 0 0 1px rgba(255,255,255,.2); }
+  .banner.night .zoom:hover { background: rgba(255,255,255,.22); color: #ffffff; }
+  .banner .zoom:focus-visible { outline: 2px solid var(--primary-color, #03a9f4); outline-offset: 2px; }
+  .htext .titles { align-self: stretch; justify-content: center; }
+  /* The status pill on the banner: the status colour on frosted glass. */
+  .banner .chip { display: inline-flex; align-items: center; gap: 4px; padding: 1px 8px; border-radius: 12px;
+                  font-size: 11px; font-weight: 500; line-height: 16px; white-space: nowrap; box-sizing: border-box;
+                  background: color-mix(in srgb, var(--c, var(--tm-accent)) 18%, rgba(255,255,255,.78)); color: color-mix(in srgb, var(--c, var(--tm-accent)) 45%, #0d2a45); }
+  .banner.night .chip { background: color-mix(in srgb, var(--c, var(--tm-accent)) 30%, rgba(8,18,38,.55)); color: color-mix(in srgb, var(--c, var(--tm-accent)) 35%, #ffffff); }
+  .banner .chip .dot { width: 7px; height: 7px; border-radius: 50%; flex: none; background: var(--c, var(--tm-accent)); }
+  /* The picture: the wall's joints, the worktop, the hob, the pot and the kitchen timer. */
+  .tm-joints line { stroke: #dfe7ea; stroke-width: .6; } .night .tm-joints line { stroke: #343d4f; }
+  .tm-top { fill: #fff; } .night .tm-top { fill: #323b4e; }
+  .tm-edge { fill: #dfe5e9; } .night .tm-edge { fill: #3c465a; }
+  .tm-hob { fill: #2a3038; } .tm-knob { fill: #59636f; }
+  .tm-heat { fill: #ff5a36; } .tm-glow { animation: tm-glow 3s ease-in-out infinite; }
+  .tm-paused .tm-heat { fill: #c9653e; } .tm-paused .tm-glow { opacity: .45; animation: none; }
+  .tm-pot { fill: #9aa3ae; } .tm-lid { fill: #7d8793; } .tm-lidknob, .tm-handle { fill: #5f6b7a; }
+  .night .tm-pot { fill: #8a94a0; } .night .tm-lid { fill: #6f7985; }
+  .tm-steam path { fill: none; stroke: #c9d2da; stroke-width: 1.4; stroke-linecap: round; animation: tm-steam 1.5s ease-out infinite; }
+  .night .tm-steam path { stroke: #7d8793; }
+  .tm-paused .tm-steam path { opacity: .45; animation: none; }
+  .tm-finished .tm-steam path { animation-duration: 1s; }
+  .tm-ktbody { fill: #f5b400; } .tm-ktknob { fill: #d68f00; } .tm-ktface { fill: #fff; }
+  .night .tm-ktbody { fill: #e0a400; } .night .tm-ktface { fill: #f4f1e6; }
+  .tm-tick { stroke: #9aa3ae; stroke-width: .8; }
+  .tm-hand line { stroke: #e5484d; stroke-width: 1.4; stroke-linecap: round; } .tm-pin { fill: #e5484d; }
+  .tm-hand { transform-box: view-box; transform-origin: 160px 40px; }
+  .tm-running .tm-hand { animation: tm-turn 3s linear infinite; }
+  .tm-pause circle { fill: var(--tm-warn); } .tm-pause rect { fill: #fff; }
+  .tm-kt { transform-box: view-box; transform-origin: 160px 52px; }
+  .tm-finished .tm-kt { animation: tm-shake .5s ease-in-out infinite; }
+  .tm-rings path { fill: none; stroke: var(--tm-crit); stroke-width: 1.3; stroke-linecap: round; animation: tm-ring 1s ease-out infinite; }
+  .tm-rings path:nth-child(2n) { animation-delay: .25s; }
+  @keyframes tm-turn { to { transform: rotate(360deg); } }
+  @keyframes tm-steam { from { opacity: .9; transform: translateY(0); } to { opacity: 0; transform: translateY(-6px); } }
+  @keyframes tm-glow { 0%, 100% { opacity: .75; } 50% { opacity: 1; } }
+  @keyframes tm-shake { 0%, 100% { transform: rotate(0); } 25% { transform: rotate(-9deg); } 75% { transform: rotate(9deg); } }
+  @keyframes tm-ring { 0% { opacity: 0; } 30% { opacity: 1; } 100% { opacity: 0; } }
+  @media (prefers-reduced-motion: reduce) {
+    .tm-hand, .tm-kt, .tm-steam path, .tm-glow, .tm-rings path { animation: none !important; }
+  }
+  .banner ~ .content { padding-top: 12px; }
+  /* Narrow card: no room for the picture beside the title, the wall alone stays. */
+  @container tm-card (max-width: 280px) { .tm-scene { display: none; } .banner { --scene-w: 0px; } .banner .htext { padding-right: 36px; } }
+`;
+
+let tmUid = 0;
 
 // ---------------------------------------------------------------------------
 // Cards
@@ -2580,9 +2899,32 @@ class TimerCard extends CardBase {
     </div>`;
   }
 
+  // The header: the illustrated banner (its picture and icon colour follow the timers' state), or the classic header
+  // (`illustration: false`). Both have the same status pill on the title row, in the icon's colour.
   _head(sum, sub) {
-    const st = sum.ringing.length ? "crit" : sum.active.length ? "accent" : "idle";
-    return this._header({ icon: sum.ringing.length ? ICONS.bell : ICONS.timer, cls: st, title: this._config.title || this._t("timers"), sub, chip: sum.chip });
+    const st = sum.ringing.length ? "crit" : sum.active.length ? "accent" : sum.paused.length ? "warn" : "idle";
+    const icon = sum.ringing.length ? ICONS.bell : ICONS.timer;
+    const title = this._config.title || this._t("timers");
+    // The status pill (in the icon's colour) says the first state; the subtitle keeps the other counts.
+    const n = (k1, kn, len) => (len === 1 ? this._t(k1) : this._t(kn, { n: len }));
+    const running = sum.active.length ? n("running_one", "running_n", sum.active.length) : "";
+    const paused = sum.paused.length ? n("paused_one", "paused_n", sum.paused.length) : "";
+    const label = sum.ringing.length ? this._t("ringing") : running || paused || this._t("idle");
+    const text = (sum.ringing.length ? [running, paused] : running ? [paused] : []).filter(Boolean).join(" · ");
+    const entity = sum.chip?.entity;
+    const pill = `<span class="chip ${st}${entity ? " clickable" : ""}"${moreInfo(entity)} title="${esc(label)}" aria-label="${esc(label)}"><span class="dot"></span><span class="chip-text">${esc(label)}</span></span>`;
+    const head = `<div class="type-icon ${st}">${svgIcon(icon)}</div><div class="titles"><div class="trow"><div class="name">${esc(title)}</div>${pill}</div>${sub && text ? `<div class="sub" title="${esc(text)}">${esc(text)}</div>` : ""}</div>`;
+    if (this._config.illustration === false) return `<div class="header">${head}${this._zoomButton()}</div>`;
+    const scene = sum.ringing.length ? "finished" : sum.active.length ? "running" : sum.paused.length ? "paused" : "idle";
+    const night = tmIsNight(this._hass, this._config) ? " night" : "";
+    return `<div class="banner tm-${scene}${night}">${tmSceneSvg(scene, this._uid)}<div class="ground"></div>
+      <div class="htext">${head}</div>
+      ${this._zoomButton()}</div>`;
+  }
+
+  // The banner's styles, only when it is shown.
+  _bannerStyle() {
+    return this._config.illustration === false ? "" : BANNER_STYLE;
   }
 
   _render() {
@@ -2601,7 +2943,7 @@ class TimerCard extends CardBase {
     if (c.show_counters !== false && m.counters.length) {
       parts.push(this._section("counters", ICONS.counter, this._t("counters"), m.counters.length, `<div class="rows">${m.counters.map((x) => this._counterRow(x)).join("")}</div>`));
     }
-    return `<style>${BASE_STYLE}${TIMER_STYLE}</style>
+    return `<style>${BASE_STYLE}${TIMER_STYLE}${this._bannerStyle()}</style>
       <ha-card>
         ${this._head(sum, sum.sub)}
         <div class="content">${parts.filter(Boolean).join("")}</div>
@@ -2696,9 +3038,9 @@ class TimerMiniCard extends withMini(TimerCard) {
       controls = `<button class="btn round primary" data-action="start" data-key="${esc(q.key)}" title="${esc(this._t("start_timer", { name: q.name }))}" aria-label="${esc(this._t("start_timer", { name: q.name }))}">${svgIcon(ICONS.play)}</button>`;
     }
     const body = it ? `${this._big(it)}${rest}` : `<div class="line">${svgIcon(ICONS.timer_off)}<span>${esc(this._t("none_running"))}</span></div>`;
-    return `<style>${BASE_STYLE}${TIMER_STYLE}${MINI_STYLE}</style>
+    return `<style>${BASE_STYLE}${TIMER_STYLE}${MINI_STYLE}${this._bannerStyle()}</style>
       <ha-card>
-        ${this._head(sum, "")}
+        ${this._head(sum, this._config.illustration === false ? "" : sum.sub)}
         <div class="content mini">
           ${it ? this._kt(it, 72) : ""}
           <div class="info">${body}</div>
@@ -2715,6 +3057,7 @@ class TimerMiniCard extends withMini(TimerCard) {
 class TimerCardEditor extends EditorBase {
   static get toggles() {
     return [
+      ["illustration", true],
       ["show_title", true],
       ["show_subtitle", true],
       ["show_hero", true],
@@ -2728,11 +3071,17 @@ class TimerCardEditor extends EditorBase {
     return ["timers", "counters"];
   }
 
+  static get defaults() {
+    return { illustration_theme: "auto" };
+  }
+
   _fields() {
+    const tr = (k) => t(this._hass, this._config, k);
     return [
       { name: "timers", selector: { entity: { multiple: true, domain: ["timer", "sensor"] } } },
       { name: "counters", selector: { entity: { multiple: true, domain: "counter" } } },
       { name: "quick_timer", selector: { entity: { domain: "timer" } } },
+      { name: "illustration_theme", selector: { select: { mode: "dropdown", options: ["auto", "day", "night"].map((v) => ({ value: v, label: tr(`theme_${v}`) })) } } },
     ];
   }
 }

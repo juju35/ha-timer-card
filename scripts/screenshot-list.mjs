@@ -9,6 +9,7 @@ export const shots = twins([
   { file: "card-idle", type: "timer-card", width: 460, config: {}, variant: "idle" },
   { file: "mini-card", type: "timer-mini-card", width: 380, config: {} },
   { file: "mini-card-idle", type: "timer-mini-card", width: 380, config: {}, variant: "idle" },
+  { file: "mini-card-paused", type: "timer-mini-card", width: 380, config: {}, variant: "paused" },
   { file: "mini-card-zoom", type: "timer-mini-card", width: 460, config: {}, clicks: [".zoom"] },
   // Narrow cards: the full card at 6 columns of a phone's Sections view and the mini card at its minimum width.
   { file: "card-narrow", type: "timer-card", width: 238, config: { show_counters: false } },
@@ -16,8 +17,8 @@ export const shots = twins([
 ]);
 
 // One looping GIF per distinct animated state:
-//   running — the next timer to end: a dot sweeps round its dial
-//   ringing — a timer rings: its dial and ring flash, the bell shakes
+//   running — the next timer to end: a dot sweeps round its dial; in the header, the pot steams and the timer's hand turns
+//   ringing — a timer rings: its dial and ring flash, the bell shakes; in the header, the kitchen timer shakes and rings
 export const gifs = twins([
   { file: "running", type: "timer-card", width: 460, config: { show_timers: false, show_counters: false, show_quick: false } },
   { file: "ringing", type: "timer-card", width: 460, config: { show_counters: false, show_quick: false }, variant: "ringing" },

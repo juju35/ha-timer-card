@@ -67,6 +67,7 @@ const base = () => {
 //   default — as above
 //   ringing — the Google Home tea timer rings (its end gone by)
 //   idle    — nothing runs: every helper idle, no speaker timer
+//   paused  — nothing runs, the pasta and the oven paused: every other helper idle, no speaker timer
 export const mockData = (variant = "default") => {
   const d = base();
   if (variant === "ringing") {
@@ -74,13 +75,17 @@ export const mockData = (variant = "default") => {
     g.attributes.timers[0] = { ...g.attributes.timers[0], status: "ringing", local_time_iso: iso(NOW - 20e3), fire_time: (NOW - 20e3) / 1000 };
     g.attributes.next_timer_status = "ringing";
   }
-  if (variant === "idle") {
-    for (const id of ["timer.pates", "timer.lessive", "timer.four"]) {
+  if (variant === "idle" || variant === "paused") {
+    for (const id of variant === "paused" ? ["timer.lessive"] : ["timer.pates", "timer.lessive", "timer.four"]) {
       const s = d.states[id];
       d.states[id] = { ...s, state: "idle", attributes: { friendly_name: s.attributes.friendly_name, duration: s.attributes.duration, editable: true } };
     }
     d.states["sensor.cuisine_minuteurs"] = { ...d.states["sensor.cuisine_minuteurs"], state: "unavailable", attributes: { friendly_name: "Kitchen speaker Timers", timers: [] } };
     d.states["sensor.salon_prochain_minuteur"] = { ...d.states["sensor.salon_prochain_minuteur"], state: "unknown", attributes: { friendly_name: "Living room Echo Next timer" } };
+  }
+  if (variant === "paused") {
+    const p = d.states["timer.pates"];
+    d.states["timer.pates"] = { ...p, state: "paused", attributes: { friendly_name: p.attributes.friendly_name, duration: p.attributes.duration, editable: true, remaining: "0:08:42" } };
   }
   return d;
 };
