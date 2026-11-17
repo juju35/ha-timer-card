@@ -42,6 +42,7 @@ const STRINGS = {
     paused_one: "1 paused",
     paused_n: "{n} paused",
     none_running: "No timer running",
+    idle: "Idle",
     done: "Done",
     pause: "Pause",
     resume: "Resume",
@@ -103,6 +104,7 @@ const STRINGS = {
     paused_one: "1 en pause",
     paused_n: "{n} en pause",
     none_running: "Aucun minuteur en cours",
+    idle: "Inactif",
     done: "Terminé",
     pause: "Pause",
     resume: "Reprendre",
@@ -164,6 +166,7 @@ const STRINGS = {
     paused_one: "1 pausiert",
     paused_n: "{n} pausiert",
     none_running: "Kein Timer läuft",
+    idle: "Inaktiv",
     done: "Fertig",
     pause: "Pause",
     resume: "Fortsetzen",
@@ -225,6 +228,7 @@ const STRINGS = {
     paused_one: "1 en pausa",
     paused_n: "{n} en pausa",
     none_running: "Ningún temporizador en marcha",
+    idle: "Inactivo",
     done: "Terminado",
     pause: "Pausar",
     resume: "Reanudar",
@@ -286,6 +290,7 @@ const STRINGS = {
     paused_one: "1 in pausa",
     paused_n: "{n} in pausa",
     none_running: "Nessun timer in corso",
+    idle: "Inattivo",
     done: "Finito",
     pause: "Pausa",
     resume: "Riprendi",
@@ -347,6 +352,7 @@ const STRINGS = {
     paused_one: "1 gepauzeerd",
     paused_n: "{n} gepauzeerd",
     none_running: "Geen timer actief",
+    idle: "Inactief",
     done: "Klaar",
     pause: "Pauzeren",
     resume: "Hervatten",
@@ -408,6 +414,7 @@ const STRINGS = {
     paused_one: "1 em pausa",
     paused_n: "{n} em pausa",
     none_running: "Nenhum temporizador em curso",
+    idle: "Inativo",
     done: "Terminado",
     pause: "Pausa",
     resume: "Retomar",
@@ -469,6 +476,7 @@ const STRINGS = {
     paused_one: "1 wstrzymany",
     paused_n: "Wstrzymane: {n}",
     none_running: "Brak aktywnych minutników",
+    idle: "Bezczynny",
     done: "Zakończony",
     pause: "Wstrzymaj",
     resume: "Wznów",
@@ -530,6 +538,7 @@ const STRINGS = {
     paused_one: "1 паузиран",
     paused_n: "Паузирано: {n}",
     none_running: "Ниједан тајмер не ради",
+    idle: "Неактиван",
     done: "Готово",
     pause: "Пауза",
     resume: "Настави",
@@ -591,6 +600,7 @@ const STRINGS = {
     paused_one: "1 pauziran",
     paused_n: "Pauzirano: {n}",
     none_running: "Nijedan tajmer ne radi",
+    idle: "Neaktivan",
     done: "Gotovo",
     pause: "Pauza",
     resume: "Nastavi",
@@ -652,6 +662,7 @@ const STRINGS = {
     paused_one: "1 în pauză",
     paused_n: "{n} în pauză",
     none_running: "Niciun cronometru pornit",
+    idle: "Inactiv",
     done: "Gata",
     pause: "Pauză",
     resume: "Reia",
@@ -713,6 +724,7 @@ const STRINGS = {
     paused_one: "1 på pause",
     paused_n: "{n} på pause",
     none_running: "Ingen timer kører",
+    idle: "Inaktiv",
     done: "Færdig",
     pause: "Pause",
     resume: "Fortsæt",
@@ -774,6 +786,7 @@ const STRINGS = {
     paused_one: "1 pausad",
     paused_n: "{n} pausade",
     none_running: "Ingen timer igång",
+    idle: "Inaktiv",
     done: "Klar",
     pause: "Pausa",
     resume: "Återuppta",
@@ -835,6 +848,7 @@ const STRINGS = {
     paused_one: "1 на пауза",
     paused_n: "На пауза: {n}",
     none_running: "Няма работещ таймер",
+    idle: "Неактивен",
     done: "Готово",
     pause: "Пауза",
     resume: "Продължи",
@@ -896,6 +910,7 @@ const STRINGS = {
     paused_one: "1 на паузе",
     paused_n: "На паузе: {n}",
     none_running: "Нет активных таймеров",
+    idle: "Неактивен",
     done: "Готово",
     pause: "Пауза",
     resume: "Продолжить",
@@ -957,6 +972,7 @@ const STRINGS = {
     paused_one: "1 на паузі",
     paused_n: "На паузі: {n}",
     none_running: "Немає активних таймерів",
+    idle: "Неактивний",
     done: "Готово",
     pause: "Пауза",
     resume: "Продовжити",
@@ -1018,6 +1034,7 @@ const STRINGS = {
     paused_one: "1 szüneteltetve",
     paused_n: "{n} szüneteltetve",
     none_running: "Nincs futó időzítő",
+    idle: "Tétlen",
     done: "Kész",
     pause: "Szünet",
     resume: "Folytatás",
@@ -1079,6 +1096,7 @@ const STRINGS = {
     paused_one: "1 pozastavený",
     paused_n: "Pozastavené: {n}",
     none_running: "Žiadny časovač nebeží",
+    idle: "Nečinný",
     done: "Hotovo",
     pause: "Pozastaviť",
     resume: "Pokračovať",
@@ -1140,6 +1158,7 @@ const STRINGS = {
     paused_one: "1 pozastaven",
     paused_n: "Pozastaveno: {n}",
     none_running: "Žádný časovač neběží",
+    idle: "Nečinný",
     done: "Hotovo",
     pause: "Pozastavit",
     resume: "Pokračovat",
@@ -1201,6 +1220,7 @@ const STRINGS = {
     paused_one: "1 zaustavljen",
     paused_n: "Zaustavljeni: {n}",
     none_running: "Noben časovnik ne teče",
+    idle: "Nedejaven",
     done: "Končano",
     pause: "Premor",
     resume: "Nadaljuj",
@@ -1262,6 +1282,7 @@ const STRINGS = {
     paused_one: "1 pauzēts",
     paused_n: "Pauzēti: {n}",
     none_running: "Neviens taimeris nedarbojas",
+    idle: "Neaktīvs",
     done: "Gatavs",
     pause: "Pauze",
     resume: "Turpināt",
@@ -1323,6 +1344,7 @@ const STRINGS = {
     paused_one: "1 σε παύση",
     paused_n: "{n} σε παύση",
     none_running: "Κανένα χρονόμετρο σε λειτουργία",
+    idle: "Ανενεργό",
     done: "Ολοκληρώθηκε",
     pause: "Παύση",
     resume: "Συνέχεια",
@@ -1467,7 +1489,7 @@ const BASE_STYLE = `
           --tm-crit: var(--error-color, #db4437); --tm-idle: var(--disabled-text-color, #9e9e9e); --tm-active: var(--info-color, #039be5);
           /* Text in a state color is mixed with the text color so that it reads at 4.5:1 at least. */
           --tm-accent-text: color-mix(in srgb, var(--tm-accent) 50%, var(--primary-text-color)); }
-  ha-card { overflow: hidden; container-type: inline-size; }
+  ha-card { overflow: hidden; container: tm-card / inline-size; }
   /* Natural width in a parent that sizes to its content (inline-block, grid "auto" column), without a minimum. */
   :host { display: block; min-width: 0; --tm-natural-width: 380px; }
   :host::before { content: ""; display: grid; grid-template-columns: minmax(0, var(--tm-natural-width)); height: 0; }
@@ -1575,7 +1597,7 @@ const BASE_STYLE = `
           color: color-mix(in srgb, var(--c, var(--tm-idle)) 60%, var(--primary-text-color)); background: color-mix(in srgb, var(--c, var(--tm-idle)) 14%, transparent); }
   .pill .icon { width: 14px; height: 14px; color: var(--c, var(--tm-idle)); }
   @media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition: none !important; animation: none !important; } }
-  @container (max-width: 230px) {
+  @container tm-card (max-width: 230px) {
     .chip { padding: 4px; flex: none; }
     .chip-text { display: none; }
     .header { gap: 6px; }
@@ -1611,7 +1633,7 @@ const MINI_STYLE = `
   .mini .info { gap: 4px; }
   .mini .line .icon { width: 14px; height: 14px; }
   .controls { display: flex; gap: 6px; flex: none; }
-  @container (max-width: 300px) {
+  @container tm-card (max-width: 300px) {
     .content.mini { flex-wrap: wrap; row-gap: 8px; }
     .mini .controls { flex-basis: 100%; justify-content: flex-end; }
   }
@@ -2401,7 +2423,7 @@ const TIMER_STYLE = `
   .mini .kt-icon .icon { width: 24px; height: 24px; }
   .mini .big b { font-size: 26px; }
   /* Narrow card: the timer above its texts, one button per row. */
-  @container (max-width: 300px) {
+  @container tm-card (max-width: 300px) {
     .hero { flex-direction: column; align-items: stretch; gap: 8px; }
     .hero .kt { align-self: center; }
     .row { gap: 8px; }
@@ -2411,7 +2433,7 @@ const TIMER_STYLE = `
     .mini .kt { width: 60px; height: 60px; }
     .mini .kt-dial, .mini .kt-icon { left: 6px; top: 8px; width: 48px; height: 48px; }
   }
-  @container (max-width: 200px) {
+  @container tm-card (max-width: 200px) {
     .mini .kt { display: none; }
     .mini .big b { font-size: 22px; }
   }
@@ -2489,7 +2511,7 @@ const BANNER_STYLE = `
   .ground { position: absolute; left: 0; right: 0; bottom: 0; height: var(--g);
             background: repeating-linear-gradient(90deg, #d9dfe3 0 18px, #c6cdd2 18px 19px); box-shadow: inset 0 2px 0 #b8c0c6; }
   .night .ground { background: repeating-linear-gradient(90deg, #3a4250 0 18px, #2e3542 18px 19px); box-shadow: inset 0 2px 0 #4a5466; }
-  .htext { position: absolute; z-index: 1; left: 0; top: 0; bottom: var(--g); right: var(--scene-w); display: flex; align-items: center; gap: 10px;
+  .htext { position: absolute; z-index: 1; left: 0; top: 0; bottom: var(--g); right: max(0px, calc(var(--scene-w) - 60px)); display: flex; align-items: center; gap: 10px;
            padding: 8px 8px 8px 14px; min-width: 0; box-sizing: border-box; }
   .htext .titles { flex: 1 1 auto; min-width: 0; }
   .htext .name { font-size: 16px; font-weight: 500; }
@@ -2500,10 +2522,36 @@ const BANNER_STYLE = `
   .banner.night .type-icon { background: rgba(255,255,255,.12); box-shadow: inset 0 0 0 1px rgba(255,255,255,.14); }
   .banner.night .type-icon .icon { fill: color-mix(in srgb, var(--c) 78%, #fff); }
   .banner.night .type-icon.idle .icon { fill: color-mix(in srgb, var(--tm-idle) 80%, #fff); }
-  .banner .zoom { position: absolute; z-index: 2; top: 6px; right: 6px; margin: 0; color: #0d2a45; background: rgba(255,255,255,.55); }
-  .banner.night .zoom { color: #fff; background: rgba(10,20,40,.45); }
-  .banner .zoom:hover { background: rgba(255,255,255,.8); color: #0d2a45; }
-  .banner.night .zoom:hover { background: rgba(10,20,40,.7); color: #fff; }
+  /* The mini card's detail button: a frosted round button in the banner's top-right corner. */
+  .banner .zoom { all: unset; position: absolute; z-index: 2; top: 5px; right: 5px; margin: 0; cursor: pointer; width: 24px; height: 24px;
+                  border-radius: 50%; display: grid; place-items: center; box-sizing: border-box; color: #33506b; background: rgba(255,255,255,.55);
+                  box-shadow: inset 0 0 0 1px rgba(255,255,255,.7); -webkit-backdrop-filter: blur(4px); backdrop-filter: blur(4px); }
+  .banner .zoom .icon { width: 16px; height: 16px; }
+  .banner .zoom:hover { background: rgba(255,255,255,.75); color: #33506b; }
+  .banner.night .zoom { color: #ffffff; background: rgba(255,255,255,.12); box-shadow: inset 0 0 0 1px rgba(255,255,255,.2); }
+  .banner.night .zoom:hover { background: rgba(255,255,255,.22); color: #ffffff; }
+  .banner .zoom:focus-visible { outline: 2px solid var(--primary-color, #03a9f4); outline-offset: 2px; }
+  /* The title row: the title gives way first (down to 4 characters), the status pill keeps its whole label. The titles
+     are their own container: when the row runs out of room, the pill drops under the subtitle. */
+  .htext .titles { container: tm-titles / inline-size; align-self: stretch; display: flex; flex-direction: column; justify-content: center; }
+  .tstack { display: flex; flex-direction: column; gap: 1px; align-items: flex-start; min-width: 0; width: 100%; }
+  .tstack > * { max-width: 100%; }
+  .trow { display: flex; align-items: center; gap: 8px; min-width: 0; width: 100%; }
+  .trow .name { flex: 0 1 auto; min-width: 4ch; }
+  /* The status pill on the banner: the status colour on frosted glass. */
+  .banner .chip { display: inline-flex; align-items: center; gap: 4px; flex: 0 0 auto; margin: 0; max-width: 51%; padding: 1px 8px; border-radius: 12px;
+                  font-size: 11px; font-weight: 500; line-height: 16px; white-space: nowrap; overflow: hidden; box-sizing: border-box;
+                  background: color-mix(in srgb, var(--c, var(--tm-accent)) 18%, rgba(255,255,255,.78)); color: color-mix(in srgb, var(--c, var(--tm-accent)) 45%, #0d2a45); }
+  .banner.night .chip { background: color-mix(in srgb, var(--c, var(--tm-accent)) 30%, rgba(8,18,38,.55)); color: color-mix(in srgb, var(--c, var(--tm-accent)) 35%, #ffffff); }
+  .banner .chip .dot { width: 7px; height: 7px; border-radius: 50%; flex: none; background: var(--c, var(--tm-accent)); }
+  .banner .chip .chip-text { display: inline; min-width: 0; overflow: hidden; text-overflow: ellipsis; }
+  @container tm-titles (max-width: 180px) {
+    .tstack { display: grid; justify-items: start; row-gap: 1px; }
+    .trow { display: contents; }
+    .trow .name { max-width: 100%; }
+    .banner .chip { order: 3; max-width: 100%; }
+  }
+  @container tm-card (max-width: 200px) { .banner .chip { padding: 4px; } .banner .chip .chip-text { display: none; } }
   /* The picture: the wall's joints, the worktop, the hob, the pot and the kitchen timer. */
   .tm-joints line { stroke: #dfe7ea; stroke-width: .6; } .night .tm-joints line { stroke: #343d4f; }
   .tm-top { fill: #fff; } .night .tm-top { fill: #323b4e; }
@@ -2538,7 +2586,7 @@ const BANNER_STYLE = `
   }
   .banner ~ .content { padding-top: 12px; }
   /* Narrow card: no room for the picture beside the title, the wall alone stays. */
-  @container (max-width: 280px) { .tm-scene { display: none; } .banner { --scene-w: 0px; } .banner .htext { padding-right: 36px; } }
+  @container tm-card (max-width: 280px) { .tm-scene { display: none; } .banner { --scene-w: 0px; } .banner .htext { padding-right: 36px; } }
 `;
 
 let tmUid = 0;
@@ -2825,11 +2873,17 @@ class TimerCard extends CardBase {
     const title = this._config.title || this._t("timers");
     if (this._config.illustration === false) return this._header({ icon, cls: st === "warn" ? "idle" : st, title, sub, chip: sum.chip });
     const scene = sum.ringing.length ? "finished" : sum.active.length ? "running" : sum.paused.length ? "paused" : "idle";
-    // Nothing running: no subtitle (the hero, or the mini card's line, says so).
-    const text = [sum.ringing.length ? this._t("ringing") : "", sum.sub].filter(Boolean).join(" · ");
+    // The status pill (in the icon's colour) says the first state; the subtitle keeps the other counts.
+    const n = (k1, kn, len) => (len === 1 ? this._t(k1) : this._t(kn, { n: len }));
+    const running = sum.active.length ? n("running_one", "running_n", sum.active.length) : "";
+    const paused = sum.paused.length ? n("paused_one", "paused_n", sum.paused.length) : "";
+    const label = sum.ringing.length ? this._t("ringing") : running || paused || this._t("idle");
+    const text = (sum.ringing.length ? [running, paused] : running ? [paused] : []).filter(Boolean).join(" · ");
+    const entity = sum.chip?.entity;
+    const pill = `<span class="chip ${st}${entity ? " clickable" : ""}"${moreInfo(entity)} title="${esc(label)}" aria-label="${esc(label)}"><span class="dot"></span><span class="chip-text">${esc(label)}</span></span>`;
     const night = tmIsNight(this._hass, this._config) ? " night" : "";
     return `<div class="banner tm-${scene}${night}">${tmSceneSvg(scene, this._uid)}<div class="ground"></div>
-      <div class="htext"><div class="type-icon ${st}">${svgIcon(icon)}</div><div class="titles"><div class="name">${esc(title)}</div>${text ? `<div class="sub">${esc(text)}</div>` : ""}</div></div>
+      <div class="htext"><div class="type-icon ${st}">${svgIcon(icon)}</div><div class="titles"><div class="tstack"><div class="trow"><div class="name">${esc(title)}</div>${pill}</div>${text ? `<div class="sub">${esc(text)}</div>` : ""}</div></div></div>
       ${this._zoomButton()}</div>`;
   }
 
