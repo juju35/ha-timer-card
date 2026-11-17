@@ -7,8 +7,8 @@
 - The header icon's colour is the state: orange running, amber paused, red ringing, grey idle, day and night.
 - Day and night pictures: night when `sun.sun` is below the horizon or with the dark theme, forced with `illustration_theme: day | night`; `illustration: false` keeps the classic header with its status chip. Both options are in the visual editors.
 - Mini card: the subtitle (how many timers run, are paused or ring) shows in the illustrated header.
-- The status pill is back in the illustrated header, on the title row right after the title, in the icon's colour (Ringing, N running, N paused, Idle); the subtitle keeps the other counts. It drops under the subtitle when room runs short and keeps only its dot on a very narrow card. The mini card's detail button sits in the banner's top-right corner, in the frosted style of the other cards.
-- With `illustration: false`, the classic header has the same status pill on the title row (Ringing, N running, N paused, Idle) in its own style and in the icon's colour, with the same narrow-card behaviour; its subtitle no longer repeats the count the pill gives.
+- The status pill is back in the illustrated header, on the title row right after the title, in the icon's colour (Ringing, N running, N paused, Idle); the subtitle keeps the other counts. It stays there only when the whole title and its whole label fit (measured, in every language); otherwise it takes its own line under the subtitle (then kept to one line), and only its dot when even that does not fit in the banner above the floor or beside the picture, or on a card 200 px wide or less. The mini card's detail button sits in the banner's top-right corner, in the frosted style of the other cards.
+- With `illustration: false`, the classic header has the same status pill on the title row (Ringing, N running, N paused, Idle) in its own style and in the icon's colour, with the same placement rule; its subtitle no longer repeats the count the pill gives.
 - Night picture with the dark theme even while the sun is up (a day picture would glare on a dark dashboard); `illustration_theme: day | night` still forces one.
 
 ## 1.1.0 - 2026-11-16

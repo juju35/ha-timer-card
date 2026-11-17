@@ -144,7 +144,7 @@ test("header, hero and rows: the next timer in large, live countdowns, its speak
   assert.match(h, /class="type-icon accent"/);
   // The status pill on the title row says the first state, the subtitle the rest.
   assert.match(h, /class="trow"><div class="name">Timers<\/div><span class="chip accent"[^>]*><span class="dot"><\/span><span class="chip-text">4 running</);
-  assert.match(h, /class="sub">1 paused</);
+  assert.match(h, /class="sub" title="1 paused">1 paused</);
   assert.match(h, /class="big accent">.*<span>Tea<\/span>/s);
   assert.match(h, /Next: Pasta at 12:38 PM/);
   assert.match(h, /Ends at 12:32 PM/);
@@ -185,7 +185,7 @@ test("a Google Home timer is dismissed with its service; a ringing one rings in 
   assert.match(html(), /class="banner tm-finished/);
   assert.match(html(), /class="type-icon crit"/);
   assert.match(html(), /class="chip crit clickable"[^>]*>.*?Ringing</s);
-  assert.match(html(), /class="sub">3 running · 1 paused</);
+  assert.match(html(), /class="sub" title="3 running · 1 paused">3 running · 1 paused</);
   assert.match(html(), /shake/);
   click(card, { action: "dismiss", key: "sensor.cuisine_minuteurs|timer/5b2e6a1e-1111-4c7e-9d6f-0123456789ab" });
   same(hass.calls.at(-1), ["google_home", "delete_timer", { entity_id: "sensor.cuisine_minuteurs", timer_id: "timer/5b2e6a1e-1111-4c7e-9d6f-0123456789ab" }]);
@@ -253,7 +253,7 @@ test("nothing found: a clear message instead of an empty card", () => {
 test("French: texts and lengths in the card's language", async () => {
   const { html } = await mount({ language: "fr" });
   assert.match(html(), /chip-text">4 en cours</);
-  assert.match(html(), /class="sub">1 en pause</);
+  assert.match(html(), /class="sub" title="1 en pause">1 en pause</);
   assert.match(html(), /Démarrage rapide · Eggs/);
 });
 

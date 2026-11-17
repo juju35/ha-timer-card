@@ -1502,29 +1502,28 @@ const BASE_STYLE = `
   .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--c, var(--tm-ok)); flex: none; display: inline-block; }
   .chip { display: inline-flex; align-items: center; gap: 4px; padding: 1px 8px; border-radius: 12px; font-size: 11px; font-weight: 500; white-space: nowrap;
           background: color-mix(in srgb, var(--c, var(--tm-ok)) 15%, transparent); color: color-mix(in srgb, var(--c, var(--tm-ok)) 50%, var(--primary-text-color));
-          flex: 0 0 auto; min-width: 0; max-width: 51%; line-height: 16px; overflow: hidden; box-sizing: border-box; }
-  .chip-text { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+          flex: none; line-height: 16px; box-sizing: border-box; }
+  .chip-text { white-space: nowrap; }
   .header { display: flex; align-items: center; gap: 10px; padding: 12px 12px 0; }
   /* The detail button sits on the title's line, whether a subtitle follows or not. */
   .header .zoom { align-self: flex-start; margin-top: 10px; }
   .type-icon { position: relative; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex: none;
                --tm-tint: var(--c, var(--tm-accent)); background: color-mix(in srgb, var(--tm-tint) 16%, transparent); transition: background-color .3s ease; }
   .type-icon .icon { width: 24px; height: 24px; fill: color-mix(in srgb, var(--tm-tint) 60%, var(--primary-text-color)); transition: fill .3s ease; }
-  .titles { flex: 1 1 0; min-width: 5ch; }
+  .titles { flex: 1 1 0; min-width: 5ch; display: flex; flex-direction: column; gap: 1px; }
   :host([hide-title]) .titles .name, :host([hide-subtitle]) .titles .sub { display: none; }
-  /* The title row, banner or classic header: the title gives way first (down to 4 characters), the status pill keeps its
-     whole label. The titles are their own container: when the row runs out of room, the pill drops under the subtitle. */
-  .titles { container: tm-titles / inline-size; }
-  .tstack { display: flex; flex-direction: column; gap: 1px; align-items: flex-start; min-width: 0; width: 100%; }
-  .tstack > * { max-width: 100%; }
-  .trow { display: flex; align-items: center; gap: 8px; min-width: 0; width: 100%; }
-  .trow .name { flex: 0 1 auto; min-width: 4ch; }
-  @container tm-titles (max-width: 180px) {
-    .tstack { display: grid; justify-items: start; row-gap: 1px; }
-    .trow { display: contents; }
-    .trow .name { max-width: 100%; }
-    .chip { order: 3; max-width: 100%; }
-  }
+  /* The status pill (classic header and banner): on the title row, 8 px after the title, only when the whole title
+     and the pill's whole label fit there; otherwise on its own line under the subtitle, which then keeps one line.
+     Its dot alone at 200 px or less, or when the banner has no room left for its label (pill-dot): the label stays
+     in its title and for screen readers. Measured after each render (_fitPill), in every language, never by a fixed
+     width. */
+  .trow { display: flex; align-items: center; gap: 8px; min-width: 0; }
+  .trow .name { flex: 0 1 auto; min-width: 0; }
+  .titles.pill-below .trow { display: contents; }
+  .titles.pill-below .sub { order: 1; }
+  .titles.pill-below .chip { order: 2; align-self: flex-start; margin-top: 2px; }
+  .titles.pill-dot .chip { padding: 4px; }
+  .titles.pill-dot .chip-text { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
   .name { font-size: 16px; font-weight: 500; line-height: 1.25; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .sub { font-size: 12px; color: var(--secondary-text-color); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .warning { padding: 16px; color: color-mix(in srgb, var(--tm-warn) 50%, var(--primary-text-color)); }
@@ -1612,7 +1611,10 @@ const BASE_STYLE = `
   @media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition: none !important; animation: none !important; } }
   @container tm-card (max-width: 230px) { .header { gap: 6px; } }
   /* At 200 px or less, only the pill's dot: its label stays in its title and for screen readers. */
-  @container tm-card (max-width: 200px) { .chip { padding: 4px; } .chip-text { display: none; } }
+  @container tm-card (max-width: 200px) {
+    .chip { padding: 4px; }
+    .chip-text { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+  }
 `;
 
 // Popup at the top of the card, over a backdrop: it stays in view on a long card.
@@ -1716,6 +1718,11 @@ const ring = (size, w, p, { end, total } = {}) => {
 // kept for keyboard users, folding sections, a popup at the top of the card, live countdowns, service calls.
 // A card defines _build() (its model from the registries and the configuration), _entityIds(m), _render(), and may
 // define _action(action, el, ev), _dialogHtml() / _dialogAction(action, el), _extraDeps(), _onConnect() / _onDisconnect().
+// The banner's ground strip (the worktop's floor), that the title block keeps clear of, and the gap between the
+// title and the status pill on its row (.trow).
+const PILL_GROUND_PX = 10;
+const PILL_GAP_PX = 8;
+
 class CardBase extends HTMLElement {
   constructor() {
     super();
@@ -1852,6 +1859,7 @@ class CardBase extends HTMLElement {
       },
     );
     this._outside.on();
+    this._watchPill();
     if (this._dialog) window.addEventListener("keydown", this._onKey);
     clearInterval(this._tick);
     this._tick = setInterval(() => {
@@ -1861,6 +1869,53 @@ class CardBase extends HTMLElement {
     this._update();
   }
 
+  // The status pill goes on the title row, right after the title, only when the whole title and the pill's whole
+  // label fit there; otherwise it takes its own line under the subtitle (the subtitle then on one line). In the
+  // banner, when title, subtitle and pill still do not fit above the ground strip (or the pill's label runs past the
+  // text, over the picture), the pill keeps its dot only.
+  // Measured after each render and on every new width (or once the web font is loaded), never by a fixed width.
+  _fitPill() {
+    for (const t of this.shadowRoot?.querySelectorAll?.(".titles") || []) {
+      const row = t.querySelector?.(".trow");
+      const name = row?.querySelector(".name");
+      const chips = row ? [...row.children].filter((n) => n.classList.contains("chip")) : [];
+      if (!name?.getBoundingClientRect || !chips.length) continue;
+      t.classList.remove("pill-below", "pill-dot");
+      // The title's whole width (scrollWidth is rounded: 1 px more, so that a title that fits is never cut).
+      const need = chips.reduce((w, c) => w + PILL_GAP_PX + c.getBoundingClientRect().width, name.scrollWidth + 1);
+      if (need <= row.getBoundingClientRect().width + 0.5) continue;
+      t.classList.add("pill-below");
+      const banner = t.closest(".banner");
+      if (!banner) continue;
+      const box = banner.getBoundingClientRect();
+      const ground = box.bottom - PILL_GROUND_PX;
+      const right = t.getBoundingClientRect().right;
+      const out = [name, ...t.querySelectorAll(".sub"), ...chips].some((n) => {
+        const r = n.getBoundingClientRect();
+        return r.height > 0 && (r.top < box.top - 0.5 || r.bottom > ground + 0.5 || r.right > right + 0.5);
+      });
+      if (out) t.classList.add("pill-dot");
+    }
+  }
+
+  _watchPill() {
+    if (typeof ResizeObserver !== "function") return;
+    this._pillResize ??= new ResizeObserver((entries) => {
+      const w = Math.round(entries.at(-1).contentRect.width);
+      if (w === this._pillWidth) return;
+      this._pillWidth = w;
+      cancelAnimationFrame(this._pillFrame);
+      this._pillFrame = requestAnimationFrame(() => this._fitPill());
+    });
+    this._pillResize.observe(this);
+    document.fonts?.ready?.then(() => this._fitPill());
+  }
+
+  _unwatchPill() {
+    this._pillResize?.disconnect();
+    this._pillWidth = null;
+  }
+
   disconnectedCallback() {
     this._pressing = this._dirty = false;
     window.removeEventListener("pointerup", this._onPressEnd, true);
@@ -1868,6 +1923,7 @@ class CardBase extends HTMLElement {
     clearInterval(this._tick);
     clearInterval(this._countdown);
     this._tick = this._countdown = null;
+    this._unwatchPill();
     this._outside?.off();
     window.removeEventListener("keydown", this._onKey);
     this._onDisconnect?.();
@@ -1931,6 +1987,7 @@ class CardBase extends HTMLElement {
       const kept = this._dialog || this._byPointer ? null : this._focusedSpot();
       this._html = html;
       this.shadowRoot.innerHTML = html;
+      this._fitPill();
       // Fields get back what was typed, and the caret when one had the focus.
       for (const el of this.shadowRoot.querySelectorAll?.("[data-keep]") || []) {
         const v = this._inputs[el.dataset.keep];
@@ -2522,15 +2579,13 @@ const BANNER_STYLE = `
   .banner.night .zoom { color: #ffffff; background: rgba(255,255,255,.12); box-shadow: inset 0 0 0 1px rgba(255,255,255,.2); }
   .banner.night .zoom:hover { background: rgba(255,255,255,.22); color: #ffffff; }
   .banner .zoom:focus-visible { outline: 2px solid var(--primary-color, #03a9f4); outline-offset: 2px; }
-  .htext .titles { align-self: stretch; display: flex; flex-direction: column; justify-content: center; }
+  .htext .titles { align-self: stretch; justify-content: center; }
   /* The status pill on the banner: the status colour on frosted glass. */
-  .banner .chip { display: inline-flex; align-items: center; gap: 4px; flex: 0 0 auto; margin: 0; max-width: 51%; padding: 1px 8px; border-radius: 12px;
-                  font-size: 11px; font-weight: 500; line-height: 16px; white-space: nowrap; overflow: hidden; box-sizing: border-box;
+  .banner .chip { display: inline-flex; align-items: center; gap: 4px; padding: 1px 8px; border-radius: 12px;
+                  font-size: 11px; font-weight: 500; line-height: 16px; white-space: nowrap; box-sizing: border-box;
                   background: color-mix(in srgb, var(--c, var(--tm-accent)) 18%, rgba(255,255,255,.78)); color: color-mix(in srgb, var(--c, var(--tm-accent)) 45%, #0d2a45); }
   .banner.night .chip { background: color-mix(in srgb, var(--c, var(--tm-accent)) 30%, rgba(8,18,38,.55)); color: color-mix(in srgb, var(--c, var(--tm-accent)) 35%, #ffffff); }
   .banner .chip .dot { width: 7px; height: 7px; border-radius: 50%; flex: none; background: var(--c, var(--tm-accent)); }
-  .banner .chip .chip-text { display: inline; min-width: 0; overflow: hidden; text-overflow: ellipsis; }
-  @container tm-card (max-width: 200px) { .banner .chip { padding: 4px; } .banner .chip .chip-text { display: none; } }
   /* The picture: the wall's joints, the worktop, the hob, the pot and the kitchen timer. */
   .tm-joints line { stroke: #dfe7ea; stroke-width: .6; } .night .tm-joints line { stroke: #343d4f; }
   .tm-top { fill: #fff; } .night .tm-top { fill: #323b4e; }
@@ -2858,7 +2913,7 @@ class TimerCard extends CardBase {
     const text = (sum.ringing.length ? [running, paused] : running ? [paused] : []).filter(Boolean).join(" · ");
     const entity = sum.chip?.entity;
     const pill = `<span class="chip ${st}${entity ? " clickable" : ""}"${moreInfo(entity)} title="${esc(label)}" aria-label="${esc(label)}"><span class="dot"></span><span class="chip-text">${esc(label)}</span></span>`;
-    const head = `<div class="type-icon ${st}">${svgIcon(icon)}</div><div class="titles"><div class="tstack"><div class="trow"><div class="name">${esc(title)}</div>${pill}</div>${sub && text ? `<div class="sub">${esc(text)}</div>` : ""}</div></div>`;
+    const head = `<div class="type-icon ${st}">${svgIcon(icon)}</div><div class="titles"><div class="trow"><div class="name">${esc(title)}</div>${pill}</div>${sub && text ? `<div class="sub" title="${esc(text)}">${esc(text)}</div>` : ""}</div>`;
     if (this._config.illustration === false) return `<div class="header">${head}${this._zoomButton()}</div>`;
     const scene = sum.ringing.length ? "finished" : sum.active.length ? "running" : sum.paused.length ? "paused" : "idle";
     const night = tmIsNight(this._hass, this._config) ? " night" : "";
