@@ -151,7 +151,7 @@ zoom: true
 |---|---|---|---|
 | `title` | both | Timers | Card title |
 | `illustration` | both | `true` | Illustrated header: the kitchen scene that follows the timers' state; `false` for the classic header with its status chip |
-| `illustration_theme` | both | `auto` | Picture of the illustrated header: `day`, `night`, or `auto` (night when `sun.sun` is below the horizon, else with Home Assistant's dark theme) |
+| `illustration_theme` | both | `auto` | Picture of the illustrated header: `day`, `night`, or `auto` (night when `sun.sun` is below the horizon or with Home Assistant's dark theme, even while the sun is up) |
 | `show_title` | both | `true` | Show the title in the header |
 | `show_subtitle` | both | `true` | Show the subtitle (how many timers run, are paused or ring; on the mini card, with the illustrated header only) |
 | `timers` | both | Automatic | Timer helpers (`timer.*`), Google Home *timers* sensors and Alexa *next timer* sensors: entity ids, or objects with `entity` and `name` (the name of a speaker timer without a label); absent, every timer helper and speaker timer sensor |

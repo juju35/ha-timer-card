@@ -9,9 +9,10 @@ const TimerMiniCard = tm.element("timer-mini-card");
 // Objects from the sandbox have the sandbox's prototypes: compared as plain JSON.
 const same = (a, b, msg) => assert.deepEqual(JSON.parse(JSON.stringify(a)), JSON.parse(JSON.stringify(b)), msg);
 
-const makeHass = (variant = "default", { language = "en", sun } = {}) => {
+const makeHass = (variant = "default", { language = "en", sun, darkMode } = {}) => {
   const d = mockData(variant);
   if (sun) d.states["sun.sun"] = { entity_id: "sun.sun", state: sun, attributes: {} };
+  if (darkMode !== undefined) d.themes = { darkMode };
   const calls = [];
   return { calls, ...d, language, locale: { language }, callService: (...a) => calls.push(a) };
 };
@@ -319,6 +320,16 @@ test("a paused timer at 0 shows 0:00; rows keep +1 min and cancel", async () => 
   assert.match(html(), /class="row">[\s\S]*data-action="cancel"/);
   const it = { key: "k", kind: "timer", entity: "timer.x", name: "X", status: "paused", remaining: 0, total: 6e4 };
   assert.match(card._state(it), /0:00/);
+});
+
+test("illustrated header: the dark theme shows the night picture even while the sun is up; forced day/night win", async () => {
+  for (const Card of [TimerCard, TimerMiniCard]) {
+    const banner = async (darkMode, config = {}) => (await mount(config, "default", Card, { sun: "above_horizon", darkMode })).html().match(/<div class="banner[^"]*">/)[0];
+    assert.match(await banner(true), / night/);
+    assert.doesNotMatch(await banner(false), / night/);
+    assert.doesNotMatch(await banner(true, { illustration_theme: "day" }), / night/);
+    assert.match(await banner(false, { illustration_theme: "night" }), / night/);
+  }
 });
 
 test("illustrated header: its picture and icon colour follow the state, night by the sun or the option, ids per card", async () => {

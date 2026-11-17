@@ -5,10 +5,11 @@
 ### Features
 - Illustrated header, 90 px high on the full and the mini card: a kitchen scene beside the title (tiled wall, worktop, a pot on the hob and a kitchen timer) with a tiled floor strip, that follows the timers' state: running (the hob glows, the pot steams, the timer's hand turns), paused (the hand stops, a pause badge), finished (a speaker timer rings: the kitchen timer shakes and rings out) and idle (all still).
 - The header icon's colour is the state: orange running, amber paused, red ringing, grey idle, day and night.
-- Day and night pictures: night when `sun.sun` is below the horizon (else with the dark theme), forced with `illustration_theme: day | night`; `illustration: false` keeps the classic header with its status chip. Both options are in the visual editors.
+- Day and night pictures: night when `sun.sun` is below the horizon or with the dark theme, forced with `illustration_theme: day | night`; `illustration: false` keeps the classic header with its status chip. Both options are in the visual editors.
 - Mini card: the subtitle (how many timers run, are paused or ring) shows in the illustrated header.
 - The status pill is back in the illustrated header, on the title row right after the title, in the icon's colour (Ringing, N running, N paused, Idle); the subtitle keeps the other counts. It drops under the subtitle when room runs short and keeps only its dot on a very narrow card. The mini card's detail button sits in the banner's top-right corner, in the frosted style of the other cards.
 - With `illustration: false`, the classic header has the same status pill on the title row (Ringing, N running, N paused, Idle) in its own style and in the icon's colour, with the same narrow-card behaviour; its subtitle no longer repeats the count the pill gives.
+- Night picture with the dark theme even while the sun is up (a day picture would glare on a dark dashboard); `illustration_theme: day | night` still forces one.
 
 ## 1.1.0 - 2026-11-16
 
