@@ -1449,6 +1449,16 @@ const clamp = (v, lo, hi) => Math.min(hi, Math.max(lo, v));
 const moreInfo = (id) => (id ? ` role="button" tabindex="0" data-entity="${esc(id)}"` : "");
 const svgIcon = (path, cls = "") => `<svg class="icon ${cls}" viewBox="0 0 24 24" aria-hidden="true"><path d="${path}"/></svg>`;
 const domainOf = (id) => String(id || "").split(".")[0];
+
+// The entity ids of a states object, listed once per states object: every card on the dashboard and every call of
+// one update share the same list instead of scanning all states again.
+const _stateIds = new WeakMap();
+const stateIds = (states) => {
+  if (!states) return [];
+  let ids = _stateIds.get(states);
+  if (!ids) _stateIds.set(states, (ids = Object.keys(states)));
+  return ids;
+};
 const asList = (v) => (Array.isArray(v) ? v : v ? [v] : []);
 
 
@@ -1840,7 +1850,7 @@ class CardBase extends HTMLElement {
   _resolve() {
     const h = this._hass;
     if (!h?.entities || !h?.devices) return null;
-    const key = [h.entities, h.devices, h.areas, Object.keys(h.states).length];
+    const key = [h.entities, h.devices, h.areas, stateIds(h.states).length];
     if (this._model && this._modelKey?.every((k, i) => k === key[i])) return this._model;
     this._modelKey = key;
     this._model = this._build();
@@ -2406,7 +2416,7 @@ const _cache = new WeakMap();
 const resolve = (hass, config) => {
   let per = _cache.get(hass.entities);
   if (!per) _cache.set(hass.entities, (per = new Map()));
-  const sig = `${JSON.stringify([config.timers, config.counters])}|${Object.keys(hass.states).length}`;
+  const sig = `${JSON.stringify([config.timers, config.counters])}|${stateIds(hass.states).length}`;
   if (per.has(sig)) return per.get(sig);
   const byName = (a, b) => nameOf(hass, a).localeCompare(nameOf(hass, b));
   let timers;
@@ -2416,7 +2426,7 @@ const resolve = (hass, config) => {
       .filter((x) => x?.entity && sourceKind(hass, x.entity))
       .map((x) => ({ ...x, kind: sourceKind(hass, x.entity) }));
   } else {
-    const ids = Object.keys(hass.states);
+    const ids = stateIds(hass.states);
     const helpers = ids.filter((id) => domainOf(id) === "timer").sort(byName);
     const speakers = Object.values(hass.entities || {})
       .filter((e) => domainOf(e.entity_id) === "sensor" && hass.states[e.entity_id] && ((e.platform === "google_home" && (e.translation_key === "timers" || /_timers$/.test(e.entity_id))) || (e.platform === "alexa_media" && (e.translation_key === "next_timer" || /_next_timer$/.test(e.entity_id))) || (e.platform === "alexa_devices" && e.translation_key === "timer")))
@@ -2426,7 +2436,7 @@ const resolve = (hass, config) => {
   }
   const counters = config.counters
     ? asList(config.counters).map((x) => (typeof x === "string" ? { entity: x } : x)).filter((x) => x?.entity)
-    : Object.keys(hass.states)
+    : stateIds(hass.states)
         .filter((id) => domainOf(id) === "counter")
         .sort(byName)
         .map((entity) => ({ entity }));

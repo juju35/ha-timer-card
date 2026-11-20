@@ -412,3 +412,13 @@ test("visual editor: timers or counters written as objects stay YAML-only", () =
     doc.createElement = create;
   }
 });
+
+test("the entity ids are listed once per states object, shared by every caller", () => {
+  const t = load({ names: ["stateIds"] });
+  const states = { "timer.a": {}, "counter.b": {} };
+  const ids = t.stateIds(states);
+  assert.deepEqual([...ids], ["timer.a", "counter.b"]);
+  assert.equal(t.stateIds(states), ids);
+  assert.notEqual(t.stateIds({ ...states }), ids);
+  assert.equal(t.stateIds(undefined).length, 0);
+});
