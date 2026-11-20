@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.2 - 2026-11-20
+
+### Fixes
+- An unavailable timer helper reads "Unavailable", with no start button (a start could only fail), is listed last and is never the quick-start target; the mini card no longer lists it among the other timers.
+- Duration popup: the minute unit is written in the card's language ("мин.", "λεπ.") instead of a fixed "min".
+- Visual editor: `timers` / `counters` written in YAML as objects (`entity` + `name`) are no longer shown in an entity picker that would drop their names on the next change; the field is hidden (YAML only) and comes back for plain entity lists.
+
 ## 1.2.1 - 2026-11-18
 
 ### Fixes
