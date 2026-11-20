@@ -12,6 +12,7 @@
 
 ### Maintenance
 - CI: npm downloads cached (validate, release, screenshots); the screenshots job no longer installs the unused `gh` package.
+- Styles: unused rules left over from the card template removed (tiles, pill, hero picture, text field).
 
 ## 1.2.1 - 2026-11-18
 

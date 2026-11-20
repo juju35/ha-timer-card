@@ -1579,12 +1579,9 @@ const BASE_STYLE = `
   .ring-svg circle { fill: none; }
   .ring-svg .track { stroke: color-mix(in srgb, var(--c, var(--tm-accent)) 18%, transparent); }
   .ring-svg .prog { stroke: var(--c, var(--tm-accent)); stroke-linecap: round; transition: stroke-dashoffset 1s linear; }
-  /* Hero, as on the garden and tempo cards: a flat illustration on the left, a big value and a few colored lines on the right. */
+  /* Hero: a big value and a few colored lines. */
   .hero { display: flex; align-items: center; gap: 12px; min-width: 0; }
-  .hero-art { flex: none; width: 120px; display: grid; place-items: center; }
-  .hero-art svg { width: 100%; height: auto; display: block; }
   .hero-body { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 5px; }
-  .hero-kick { font-size: 12px; color: var(--secondary-text-color); }
   .big { display: flex; align-items: baseline; gap: 6px; min-width: 0; }
   .big .icon { width: 24px; height: 24px; align-self: center; color: var(--c, var(--tm-accent)); }
   .big b { font-size: 30px; font-weight: 400; line-height: 1; font-variant-numeric: tabular-nums; white-space: nowrap; }
@@ -1605,19 +1602,6 @@ const BASE_STYLE = `
   .row-state { font-size: 12.5px; color: var(--secondary-text-color); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .row-state.ok, .row-state.warn, .row-state.crit, .row-state.active, .row-state.accent { color: color-mix(in srgb, var(--c) 60%, var(--primary-text-color)); }
   .rows { display: flex; flex-direction: column; gap: 8px; }
-  /* Tiles, as on room overview: grey, tinted with a border when they need a look; small badges below. */
-  .tiles { display: grid; gap: 8px; grid-template-columns: repeat(var(--cols, 2), minmax(0, 1fr)); }
-  .tile { min-width: 0; display: flex; flex-direction: column; gap: 6px; padding: 8px; border-radius: 10px; box-sizing: border-box;
-          background: var(--secondary-background-color, rgba(127,127,127,.12)); border: 1px solid transparent; }
-  .tile.tint { background: color-mix(in srgb, var(--c) 13%, var(--secondary-background-color, rgba(127,127,127,.12)));
-               border-color: color-mix(in srgb, var(--c) 30%, transparent); }
-  .tile-head { display: flex; align-items: center; gap: 8px; min-width: 0; }
-  .tile .row-icon { width: 30px; height: 30px; } .tile .row-icon > .icon { width: 18px; height: 18px; }
-  .tile .row-state { font-size: 12px; }
-  .badges { display: flex; gap: 4px; flex-wrap: wrap; }
-  .pill { display: inline-flex; align-items: center; gap: 3px; font-size: 12px; padding: 1px 7px; border-radius: 10px;
-          color: color-mix(in srgb, var(--c, var(--tm-idle)) 60%, var(--primary-text-color)); background: color-mix(in srgb, var(--c, var(--tm-idle)) 14%, transparent); }
-  .pill .icon { width: 14px; height: 14px; color: var(--c, var(--tm-idle)); }
   @media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition: none !important; animation: none !important; } }
   @container tm-card (max-width: 230px) { .header { gap: 6px; } }
   /* At 200 px or less, only the pill's dot: its label stays in its title and for screen readers. */
@@ -1644,9 +1628,6 @@ const DIALOG_STYLE = `
             background: transparent; border: 1px solid color-mix(in srgb, var(--primary-text-color) 16%, transparent); }
   .preset.on { border-color: color-mix(in srgb, var(--tm-accent) 60%, transparent); color: var(--tm-accent-text); font-weight: 500;
                background: color-mix(in srgb, var(--tm-accent) 10%, transparent); }
-  .field { font: inherit; font-size: 15px; width: 100%; box-sizing: border-box; padding: 10px 12px; border-radius: 10px; color: var(--primary-text-color);
-           background: transparent; border: 1px solid color-mix(in srgb, var(--primary-text-color) 20%, transparent); }
-  .field:focus { outline: 2px solid var(--primary-color, var(--tm-accent)); outline-offset: -1px; }
 `;
 
 // The mini card: header and a compact row; its detail button switches it to the full card's content.
