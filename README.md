@@ -154,8 +154,8 @@ zoom: true
 | `illustration_theme` | both | `auto` | Picture of the illustrated header: `day`, `night`, or `auto` (follows the Home Assistant theme: night with a dark theme, day with a light theme) |
 | `show_title` | both | `true` | Show the title in the header |
 | `show_subtitle` | both | `true` | Show the subtitle (how many timers run, are paused or ring; on the mini card, with the illustrated header only) |
-| `timers` | both | Automatic | Timer helpers (`timer.*`), Google Home *timers* sensors and Alexa *next timer* sensors: entity ids, or objects with `entity` and `name` (the name of a speaker timer without a label); absent, every timer helper and speaker timer sensor |
-| `counters` | both | Automatic | Counter helpers: entity ids, or objects with `entity` and `name`; absent, every counter helper; `[]` for none |
+| `timers` | both | Automatic | Timer helpers (`timer.*`), Google Home *timers* sensors and Alexa *next timer* sensors: entity ids, or objects with `entity` and `name` (the name of a speaker timer without a label; objects are YAML only, the visual editor then hides the field); absent, every timer helper and speaker timer sensor |
+| `counters` | both | Automatic | Counter helpers: entity ids, or objects with `entity` and `name` (YAML only); absent, every counter helper; `[]` for none (YAML only: emptied in the visual editor, the list goes back to automatic — use `show_counters: false`) |
 | `quick_timer` | both | First idle helper | Timer helper the quick starts (and the mini card's start button) start |
 | `show_hero` | both | `true` | The next timer to end, in large |
 | `show_timers` | both | `true` | Timers section |

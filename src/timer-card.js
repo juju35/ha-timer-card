@@ -1449,6 +1449,16 @@ const clamp = (v, lo, hi) => Math.min(hi, Math.max(lo, v));
 const moreInfo = (id) => (id ? ` role="button" tabindex="0" data-entity="${esc(id)}"` : "");
 const svgIcon = (path, cls = "") => `<svg class="icon ${cls}" viewBox="0 0 24 24" aria-hidden="true"><path d="${path}"/></svg>`;
 const domainOf = (id) => String(id || "").split(".")[0];
+
+// The entity ids of a states object, listed once per states object: every card on the dashboard and every call of
+// one update share the same list instead of scanning all states again.
+const _stateIds = new WeakMap();
+const stateIds = (states) => {
+  if (!states) return [];
+  let ids = _stateIds.get(states);
+  if (!ids) _stateIds.set(states, (ids = Object.keys(states)));
+  return ids;
+};
 const asList = (v) => (Array.isArray(v) ? v : v ? [v] : []);
 
 
@@ -1569,12 +1579,9 @@ const BASE_STYLE = `
   .ring-svg circle { fill: none; }
   .ring-svg .track { stroke: color-mix(in srgb, var(--c, var(--tm-accent)) 18%, transparent); }
   .ring-svg .prog { stroke: var(--c, var(--tm-accent)); stroke-linecap: round; transition: stroke-dashoffset 1s linear; }
-  /* Hero, as on the garden and tempo cards: a flat illustration on the left, a big value and a few colored lines on the right. */
+  /* Hero: a big value and a few colored lines. */
   .hero { display: flex; align-items: center; gap: 12px; min-width: 0; }
-  .hero-art { flex: none; width: 120px; display: grid; place-items: center; }
-  .hero-art svg { width: 100%; height: auto; display: block; }
   .hero-body { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 5px; }
-  .hero-kick { font-size: 12px; color: var(--secondary-text-color); }
   .big { display: flex; align-items: baseline; gap: 6px; min-width: 0; }
   .big .icon { width: 24px; height: 24px; align-self: center; color: var(--c, var(--tm-accent)); }
   .big b { font-size: 30px; font-weight: 400; line-height: 1; font-variant-numeric: tabular-nums; white-space: nowrap; }
@@ -1595,19 +1602,6 @@ const BASE_STYLE = `
   .row-state { font-size: 12.5px; color: var(--secondary-text-color); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .row-state.ok, .row-state.warn, .row-state.crit, .row-state.active, .row-state.accent { color: color-mix(in srgb, var(--c) 60%, var(--primary-text-color)); }
   .rows { display: flex; flex-direction: column; gap: 8px; }
-  /* Tiles, as on room overview: grey, tinted with a border when they need a look; small badges below. */
-  .tiles { display: grid; gap: 8px; grid-template-columns: repeat(var(--cols, 2), minmax(0, 1fr)); }
-  .tile { min-width: 0; display: flex; flex-direction: column; gap: 6px; padding: 8px; border-radius: 10px; box-sizing: border-box;
-          background: var(--secondary-background-color, rgba(127,127,127,.12)); border: 1px solid transparent; }
-  .tile.tint { background: color-mix(in srgb, var(--c) 13%, var(--secondary-background-color, rgba(127,127,127,.12)));
-               border-color: color-mix(in srgb, var(--c) 30%, transparent); }
-  .tile-head { display: flex; align-items: center; gap: 8px; min-width: 0; }
-  .tile .row-icon { width: 30px; height: 30px; } .tile .row-icon > .icon { width: 18px; height: 18px; }
-  .tile .row-state { font-size: 12px; }
-  .badges { display: flex; gap: 4px; flex-wrap: wrap; }
-  .pill { display: inline-flex; align-items: center; gap: 3px; font-size: 12px; padding: 1px 7px; border-radius: 10px;
-          color: color-mix(in srgb, var(--c, var(--tm-idle)) 60%, var(--primary-text-color)); background: color-mix(in srgb, var(--c, var(--tm-idle)) 14%, transparent); }
-  .pill .icon { width: 14px; height: 14px; color: var(--c, var(--tm-idle)); }
   @media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition: none !important; animation: none !important; } }
   @container tm-card (max-width: 230px) { .header { gap: 6px; } }
   /* At 200 px or less, only the pill's dot: its label stays in its title and for screen readers. */
@@ -1634,9 +1628,6 @@ const DIALOG_STYLE = `
             background: transparent; border: 1px solid color-mix(in srgb, var(--primary-text-color) 16%, transparent); }
   .preset.on { border-color: color-mix(in srgb, var(--tm-accent) 60%, transparent); color: var(--tm-accent-text); font-weight: 500;
                background: color-mix(in srgb, var(--tm-accent) 10%, transparent); }
-  .field { font: inherit; font-size: 15px; width: 100%; box-sizing: border-box; padding: 10px 12px; border-radius: 10px; color: var(--primary-text-color);
-           background: transparent; border: 1px solid color-mix(in srgb, var(--primary-text-color) 20%, transparent); }
-  .field:focus { outline: 2px solid var(--primary-color, var(--tm-accent)); outline-offset: -1px; }
 `;
 
 // The mini card: header and a compact row; its detail button switches it to the full card's content.
@@ -1840,7 +1831,7 @@ class CardBase extends HTMLElement {
   _resolve() {
     const h = this._hass;
     if (!h?.entities || !h?.devices) return null;
-    const key = [h.entities, h.devices, h.areas, Object.keys(h.states).length];
+    const key = [h.entities, h.devices, h.areas, stateIds(h.states).length];
     if (this._model && this._modelKey?.every((k, i) => k === key[i])) return this._model;
     this._modelKey = key;
     this._model = this._build();
@@ -2322,10 +2313,12 @@ class EditorBase extends HTMLElement {
       this._formConfig = this._config;
       this._form.data = { ...defaults, ...this._config };
     }
-    const l = lang(this._hass, this._config);
-    if (this._schemaLang !== l) {
-      this._schemaLang = l;
-      this._form.schema = this._schema();
+    // The schema follows the language and the configuration (a field can depend on what the YAML holds).
+    const schema = this._schema();
+    const key = JSON.stringify(schema);
+    if (this._schemaKey !== key) {
+      this._schemaKey = key;
+      this._form.schema = schema;
     }
   }
 }
@@ -2404,7 +2397,7 @@ const _cache = new WeakMap();
 const resolve = (hass, config) => {
   let per = _cache.get(hass.entities);
   if (!per) _cache.set(hass.entities, (per = new Map()));
-  const sig = `${JSON.stringify([config.timers, config.counters])}|${Object.keys(hass.states).length}`;
+  const sig = `${JSON.stringify([config.timers, config.counters])}|${stateIds(hass.states).length}`;
   if (per.has(sig)) return per.get(sig);
   const byName = (a, b) => nameOf(hass, a).localeCompare(nameOf(hass, b));
   let timers;
@@ -2414,7 +2407,7 @@ const resolve = (hass, config) => {
       .filter((x) => x?.entity && sourceKind(hass, x.entity))
       .map((x) => ({ ...x, kind: sourceKind(hass, x.entity) }));
   } else {
-    const ids = Object.keys(hass.states);
+    const ids = stateIds(hass.states);
     const helpers = ids.filter((id) => domainOf(id) === "timer").sort(byName);
     const speakers = Object.values(hass.entities || {})
       .filter((e) => domainOf(e.entity_id) === "sensor" && hass.states[e.entity_id] && ((e.platform === "google_home" && (e.translation_key === "timers" || /_timers$/.test(e.entity_id))) || (e.platform === "alexa_media" && (e.translation_key === "next_timer" || /_next_timer$/.test(e.entity_id))) || (e.platform === "alexa_devices" && e.translation_key === "timer")))
@@ -2424,7 +2417,7 @@ const resolve = (hass, config) => {
   }
   const counters = config.counters
     ? asList(config.counters).map((x) => (typeof x === "string" ? { entity: x } : x)).filter((x) => x?.entity)
-    : Object.keys(hass.states)
+    : stateIds(hass.states)
         .filter((id) => domainOf(id) === "counter")
         .sort(byName)
         .map((entity) => ({ entity }));
@@ -2664,7 +2657,8 @@ class TimerCard extends CardBase {
         const item = { key: src.entity, kind: "timer", entity: src.entity, name: src.name || nameOf(this._hass, src.entity), sub: "", status: s.state, total };
         if (s.state === "active") item.end = parseTime(a.finishes_at) ?? now + (parseDuration(a.remaining) ?? 0);
         else if (s.state === "paused") item.remaining = parseDuration(a.remaining);
-        else item.status = "idle";
+        // Unavailable (its integration reloading, a YAML helper removed): no start button that could only fail.
+        else item.status = valid(s) ? "idle" : "unavailable";
         out.push(item);
       } else if (src.kind === "google_home") {
         for (const tm of asList(a.timers)) {
@@ -2715,7 +2709,7 @@ class TimerCard extends CardBase {
     }
     // An end gone by: the timer rings (Google Home) or is about to report it is done.
     for (const it of out) if (it.status === "active" && it.end !== null && it.end !== undefined && it.end <= now && it.kind !== "timer") it.status = "ringing";
-    const rank = { ringing: 0, active: 1, paused: 2, idle: 3 };
+    const rank = { ringing: 0, active: 1, paused: 2, idle: 3, unavailable: 4 };
     return out.sort((x, y) => rank[x.status] - rank[y.status] || (x.end ?? Number.MAX_SAFE_INTEGER) - (y.end ?? Number.MAX_SAFE_INTEGER) || x.name.localeCompare(y.name));
   }
 
@@ -2856,6 +2850,7 @@ class TimerCard extends CardBase {
     if (it.status === "active" && it.end) parts = [`<span class="num" data-end="${it.end}" data-fmt="left">${esc(this._t("left", { time: fmtCountdown(it.end - Date.now()) }))}</span>`, esc(this._t("ends_at", { time: fmtTime(this._hass, this._config, it.end) }))];
     else if (it.status === "paused") parts = [esc(this._t("paused")), it.remaining !== null && it.remaining !== undefined ? left(it.remaining) : ""];
     else if (it.status === "ringing") parts = [esc(this._t("ringing"))];
+    else if (it.status === "unavailable") parts = [esc(this._t("unavailable"))];
     else parts = [it.total ? esc(this._length(it.total)) : ""];
     return [...parts, it.sub ? esc(it.sub) : ""].filter(Boolean).join(" · ");
   }
@@ -2989,12 +2984,25 @@ class TimerCard extends CardBase {
     }
   }
 
+  // "25 min" in the card's language, its unit small ("25 мин", "25 λεπ."): the number and the unit apart.
+  _minutes(n) {
+    let parts;
+    try {
+      parts = new Intl.NumberFormat(this._locale(), { style: "unit", unit: "minute", unitDisplay: "short" }).formatToParts(n);
+    } catch {
+      parts = [{ type: "integer", value: String(n) }, { type: "literal", value: " " }, { type: "unit", value: "min" }];
+    }
+    const value = parts.filter((p) => p.type !== "unit" && p.type !== "literal").map((p) => p.value).join("");
+    const unit = parts.filter((p) => p.type === "unit").map((p) => p.value).join("");
+    return `${esc(value)}${unit ? `<small>${esc(unit)}</small>` : ""}`;
+  }
+
   _dialogHtml() {
     const d = this._dialog;
     const presets = PRESETS.map((n) => `<button class="preset${n === d.minutes ? " on" : ""}" data-action="dur_preset" data-min="${n}" aria-pressed="${n === d.minutes}">${esc(this._length(n * 6e4))}</button>`).join("");
     const body = `<div class="stepper" role="group" aria-label="${esc(this._t("duration"))}">
           <button class="btn round" data-action="dur_minus" aria-label="${esc(this._t("less"))}" title="${esc(this._t("less"))}"${d.minutes <= 1 ? " disabled" : ""}>${svgIcon(ICONS.minus)}</button>
-          <div class="val num" aria-live="polite">${d.minutes}<small>min</small></div>
+          <div class="val num" aria-live="polite">${this._minutes(d.minutes)}</div>
           <button class="btn round" data-action="dur_plus" aria-label="${esc(this._t("more"))}" title="${esc(this._t("more"))}">${svgIcon(ICONS.plus)}</button>
         </div>
         <div class="presets">${presets}</div>`;
@@ -3012,7 +3020,7 @@ class TimerMiniCard extends withMini(TimerCard) {
     if (error) return error;
     const sum = this._summary(m);
     const it = sum.hero;
-    const others = sum.items.filter((x) => x !== it && x.status !== "idle");
+    const others = sum.items.filter((x) => x !== it && x.status !== "idle" && x.status !== "unavailable");
     // The other timers, their countdowns live (data-end, ticked by _syncCountdown).
     const short = (x) => {
       if (x.status === "active" && x.end) return `<span class="num" data-end="${x.end}">${esc(fmtCountdown(x.end - Date.now()))}</span>`;
@@ -3076,9 +3084,12 @@ class TimerCardEditor extends EditorBase {
 
   _fields() {
     const tr = (k) => t(this._hass, this._config, k);
+    // `timers` / `counters` written in YAML with objects ({ entity, name }) stay YAML-only: an entity picker would
+    // show them empty and drop their names on the first change.
+    const plain = (k) => asList(this._config?.[k]).every((x) => typeof x === "string");
     return [
-      { name: "timers", selector: { entity: { multiple: true, domain: ["timer", "sensor"] } } },
-      { name: "counters", selector: { entity: { multiple: true, domain: "counter" } } },
+      ...(plain("timers") ? [{ name: "timers", selector: { entity: { multiple: true, domain: ["timer", "sensor"] } } }] : []),
+      ...(plain("counters") ? [{ name: "counters", selector: { entity: { multiple: true, domain: "counter" } } }] : []),
       { name: "quick_timer", selector: { entity: { domain: "timer" } } },
       { name: "illustration_theme", selector: { select: { mode: "dropdown", options: ["auto", "day", "night"].map((v) => ({ value: v, label: tr(`theme_${v}`) })) } } },
     ];
