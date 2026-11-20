@@ -7,6 +7,12 @@
 - Duration popup: the minute unit is written in the card's language ("мин.", "λεπ.") instead of a fixed "min".
 - Visual editor: `timers` / `counters` written in YAML as objects (`entity` + `name`) are no longer shown in an entity picker that would drop their names on the next change; the field is hidden (YAML only) and comes back for plain entity lists.
 
+### Performance
+- The entity ids are listed once per state update and shared by every card and call, instead of a full scan of the states each time.
+
+### Maintenance
+- CI: npm downloads cached (validate, release, screenshots); the screenshots job no longer installs the unused `gh` package.
+
 ## 1.2.1 - 2026-11-18
 
 ### Fixes
