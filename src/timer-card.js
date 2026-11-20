@@ -2322,10 +2322,12 @@ class EditorBase extends HTMLElement {
       this._formConfig = this._config;
       this._form.data = { ...defaults, ...this._config };
     }
-    const l = lang(this._hass, this._config);
-    if (this._schemaLang !== l) {
-      this._schemaLang = l;
-      this._form.schema = this._schema();
+    // The schema follows the language and the configuration (a field can depend on what the YAML holds).
+    const schema = this._schema();
+    const key = JSON.stringify(schema);
+    if (this._schemaKey !== key) {
+      this._schemaKey = key;
+      this._form.schema = schema;
     }
   }
 }
@@ -2664,7 +2666,8 @@ class TimerCard extends CardBase {
         const item = { key: src.entity, kind: "timer", entity: src.entity, name: src.name || nameOf(this._hass, src.entity), sub: "", status: s.state, total };
         if (s.state === "active") item.end = parseTime(a.finishes_at) ?? now + (parseDuration(a.remaining) ?? 0);
         else if (s.state === "paused") item.remaining = parseDuration(a.remaining);
-        else item.status = "idle";
+        // Unavailable (its integration reloading, a YAML helper removed): no start button that could only fail.
+        else item.status = valid(s) ? "idle" : "unavailable";
         out.push(item);
       } else if (src.kind === "google_home") {
         for (const tm of asList(a.timers)) {
@@ -2715,7 +2718,7 @@ class TimerCard extends CardBase {
     }
     // An end gone by: the timer rings (Google Home) or is about to report it is done.
     for (const it of out) if (it.status === "active" && it.end !== null && it.end !== undefined && it.end <= now && it.kind !== "timer") it.status = "ringing";
-    const rank = { ringing: 0, active: 1, paused: 2, idle: 3 };
+    const rank = { ringing: 0, active: 1, paused: 2, idle: 3, unavailable: 4 };
     return out.sort((x, y) => rank[x.status] - rank[y.status] || (x.end ?? Number.MAX_SAFE_INTEGER) - (y.end ?? Number.MAX_SAFE_INTEGER) || x.name.localeCompare(y.name));
   }
 
@@ -2856,6 +2859,7 @@ class TimerCard extends CardBase {
     if (it.status === "active" && it.end) parts = [`<span class="num" data-end="${it.end}" data-fmt="left">${esc(this._t("left", { time: fmtCountdown(it.end - Date.now()) }))}</span>`, esc(this._t("ends_at", { time: fmtTime(this._hass, this._config, it.end) }))];
     else if (it.status === "paused") parts = [esc(this._t("paused")), it.remaining !== null && it.remaining !== undefined ? left(it.remaining) : ""];
     else if (it.status === "ringing") parts = [esc(this._t("ringing"))];
+    else if (it.status === "unavailable") parts = [esc(this._t("unavailable"))];
     else parts = [it.total ? esc(this._length(it.total)) : ""];
     return [...parts, it.sub ? esc(it.sub) : ""].filter(Boolean).join(" · ");
   }
@@ -2989,12 +2993,25 @@ class TimerCard extends CardBase {
     }
   }
 
+  // "25 min" in the card's language, its unit small ("25 мин", "25 λεπ."): the number and the unit apart.
+  _minutes(n) {
+    let parts;
+    try {
+      parts = new Intl.NumberFormat(this._locale(), { style: "unit", unit: "minute", unitDisplay: "short" }).formatToParts(n);
+    } catch {
+      parts = [{ type: "integer", value: String(n) }, { type: "literal", value: " " }, { type: "unit", value: "min" }];
+    }
+    const value = parts.filter((p) => p.type !== "unit" && p.type !== "literal").map((p) => p.value).join("");
+    const unit = parts.filter((p) => p.type === "unit").map((p) => p.value).join("");
+    return `${esc(value)}${unit ? `<small>${esc(unit)}</small>` : ""}`;
+  }
+
   _dialogHtml() {
     const d = this._dialog;
     const presets = PRESETS.map((n) => `<button class="preset${n === d.minutes ? " on" : ""}" data-action="dur_preset" data-min="${n}" aria-pressed="${n === d.minutes}">${esc(this._length(n * 6e4))}</button>`).join("");
     const body = `<div class="stepper" role="group" aria-label="${esc(this._t("duration"))}">
           <button class="btn round" data-action="dur_minus" aria-label="${esc(this._t("less"))}" title="${esc(this._t("less"))}"${d.minutes <= 1 ? " disabled" : ""}>${svgIcon(ICONS.minus)}</button>
-          <div class="val num" aria-live="polite">${d.minutes}<small>min</small></div>
+          <div class="val num" aria-live="polite">${this._minutes(d.minutes)}</div>
           <button class="btn round" data-action="dur_plus" aria-label="${esc(this._t("more"))}" title="${esc(this._t("more"))}">${svgIcon(ICONS.plus)}</button>
         </div>
         <div class="presets">${presets}</div>`;
@@ -3012,7 +3029,7 @@ class TimerMiniCard extends withMini(TimerCard) {
     if (error) return error;
     const sum = this._summary(m);
     const it = sum.hero;
-    const others = sum.items.filter((x) => x !== it && x.status !== "idle");
+    const others = sum.items.filter((x) => x !== it && x.status !== "idle" && x.status !== "unavailable");
     // The other timers, their countdowns live (data-end, ticked by _syncCountdown).
     const short = (x) => {
       if (x.status === "active" && x.end) return `<span class="num" data-end="${x.end}">${esc(fmtCountdown(x.end - Date.now()))}</span>`;
@@ -3076,9 +3093,12 @@ class TimerCardEditor extends EditorBase {
 
   _fields() {
     const tr = (k) => t(this._hass, this._config, k);
+    // `timers` / `counters` written in YAML with objects ({ entity, name }) stay YAML-only: an entity picker would
+    // show them empty and drop their names on the first change.
+    const plain = (k) => asList(this._config?.[k]).every((x) => typeof x === "string");
     return [
-      { name: "timers", selector: { entity: { multiple: true, domain: ["timer", "sensor"] } } },
-      { name: "counters", selector: { entity: { multiple: true, domain: "counter" } } },
+      ...(plain("timers") ? [{ name: "timers", selector: { entity: { multiple: true, domain: ["timer", "sensor"] } } }] : []),
+      ...(plain("counters") ? [{ name: "counters", selector: { entity: { multiple: true, domain: "counter" } } }] : []),
       { name: "quick_timer", selector: { entity: { domain: "timer" } } },
       { name: "illustration_theme", selector: { select: { mode: "dropdown", options: ["auto", "day", "night"].map((v) => ({ value: v, label: tr(`theme_${v}`) })) } } },
     ];

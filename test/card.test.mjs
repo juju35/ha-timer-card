@@ -375,3 +375,40 @@ test("illustration: false keeps the classic header and its status chip", async (
   const mini = await mount({ illustration: false }, "default", TimerMiniCard);
   assert.match(mini.html(), /class="header">[\s\S]*class="trow">[\s\S]*chip accent[\s\S]*class="zoom"/);
 });
+
+test("an unavailable timer helper says so, with no start button, and is never the quick-start target", async () => {
+  const { card, hass, html } = await mount({ timers: ["timer.oeufs", "timer.pates"] });
+  hass.states["timer.oeufs"] = { ...hass.states["timer.oeufs"], state: "unavailable" };
+  card._lastDeps = null;
+  card.hass = { ...hass, states: { ...hass.states } };
+  const out = html();
+  assert.match(out, /Unavailable/);
+  assert.doesNotMatch(out, /data-action="start" data-key="timer\.oeufs"/);
+  assert.doesNotMatch(out, /data-action="quick"/);
+});
+
+test("the duration popup writes the minute unit in the card's language", async () => {
+  const { card, html } = await mount({ language: "ru" });
+  click(card, { action: "start", key: "timer.oeufs" });
+  assert.match(html(), /class="val num"[^>]*>6<small>мин\.?<\/small>/);
+});
+
+test("visual editor: timers or counters written as objects stay YAML-only", () => {
+  const Editor = tm.element("timer-card-editor");
+  const doc = tm.window.document;
+  const create = doc.createElement;
+  let form;
+  doc.createElement = (tag) => (form = { tag, listeners: {}, addEventListener(type, fn) { this.listeners[type] = fn; } });
+  try {
+    const ed = new Editor();
+    ed.setConfig({ type: "custom:timer-card", timers: [{ entity: "timer.pates", name: "Pasta" }], counters: ["counter.cafes"] });
+    ed.hass = makeHass();
+    const names = form.schema.map((s) => s.name);
+    assert.ok(!names.includes("timers"));
+    assert.ok(names.includes("counters"));
+    ed.setConfig({ type: "custom:timer-card", timers: ["timer.pates"] });
+    assert.ok(form.schema.some((s) => s.name === "timers"));
+  } finally {
+    doc.createElement = create;
+  }
+});
