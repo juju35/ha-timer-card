@@ -94,7 +94,8 @@ export const load = ({ now = NOW, names = [] } = {}) => {
   };
   sandbox.window = sandbox;
   vm.createContext(sandbox);
-  const out = vm.runInContext(`${source}\n({ ${names.join(", ")} })`, sandbox);
+  // The file name lets `node --test --experimental-test-coverage` report the card source itself, not only the tests.
+  const out = vm.runInContext(`${source}\n({ ${names.join(", ")} })`, sandbox, { filename: new URL("../src/timer-card.js", import.meta.url).pathname });
   out.element = (tag) => registry.get(tag);
   out.window = sandbox;
   return out;
