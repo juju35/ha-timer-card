@@ -1,6 +1,6 @@
 {
   "name": "ha-timer-card",
-  "version": "1.2.2",
+  "version": "1.2.3",
   "description": "Lovelace cards for Home Assistant: timers and counters: timer helpers, Google Home and Alexa timers with live countdown rings, quick starts and counters.",
   "private": true,
   "type": "module",
