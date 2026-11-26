@@ -13,10 +13,11 @@ export const TIMER_STYLE = `
   .kt-dial .ring-svg { width: 100%; height: 100%; }
   .kt-icon { position: absolute; left: 12px; top: 16px; width: 96px; height: 96px; display: grid; place-items: center; color: color-mix(in srgb, var(--c) 70%, var(--primary-text-color)); }
   .kt-icon .icon { width: 36px; height: 36px; }
-  /* The seconds sweep: a dot runs round the dial while the timer runs. */
-  .sweep { position: absolute; inset: 0; border-radius: 50%; animation: tm-sweep 3s linear infinite; pointer-events: none; }
-  .sweep::before { content: ""; position: absolute; top: 0; left: 50%; width: 8px; height: 8px; margin-left: -4px; border-radius: 50%;
-                   background: var(--c); box-shadow: 0 0 6px var(--c); }
+  /* The seconds hand: a dot goes round the dial once a minute while the timer runs, inside the ring (inset set inline). */
+  .sweep { position: absolute; inset: 0; border-radius: 50%; animation: tm-sweep 60s linear infinite; pointer-events: none; }
+  .sweep::before { content: ""; position: absolute; top: 0; left: 50%; width: 6px; height: 6px; margin-left: -3px; border-radius: 50%;
+                   background: var(--c); }
+  .mini .sweep::before { width: 4px; height: 4px; margin-left: -2px; }
   @keyframes tm-sweep { to { transform: rotate(360deg); } }
   .ringing .prog, .row-icon.ringing .prog { animation: tm-flash .8s steps(2, jump-none) infinite; }
   @keyframes tm-flash { 0%, 100% { opacity: 1; } 50% { opacity: .25; } }

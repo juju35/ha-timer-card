@@ -30,7 +30,7 @@ Timers, speaker timers and counters are **discovered automatically** from the Ho
 ## Features
 
 - Two cards: a full **Timer Card** (`custom:timer-card`) and a compact **Timer Mini Card** (`custom:timer-mini-card`)
-- The **next timer to end in large**: a dial whose ring empties second by second, the time left inside, its length, the time it ends and the speaker it rings on; a dot sweeps round the dial while it runs, the dial flashes and a bell shakes when a speaker timer rings (see [Animations](#animations))
+- The **next timer to end in large**: a dial whose ring empties second by second, the time left inside, its length, the time it ends and the speaker it rings on; a dot goes round the dial once a minute, like a seconds hand, while it runs, the dial flashes and a bell shakes when a speaker timer rings (see [Animations](#animations))
 - **Every timer** in a list, ringing first, then running (the next to end first), paused and idle, each with its own ring and live countdown
 - **Timer helpers**: Pause, Resume, *Add a minute* (`timer.change`), Cancel, and Start with a popup at the top of the card to pick the duration (presets 1 to 60 minutes, or minute by minute)
 - **Quick starts**: 5, 10 and 15 minutes (or *Other*) on the idle timer helper of your choice
@@ -173,7 +173,7 @@ zoom: true
 
 The dial of the next timer and the header's kitchen scene animate; every animation honours `prefers-reduced-motion`.
 
-While it runs, a dot sweeps round the dial (and the ring empties second by second in Home Assistant); in the header, the pot steams and the kitchen timer's hand turns:
+While it runs, a dot goes round the dial once a minute, like a seconds hand (and the ring empties second by second in Home Assistant); in the header, the pot steams and the kitchen timer's hand turns:
 
 | Light | Dark |
 |---|---|
