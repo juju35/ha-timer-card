@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.6 - 2026-11-26
+
+### Fixes
+- Timer rows: the ring of a running timer is drawn inside its round icon, on the edge, instead of 2 px beyond it. The rows that run now line up with the paused and idle ones.
+- Dial: the dot goes round once a minute, like a seconds hand in step with the clock, instead of every 3 seconds. It runs on an orbit inside the ring, so it no longer passes over the arc.
+- A custom icon (`<ha-icon>`) is centred in its round row icon.
+
 ## 1.2.5 - 2026-11-24
 
 ### Maintenance

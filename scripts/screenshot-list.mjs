@@ -17,7 +17,7 @@ export const shots = twins([
 ]);
 
 // One looping GIF per distinct animated state:
-//   running — the next timer to end: a dot sweeps round its dial; in the header, the pot steams and the timer's hand turns
+//   running — the next timer to end: a seconds dot goes round its dial; in the header, the pot steams and the timer's hand turns
 //   ringing — a timer rings: its dial and ring flash, the bell shakes; in the header, the kitchen timer shakes and rings
 export const gifs = twins([
   { file: "running", type: "timer-card", width: 460, config: { show_timers: false, show_counters: false, show_quick: false } },

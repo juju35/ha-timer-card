@@ -102,7 +102,10 @@ export const BASE_STYLE = `
               --t: var(--c, var(--tm-idle)); background: color-mix(in srgb, var(--t) 18%, transparent); color: color-mix(in srgb, var(--t) 70%, var(--primary-text-color)); }
   .row-icon.idle { background: color-mix(in srgb, var(--primary-text-color) 8%, transparent); color: var(--secondary-text-color); }
   .row-icon > .icon, .row-icon > ha-icon { width: 22px; height: 22px; --mdc-icon-size: 22px; }
-  .row-icon .ring-svg { inset: -2px; width: 44px; height: 44px; }
+  /* Home Assistant's <ha-icon> is inline: as a flex box of the icon's size it is centred, not set on a line of text. */
+  .row-icon > ha-icon { display: flex; line-height: 0; }
+  /* The ring is drawn inside the round icon, on its edge: the rows that run line up with those at rest. */
+  .row-icon .ring-svg { inset: 0; width: 40px; height: 40px; }
   .badge { position: absolute; right: -3px; bottom: -3px; width: 17px; height: 17px; border-radius: 50%; display: grid; place-items: center;
            background: var(--b, var(--tm-ok)); color: #fff; box-shadow: 0 0 0 2px var(--ha-card-background, var(--card-background-color, #fff)); }
   .badge .icon { width: 11px; height: 11px; }

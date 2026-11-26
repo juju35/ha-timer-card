@@ -169,9 +169,17 @@ export class TimerCard extends CardBase {
       <svg class="kt-body" viewBox="0 0 120 120" aria-hidden="true"><rect class="top" x="53" y="3" width="14" height="9" rx="2"/><rect class="top" x="57" y="10" width="6" height="7"/>
 <rect class="top" x="90" y="12" width="12" height="5" rx="2" transform="rotate(45 96 14)"/>
         <circle class="face" cx="60" cy="64" r="54"/></svg>
-      <div class="kt-dial">${this._ring(it, 96, w)}${it.status === "active" ? '<div class="sweep" aria-hidden="true"></div>' : ""}</div>
+      <div class="kt-dial">${this._ring(it, 96, w)}${it.status === "active" ? this._sweep(w) : ""}</div>
       <div class="kt-icon">${svgIcon(this._icon(it), it.status === "ringing" ? "shake" : "")}</div>
     </div>`;
+  }
+
+  // The seconds hand: a dot that goes round once a minute, in step with the clock (its delay is the seconds already
+  // gone), on an orbit inside the ring so that it never runs over the arc.
+  _sweep(w) {
+    const inset = (((w + 3) / 96) * 100).toFixed(2);
+    const delay = ((Date.now() / 1000) % 60).toFixed(2);
+    return `<div class="sweep" style="inset:${inset}%;animation-delay:-${delay}s" aria-hidden="true"></div>`;
   }
 
   _big(it) {
@@ -249,7 +257,7 @@ export class TimerCard extends CardBase {
     const ringed = it.status === "active" || it.status === "ringing";
     const acts = this._actions(it, false, true);
     return `<div class="row">
-      <div class="row-icon ${cls} ${it.status}">${ringed ? this._ring(it, 44, 3) : ""}${svgIcon(this._icon(it), it.status === "ringing" ? "shake" : "")}${badge}</div>
+      <div class="row-icon ${cls} ${it.status}">${ringed ? this._ring(it, 40, 3) : ""}${svgIcon(this._icon(it), it.status === "ringing" ? "shake" : "")}${badge}</div>
       <div class="row-text clickable" role="button" tabindex="0" data-entity="${esc(it.entity)}"><div class="row-name">${esc(it.name)}</div><div class="row-state ${cls}">${this._state(it)}</div></div>
       ${acts ? `<div class="acts">${acts}</div>` : ""}
     </div>`;
