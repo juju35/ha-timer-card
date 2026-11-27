@@ -3,6 +3,7 @@
 // ---------------------------------------------------------------------------
 import { ICONS, asList, clamp, esc, fmtCountdown, intlLocale, stateIds, svgIcon, t } from "./helpers.js";
 import { BASE_STYLE, CONFIRM_GUARD_MS, DIALOG_STYLE, FOCUS_SELECTOR, focusKey, isOutside, watchOutside } from "./styles.js";
+import { rcMorph } from "./in-place-redraw.js";
 
 export let tmUid = 0;
 
@@ -278,7 +279,8 @@ export class CardBase extends HTMLElement {
       const focused = this._dialog && active?.dataset?.action;
       const kept = this._dialog || this._byPointer ? null : this._focusedSpot();
       this._html = html;
-      this.shadowRoot.innerHTML = html;
+      // In place (see rcMorph): the nodes stay, so the card keeps its height, its animations and its focus.
+    rcMorph(this.shadowRoot, html);
       this._fitPill();
       // Fields get back what was typed, and the caret when one had the focus.
       for (const el of this.shadowRoot.querySelectorAll?.("[data-keep]") || []) {
